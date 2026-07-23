@@ -1,0 +1,63 @@
+<section class="page-section page-enter">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    Live Database
+                </div>
+
+                <h1 class="section-title">
+                    WAC Adventure Explorer
+                </h1>
+
+                <p class="section-subtitle">
+                    Search and filter the live WAC adventure database.
+                </p>
+
+            </div>
+
+            <div class="chip" id="adventureCount">
+                Loading...
+            </div>
+
+        </div>
+
+        <div class="toolbar">
+
+            <input
+                id="adventureSearch"
+                class="search-input"
+                type="search"
+                placeholder="Search adventures...">
+
+            <select
+                id="categoryFilter"
+                class="filter-select">
+
+                <option value="">
+                    All Categories
+                </option>
+
+            </select>
+
+        </div>
+
+        <div id="adventureGrid" class="card-grid"></div>
+
+        <div id="adventureEmpty" class="empty-state hidden">
+
+            <h3>No Adventures Found</h3>
+
+            <p>
+                Try a different search term or category.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>

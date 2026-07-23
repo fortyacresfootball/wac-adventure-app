@@ -1,0 +1,510 @@
+<section class="page-section page-enter">
+
+    <div class="container">
+
+        <!-- ===================================================== -->
+        <!-- Adventure Record Hero -->
+        <!-- ===================================================== -->
+
+        <div class="profile-hero">
+
+            <div class="profile-cover">
+
+                <div class="profile-photo">
+
+                    <img
+                        id="profilePhoto"
+                        src="assets/icons/wac-icon.png"
+                        alt="Member Photo">
+
+                </div>
+
+                <div class="profile-header">
+
+                    <div class="eyebrow">
+                        Adventure Record
+                    </div>
+
+                    <h1 id="profileName">
+                        WAC Member
+                    </h1>
+
+                    <div class="profile-subtitle">
+
+                        <span id="profileRole">
+                            Member
+                        </span>
+
+                        <span class="dot">•</span>
+
+                        <span id="memberSince">
+                            Member Since
+                        </span>
+
+                    </div>
+
+                    <p class="profile-quote">
+                        Live the Adventure. Leave the Legacy.
+                    </p>
+
+                </div>
+
+                <div class="profile-level">
+
+                    <div class="level-circle">
+
+                        <div
+                            id="profileLevel"
+                            class="level-number">
+
+                            1
+
+                        </div>
+
+                        <div class="level-text">
+                            LEVEL
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- Adventure Summary -->
+        <!-- ===================================================== -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div
+                    id="statCompleted"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+                <div class="stat-label">
+                    Adventures Completed
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div
+                    id="statBadges"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+                <div class="stat-label">
+                    Badges Earned
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div
+                    id="statPoints"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+                <div class="stat-label">
+                    WAC Points
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div
+                    id="statPercent"
+                    class="stat-number">
+
+                    0%
+
+                </div>
+
+                <div class="stat-label">
+                    Overall Completion
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- Current Rank -->
+        <!-- ===================================================== -->
+
+        <div class="panel panel-wide">
+
+            <div class="panel-label">
+                Current Rank
+            </div>
+
+            <h2 id="profileRank">
+                Explorer
+            </h2>
+
+            <div class="progress-bar">
+
+                <div
+                    id="rankProgressBar"
+                    class="progress-fill"
+                    style="width: 0%;">
+
+                </div>
+
+            </div>
+
+            <p id="rankProgressText">
+                0 of 25 adventures toward Adventurer
+            </p>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- Adventure Overview -->
+        <!-- ===================================================== -->
+
+        <div class="dashboard-grid">
+
+            <div class="panel panel-large">
+
+                <div class="panel-label">
+                    Adventure Status
+                </div>
+
+                <h3 id="currentObjectiveTitle">
+                    Ready for the Next Adventure
+                </h3>
+
+                <p id="currentObjectiveText">
+                    Select an adventure from the WAC Adventure Explorer
+                    and begin adding chapters to your Adventure Record.
+                </p>
+
+                <a
+                    href="#"
+                    class="small-button"
+                    data-page="adventures">
+
+                    Explore Adventures
+
+                </a>
+
+            </div>
+
+            <div class="panel panel-medium">
+
+                <div class="panel-label">
+                    Favorite Category
+                </div>
+
+                <div class="metric">
+                    🏕️
+                </div>
+
+                <h3 id="favoriteCategory">
+                    Not Yet Established
+                </h3>
+
+                <p id="favoriteCategoryText">
+                    Complete adventures to establish your leading category.
+                </p>
+
+            </div>
+
+            <div class="panel panel-medium">
+
+                <div class="panel-label">
+                    Next Milestone
+                </div>
+
+                <div class="metric">
+                    ⭐
+                </div>
+
+                <h3 id="nextMilestone">
+                    Adventurer
+                </h3>
+
+                <p id="nextMilestoneText">
+                    Complete 25 adventures to reach the next WAC rank.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- Recent Adventures and Current Challenges -->
+        <!-- ===================================================== -->
+
+        <div class="dashboard-grid">
+
+            <div class="panel panel-large">
+
+                <div class="panel-label">
+                    Recent Adventures
+                </div>
+
+                <div
+                    id="recentActivity"
+                    class="activity-list">
+
+                    <div class="empty-state">
+
+                        <h3>No Adventures Completed Yet</h3>
+
+                        <p>
+                            Completed adventures will appear here in chronological order.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="panel panel-medium">
+
+                <div class="panel-label">
+                    Current Challenges
+                </div>
+
+                <div id="currentChallenges">
+
+                    <div class="empty-state">
+
+                        <h3>No Active Challenges</h3>
+
+                        <p>
+                            Future challenges and active objectives will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- Category Progress -->
+        <!-- ===================================================== -->
+
+        <div class="panel panel-wide">
+
+            <div class="panel-label">
+                Category Progress
+            </div>
+
+            <div id="categoryProgress">
+
+                <div class="empty-state">
+
+                    <h3>No Category Progress Yet</h3>
+
+                    <p>
+                        Category statistics will be calculated from completed adventures.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    
+ <!-- ===================================================== -->
+<!-- Featured Badges & Achievements -->
+<!-- ===================================================== -->
+
+<div class="dashboard-grid">
+
+    <!-- Featured Badges -->
+
+    <div class="panel panel-medium">
+
+        <div class="panel-label">
+            Featured Badges
+        </div>
+
+        <div
+            id="earnedBadges"
+            class="badge-grid">
+
+            <div class="empty-state">
+
+                <h3>No Badges Earned Yet</h3>
+
+                <p>
+                    Your earned WAC badges will be displayed here as you complete adventures.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Achievements -->
+
+    <div class="panel panel-medium">
+
+        <div class="panel-label">
+            Achievements
+        </div>
+
+        <div
+            id="achievementList"
+            class="achievement-list">
+
+            <div class="empty-state">
+
+                <h3>No Achievements Yet</h3>
+
+                <p>
+                    Complete adventures to unlock WAC achievements.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+        <!-- ===================================================== -->
+        <!-- Adventure Journal -->
+        <!-- ===================================================== -->
+
+        <div class="panel panel-wide">
+
+            <div class="panel-label">
+                Adventure Journal
+            </div>
+
+            <div id="journalEntries">
+
+                <div class="empty-state">
+
+                    <h3>Your Story Begins Here</h3>
+
+                    <p>
+                        Every completed adventure becomes part of your permanent WAC legacy.
+
+                    </p>
+
+                    <blockquote>
+
+                        "The best memories aren't just made...
+                        they're preserved."
+
+                    </blockquote>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- Compound Legacy -->
+        <!-- ===================================================== -->
+
+        <div class="panel panel-wide">
+
+            <div class="panel-label">
+                Compound Legacy
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div
+                        id="legacyMemberSince"
+                        class="stat-number">
+
+                        2009
+
+                    </div>
+
+                    <div class="stat-label">
+                        Member Since
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div
+                        id="legacyCampfires"
+                        class="stat-number">
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+                        Campfires
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div
+                        id="legacyFish"
+                        class="stat-number">
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+                        Fish Caught
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div
+                        id="legacyDeer"
+                        class="stat-number">
+
+                        0
+
+                    </div>
+
+                    <div class="stat-label">
+                        Deer Harvested
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

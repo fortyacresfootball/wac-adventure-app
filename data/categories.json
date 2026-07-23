@@ -1,0 +1,50 @@
+[
+  {
+    "Code": "L",
+    "Category Name": "Lifestyle"
+  },
+  {
+    "Code": "CC",
+    "Category Name": "Community & Culture"
+  },
+  {
+    "Code": "S",
+    "Category Name": "Shenanigans & Compound Glory"
+  },
+  {
+    "Code": "H",
+    "Category Name": "Hunting & Wildlife Management"
+  },
+  {
+    "Code": "O",
+    "Category Name": "Wilderness & Outdoor Exploration"
+  },
+  {
+    "Code": "C",
+    "Category Name": "Trade, Crafting & Homesteading"
+  },
+  {
+    "Code": "B",
+    "Category Name": "Construction & WAC Infrastructure"
+  },
+  {
+    "Code": "TC",
+    "Category Name": "Mechanical, Tech & Comms"
+  },
+  {
+    "Code": "SP",
+    "Category Name": "Survival, Safety & Emergency Prep"
+  },
+  {
+    "Code": "MD",
+    "Category Name": "Health, Care & Purple Heart Medals"
+  },
+  {
+    "Code": "T",
+    "Category Name": "Travel & Expeditions"
+  },
+  {
+    "Code": "F",
+    "Category Name": "Physical Fitness & Recreation"
+  }
+]

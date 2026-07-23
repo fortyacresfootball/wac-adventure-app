@@ -1,0 +1,242 @@
+[
+  {
+    "Location ID": "LOC001",
+    "Location Name": "Workman Adventure Compound",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "WAC Property",
+    "Description": "The home of the Workman Adventure Compound and headquarters for WAC adventures."
+  },
+  {
+    "Location ID": "LOC002",
+    "Location Name": "Eight Point Lake",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "Lake",
+    "Description": "Primary lake adjacent to the WAC used for boating, fishing, kayaking, swimming, and water sports."
+  },
+  {
+    "Location ID": "LOC003",
+    "Location Name": "Crooked Lake",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "Lake",
+    "Description": "Local lake included in the Triple Paddle challenge."
+  },
+  {
+    "Location ID": "LOC004",
+    "Location Name": "Big Mud Lake",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "Lake",
+    "Description": "Local lake included in the Triple Paddle challenge."
+  },
+  {
+    "Location ID": "LOC005",
+    "Location Name": "Paul's Deer Blind",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "WAC Property",
+    "Description": "Primary hunting blind located on the WAC property."
+  },
+  {
+    "Location ID": "LOC006",
+    "Location Name": "WAC Rifle Range",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "WAC Property",
+    "Description": "Primary shooting range for firearms training and recreational shooting."
+  },
+  {
+    "Location ID": "LOC007",
+    "Location Name": "WAC Fire Pit",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "WAC Property",
+    "Description": "Main gathering area for campfires, stories, and evening events."
+  },
+  {
+    "Location ID": "LOC008",
+    "Location Name": "WAC Pavilion",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "WAC Property",
+    "Description": "Covered gathering area used for meals, meetings, and celebrations."
+  },
+  {
+    "Location ID": "LOC009",
+    "Location Name": "WAC Pole Barn",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "WAC Property",
+    "Description": "Equipment storage and activity area at the WAC."
+  },
+  {
+    "Location ID": "LOC010",
+    "Location Name": "WAC Trails",
+    "City": "Lake",
+    "State": "Michigan",
+    "Location Type": "Trail",
+    "Description": "Network of hiking, ATV, and exploration trails throughout the property."
+  },
+  {
+    "Location ID": "LOC011",
+    "Location Name": "Mackinac Bridge",
+    "City": "St. Ignace",
+    "State": "Michigan",
+    "Location Type": "Landmark",
+    "Description": "Iconic bridge connecting Michigan's Lower and Upper Peninsulas."
+  },
+  {
+    "Location ID": "LOC012",
+    "Location Name": "Isle Royale National Park",
+    "City": "Houghton",
+    "State": "Michigan",
+    "Location Type": "National Park",
+    "Description": "Remote island national park in Lake Superior."
+  },
+  {
+    "Location ID": "LOC013",
+    "Location Name": "Pictured Rocks National Lakeshore",
+    "City": "Munising",
+    "State": "Michigan",
+    "Location Type": "National Lakeshore",
+    "Description": "Famous sandstone cliffs and waterfalls along Lake Superior."
+  },
+  {
+    "Location ID": "LOC014",
+    "Location Name": "Tahquamenon Falls State Park",
+    "City": "Paradise",
+    "State": "Michigan",
+    "Location Type": "State Park",
+    "Description": "Home to the Upper and Lower Tahquamenon Falls."
+  },
+  {
+    "Location ID": "LOC015",
+    "Location Name": "Kitch-iti-kipi",
+    "City": "Manistique",
+    "State": "Michigan",
+    "Location Type": "State Park",
+    "Description": "Michigan's largest natural freshwater spring."
+  },
+  {
+    "Location ID": "LOC016",
+    "Location Name": "Copper Harbor",
+    "City": "Copper Harbor",
+    "State": "Michigan",
+    "Location Type": "Town",
+    "Description": "Northernmost community in Michigan's Upper Peninsula."
+  },
+  {
+    "Location ID": "LOC017",
+    "Location Name": "Mount Arvon",
+    "City": "L'Anse",
+    "State": "Michigan",
+    "Location Type": "Mountain",
+    "Description": "Highest natural point in the State of Michigan."
+  },
+  {
+    "Location ID": "LOC018",
+    "Location Name": "Baraga County",
+    "City": "L'Anse",
+    "State": "Michigan",
+    "Location Type": "County",
+    "Description": "Home of Mount Arvon and numerous wilderness adventures."
+  },
+  {
+    "Location ID": "LOC019",
+    "Location Name": "Rochester Hills",
+    "City": "Rochester Hills",
+    "State": "Michigan",
+    "Location Type": "City",
+    "Description": "Home city of the WAC founders."
+  },
+  {
+    "Location ID": "LOC020",
+    "Location Name": "Clarkston",
+    "City": "Clarkston",
+    "State": "Michigan",
+    "Location Type": "City",
+    "Description": "Primary residence of the Workman family."
+  },
+  {
+    "Location ID": "LOC021",
+    "Location Name": "Lake Hudson Recreation Area",
+    "City": "Hudson",
+    "State": "Michigan",
+    "Location Type": "State Recreation Area",
+    "Description": "Official International Dark Sky Park."
+  },
+  {
+    "Location ID": "LOC022",
+    "Location Name": "Negwegon State Park",
+    "City": "Harrisville",
+    "State": "Michigan",
+    "Location Type": "State Park",
+    "Description": "Dark sky viewing location on Lake Huron."
+  },
+  {
+    "Location ID": "LOC023",
+    "Location Name": "Port Crescent State Park",
+    "City": "Port Austin",
+    "State": "Michigan",
+    "Location Type": "State Park",
+    "Description": "Dark sky preserve and campground."
+  },
+  {
+    "Location ID": "LOC024",
+    "Location Name": "Rockport Recreation Area",
+    "City": "Alpena",
+    "State": "Michigan",
+    "Location Type": "State Recreation Area",
+    "Description": "Dark sky viewing and fossil hunting area."
+  },
+  {
+    "Location ID": "LOC025",
+    "Location Name": "Thompson's Harbor State Park",
+    "City": "Alpena",
+    "State": "Michigan",
+    "Location Type": "State Park",
+    "Description": "Protected shoreline and dark sky destination."
+  },
+  {
+    "Location ID": "LOC026",
+    "Location Name": "Wilderness State Park",
+    "City": "Mackinaw City",
+    "State": "Michigan",
+    "Location Type": "State Park",
+    "Description": "Large park known for exceptional night sky viewing."
+  },
+  {
+    "Location ID": "LOC027",
+    "Location Name": "Clare County Fair",
+    "City": "Clare",
+    "State": "Michigan",
+    "Location Type": "Fairgrounds",
+    "Description": "Regional fair featured in WAC adventures."
+  },
+  {
+    "Location ID": "LOC028",
+    "Location Name": "Evart",
+    "City": "Evart",
+    "State": "Michigan",
+    "Location Type": "City",
+    "Description": "Community frequently referenced in WAC activities."
+  },
+  {
+    "Location ID": "LOC029",
+    "Location Name": "Farwell",
+    "City": "Farwell",
+    "State": "Michigan",
+    "Location Type": "City",
+    "Description": "Community frequently referenced in WAC activities."
+  },
+  {
+    "Location ID": "LOC030",
+    "Location Name": "Lake",
+    "City": "Clare County",
+    "State": "Michigan",
+    "Location Type": "Town",
+    "Description": "Home community surrounding the Workman Adventure Compound."
+  }
+]

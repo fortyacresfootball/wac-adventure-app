@@ -1,107 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Workman Adventure Compound</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<style>
+    <title>Workman Adventure Compound</title>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-
-    background:#16341d;
-    color:white;
-    font-family:Arial,Helvetica,sans-serif;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    height:100vh;
-
-}
-
-.container{
-
-    text-align:center;
-
-}
-
-.logo{
-
-    width:180px;
-    margin-bottom:35px;
-
-}
-
-h1{
-
-    font-size:54px;
-    margin-bottom:12px;
-    letter-spacing:2px;
-
-}
-
-h2{
-
-    font-weight:300;
-    color:#d9d9d9;
-    margin-bottom:50px;
-
-}
-
-.button{
-
-    display:inline-block;
-
-    background:#d4af37;
-
-    color:#16341d;
-
-    text-decoration:none;
-
-    padding:18px 45px;
-
-    border-radius:12px;
-
-    font-size:22px;
-
-    font-weight:bold;
-
-    transition:.25s;
-
-}
-
-.button:hover{
-
-    transform:scale(1.05);
-
-}
-
-</style>
+    <link rel="stylesheet"
+          href="css/styles.css">
 
 </head>
 
 <body>
 
-<div class="container">
+<header class="hero">
 
-<img class="logo" src="wac-icon.png">
+    <div class="hero-overlay">
 
-<h1>WORKMAN</h1>
+        <div class="container">
 
-<h2>Adventure Awaits</h2>
+            <nav class="navbar">
 
-<a class="button" href="#">ENTER</a>
+                <div class="brand">
 
-</div>
+                    <img
+                        class="logo"
+                        src="assets/icons/wac-icon.png"
+                        alt="WAC Logo">
+
+                </div>
+
+                <div class="nav-links">
+
+                    <a href="#"
+                       data-page="home"
+                       class="active">
+                        Home
+                    </a>
+
+                    <a href="#"
+                       data-page="adventures">
+                        Adventures
+                    </a>
+
+                    <a href="#"
+                       data-page="events">
+                        Events
+                    </a>
+
+                    <a href="#"
+                       data-page="family">
+                        Family
+                    </a>
+
+                    <a href="#"
+                       data-page="resources">
+                        Resources
+                    </a>
+
+                </div>
+
+            </nav>
+
+            <section class="hero-content">
+
+                <div class="hero-kicker">
+                    EST. 2009
+                </div>
+
+                <h1>
+                    WORKMAN
+                </h1>
+
+                <h2>
+                    Adventure Compound
+                </h2>
+
+                <p class="tagline">
+                    Where Memories Become Tradition
+                </p>
+
+                <a href="#"
+                   class="button"
+                   data-page="adventures">
+
+                    Explore Adventures
+
+                </a>
+
+                <div class="scroll-indicator">
+
+                    ↓ SCROLL
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main id="app-content"></main>
+
+<!-- Global Components -->
+
+<div id="globalComponents"></div>
+
+<!-- Core -->
+
+<script src="js/database.js"></script>
+<script src="js/api.js"></script>
+<script src="js/progressEngine.js"></script>
+<script src="js/recommendationEngine.js"></script>
+<script src="js/uiEngine.js"></script>
+<script src="js/memberState.js"></script>
+<script src="js/achievementEngine.js"></script>
+
+<!-- Components -->
+
+<script src="js/componentLoader.js"></script>
+<script src="js/successModal.js"></script>
+<script src="js/drawer.js"></script>
+
+<!-- Application -->
+
+<script src="js/router.js"></script>
+<script src="js/app.js"></script>
 
 </body>
 
