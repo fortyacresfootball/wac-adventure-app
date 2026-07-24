@@ -14,15 +14,15 @@
         <!-- Header -->
         <!-- ====================================== -->
 
-        <div class="drawer-header">
+        <header class="drawer-header">
 
             <img
                 id="drawerBadge"
                 class="drawer-badge"
-                src="assets/icons/wac-icon.png"
-                alt="Badge">
+                src="assets/badges/B-01.webp"
+                alt="Adventure Badge">
 
-            <div>
+            <div class="drawer-header-info">
 
                 <span
                     id="drawerCategory"
@@ -38,183 +38,209 @@
 
                 </h2>
 
-                <div
-                    id="drawerPoints"
-                    class="chip">
+                <div class="drawer-chip-row">
 
-                    100 Points
+    <div
+        id="drawerPoints"
+        class="chip">
+
+        100 Points
+
+    </div>
+
+    <div
+        id="drawerStatus"
+        class="chip">
+
+        Available
+
+    </div>
+
+</div>
+
+<div class="drawer-summary">
+
+    <div class="summary-item">
+
+        ⭐
+        <span id="drawerDifficultyHeader">
+            Moderate
+        </span>
+
+    </div>
+
+    <div class="summary-item">
+
+        ⏱
+        <span id="drawerTimeHeader">
+            2 Hours
+        </span>
+
+    </div>
+
+    <div class="summary-item">
+
+        📍
+        <span id="drawerLocationHeader">
+            WAC Property
+        </span>
+
+    </div>
+
+    <div class="summary-item">
+
+        🌲
+        <span id="drawerSeasonHeader">
+            All Seasons
+        </span>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </header>
+
+        <!-- ====================================== -->
+        <!-- Adventure Overview -->
+        <!-- ====================================== -->
+
+        <section class="drawer-section">
+
+            <h3>Adventure Overview</h3>
+
+            <p id="drawerVibe">
+
+                Adventure overview...
+
+            </p>
+
+        </section>
+
+                        <!-- ====================================== -->
+        <!-- Adventure Stats -->
+        <!-- ====================================== -->
+
+        <section class="drawer-section">
+
+            <div class="stats-grid stats-grid-two">
+
+                <div class="stat-card">
+
+                    <div
+                        id="drawerType"
+                        class="stat-number">
+
+                        Outdoor
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Adventure Type
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div
+                        id="drawerAge"
+                        class="stat-number">
+
+                        All Ages
+
+                    </div>
+
+                    <div class="stat-label">
+
+                        Minimum Age
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+        </section>
 
         <!-- ====================================== -->
-<!-- Adventure Overview -->
-<!-- ====================================== -->
+        <!-- Mission -->
+        <!-- ====================================== -->
+
+        <section class="drawer-section mission-card">
+
+    <h3>🧭 Mission</h3>
+
+            <p id="drawerMission"></p>
+
+        </section>
+
+        <!-- ====================================== -->
+        <!-- Why It Matters -->
+        <!-- ====================================== -->
+
+        <section class="drawer-section why-card">
+
+    <h3>⭐ Why It Matters</h3>
+
+            <p id="drawerWhy"></p>
+
+        </section>
+
+        <!-- ====================================== -->
+        <!-- President's Note -->
+        <!-- ====================================== -->
+
+        <section class="drawer-section note-card">
+
+    <h3>💬 President's Note</h3>
+
+            <p id="drawerNote"></p>
+
+        </section>
+
+        <!-- ====================================== -->
+        <!-- Required Equipment -->
+        <!-- ====================================== -->
+
+        <section class="drawer-section">
+
+    <h3>Required Equipment</h3>
+
+    <div id="drawerEquipment" class="drawer-list">
+
+    </div>
+
+</section>
 
 <section class="drawer-section">
 
-    <h3>Adventure Overview</h3>
+    <h3>Prerequisites</h3>
 
-    <p id="drawerVibe">
+    <div id="drawerPrerequisite" class="drawer-list">
 
-        Adventure overview goes here.
-
-    </p>
+    </div>
 
 </section>
 
         <!-- ====================================== -->
-        <!-- Quick Information -->
+        <!-- Footer -->
         <!-- ====================================== -->
 
-        <section class="drawer-section">
-
-            <div class="stats-grid">
-
-                <div class="stat-card">
-
-                    <div
-                        id="drawerDifficulty"
-                        class="stat-number">
-
-                        ★
-
-                    </div>
-
-                    <div class="stat-label">
-
-                        Difficulty
-
-                    </div>
-
-                </div>
-
-                <div class="stat-card">
-
-                    <div
-                        id="drawerTime"
-                        class="stat-number">
-
-                        --
-
-                    </div>
-
-                    <div class="stat-label">
-
-                        Time
-
-                    </div>
-
-                </div>
-
-                <div class="stat-card">
-
-                    <div
-                        id="drawerStatus"
-                        class="stat-number">
-
-                        Open
-
-                    </div>
-
-                    <div class="stat-label">
-
-                        Status
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Mission -->
-
-        <section class="drawer-section">
-
-            <h3>Mission</h3>
-
-            <p id="drawerMission">
-
-                Mission
-
-            </p>
-
-        </section>
-
-        <!-- Requirements -->
-
-        <section class="drawer-section">
-
-            <h3>Requirements</h3>
-
-            <p id="drawerRequirement">
-
-                Requirements
-
-            </p>
-
-        </section>
-
-        <!-- Why -->
-
-        <section class="drawer-section">
-
-            <h3>Why It Matters</h3>
-
-            <p id="drawerWhy">
-
-                Why
-
-            </p>
-
-        </section>
-
-        <!-- President -->
-
-        <section class="drawer-section">
-
-            <h3>President's Note</h3>
-
-            <p id="drawerNote">
-
-                Note
-
-            </p>
-
-        </section>
-
-        <!-- Location -->
-
-        <section class="drawer-section">
-
-            <h3>Location</h3>
-
-            <p id="drawerLocation">
-
-                Anywhere
-
-            </p>
-
-        </section>
-
-        <!-- Footer -->
-
-        <div class="drawer-footer">
+        <footer class="drawer-footer">
 
             <button
-                class="button"
-                id="completeAdventure">
+                id="completeAdventure"
+                class="button">
 
                 Complete Adventure
 
             </button>
 
-        </div>
+        </footer>
 
     </aside>
 

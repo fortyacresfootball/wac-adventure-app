@@ -139,11 +139,15 @@
 
                 <div class="card dark-card ${completed ? "completed-card" : ""}">
 
-                    <div class="card-icon">
+                    <div class="card-image">
 
-                        ${completed ? "✅" : "🏕️"}
+    <img
+        src="assets/badges/${adventure["ID"]}.webp"
+        alt="${adventure.Title}"
+        loading="lazy"
+        onerror="this.src='assets/badges/${adventure["ID"]}.png'">
 
-                    </div>
+</div>
 
                     <span class="badge">
 

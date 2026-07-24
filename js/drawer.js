@@ -1,6 +1,6 @@
 // ======================================
 // WAC Adventure Drawer
-// Version 5.0
+// Version 6.0
 // ======================================
 
 const Drawer = {
@@ -72,10 +72,6 @@ const Drawer = {
 
                 }
 
-                //--------------------------------------------------
-                // Refresh Member State
-                //--------------------------------------------------
-
                 await MemberState.load(
                     member["Member ID"]
                 );
@@ -136,10 +132,6 @@ const Drawer = {
 
         overlay.classList.add("open");
 
-        //--------------------------------------------------
-        // Current Member
-        //--------------------------------------------------
-
         const member =
             window.WAC.selectedMember ||
             (await Database.getMembers())[0];
@@ -152,14 +144,14 @@ const Drawer = {
         // Helper
         //--------------------------------------------------
 
-        const set = (id,value)=>{
+        const set = (id, value) => {
 
-            const e =
+            const element =
                 document.getElementById(id);
 
-            if(e){
+            if (element) {
 
-                e.textContent =
+                element.textContent =
                     value || "";
 
             }
@@ -175,45 +167,156 @@ const Drawer = {
 
         if (badge) {
 
+            badge.onerror = null;
+
             badge.src =
-                adventure["Badge Images"] ||
-                "assets/icons/wac-icon.png";
+                `assets/badges/${adventure["ID"]}.webp`;
+
+            badge.onerror = () => {
+
+                badge.src =
+                    `assets/badges/${adventure["ID"]}.png`;
+
+            };
 
         }
 
-        //--------------------------------------------------
+                //--------------------------------------------------
         // Populate
         //--------------------------------------------------
 
-        set("drawerTitle",
-            adventure.Title);
+        set("drawerTitle", adventure.Title);
+        set("drawerCategory", adventure.Category);
+        set("drawerPoints", `${adventure["Points"] || 100} Points`);
 
-        set("drawerCategory",
-            adventure.Category);
+        // Summary Banner
+        set("drawerDifficultyHeader", adventure["Difficulty"]);
+        set("drawerTimeHeader", adventure["Estimated Time"]);
+        set("drawerLocationHeader", adventure["Location"]);
+        set("drawerSeasonHeader", adventure["Season"]);
 
-        set("drawerPoints",
-            `${adventure["Points"] || 100} Points`);
+        // Detail Cards
+        set("drawerDifficulty", adventure["Difficulty"]);
+        set("drawerTime", adventure["Estimated Time"]);
+        set("drawerSeason", adventure["Season"]);
+        
+        //--------------------------------------------------
+// Adventure Type
+//--------------------------------------------------
 
-        set("drawerDifficulty",
-            adventure["Difficulty"]);
+const category =
+    (adventure.Category || "").toLowerCase();
 
-        set("drawerTime",
-            adventure["Estimated Time"]);
+let type = "Outdoor";
 
-        set("drawerMission",
-            adventure["Mission"]);
+if (category.includes("hunt")) type = "Hunting";
+else if (category.includes("fish")) type = "Fishing";
+else if (category.includes("camp")) type = "Camping";
+else if (category.includes("craft")) type = "Craft";
+else if (category.includes("food")) type = "Cooking";
+else if (category.includes("history")) type = "History";
+else if (category.includes("shoot")) type = "Shooting";
+else if (category.includes("water")) type = "Water";
 
-        set("drawerWhy",
-            adventure["Why It Matters"]);
+set("drawerType", type);
+        set("drawerAge", adventure["Minimum Age"]);
 
-        set("drawerVibe",
-            adventure["Vibe"]);
+        // Content
+        set("drawerMission", adventure["Mission"]);
+        set("drawerWhy", adventure["Why It Matters"]);
+        set("drawerVibe", adventure["Vibe"]);
+        set("drawerNote", adventure["Presidents Note"]);
 
-        set("drawerNote",
-            adventure["Presidents Note"]);
+        // Adventure Details
+        //--------------------------------------------------
+// Equipment List
+//--------------------------------------------------
 
-        set("drawerLocation",
-            adventure["Location"]);
+const equipment =
+    document.getElementById("drawerEquipment");
+
+if (equipment) {
+
+    equipment.innerHTML = "";
+
+    const items =
+        (adventure["Equipment"] || "")
+            .split(/\r?\n|,/)
+            .map(i => i.trim())
+            .filter(i => i.length);
+
+    if (items.length === 0) {
+
+        equipment.innerHTML =
+            "<div class='list-item'>None Required</div>";
+
+    } else {
+
+        items.forEach(item => {
+
+            equipment.innerHTML += `
+
+                <div class="list-item">
+
+                    <span class="list-icon">🧰</span>
+
+                    <span>${item}</span>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+}
+
+//--------------------------------------------------
+// Prerequisites
+//--------------------------------------------------
+
+const prereq =
+    document.getElementById("drawerPrerequisite");
+
+if (prereq) {
+
+    prereq.innerHTML = "";
+
+    const items =
+        (adventure["Prerequisite"] || "")
+            .split(/\r?\n|,/)
+            .map(i => i.trim())
+            .filter(i => i.length);
+
+    if (items.length === 0) {
+
+        prereq.innerHTML =
+            "<div class='list-item'>None</div>";
+
+    } else {
+
+        items.forEach(item => {
+
+            prereq.innerHTML += `
+
+                <div class="list-item">
+
+                    <span class="list-icon">✓</span>
+
+                    <span>${item}</span>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+}
+        set("drawerLocation", adventure["Location"]);
+        set("drawerGPS", adventure["GPS Coordinates"]);
 
         //--------------------------------------------------
         // Completion Status
@@ -229,7 +332,7 @@ const Drawer = {
                 "completeAdventure"
             );
 
-        if(completed){
+        if (completed) {
 
             set(
                 "drawerStatus",
@@ -247,7 +350,7 @@ const Drawer = {
 
         }
 
-        else{
+        else {
 
             set(
                 "drawerStatus",
@@ -269,7 +372,7 @@ const Drawer = {
 
     //--------------------------------------------------
 
-    close(){
+    close() {
 
         this.currentAdventure = null;
 

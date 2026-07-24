@@ -11,32 +11,43 @@ const UI = {
 
     badgeCard(adventure) {
 
-        return `
+    return `
 
-            <div class="badge-card">
+        <div class="badge-card" data-id="${adventure.ID}">
 
-                <img
-                    src="assets/icons/wac-icon.png"
-                    alt="${adventure.Title}"
-                    class="badge-image">
+            <img
+                src="assets/badges/B-01.webp"
+                alt="${adventure.Title}"
+                class="badge-image"
+                loading="lazy">
 
-                <div class="badge-title">
+            <div class="badge-title">
 
-                    ${adventure.Title}
-
-                </div>
-
-                <div class="badge-id">
-
-                    ${adventure["ID"]}
-
-                </div>
+                ${adventure.Title}
 
             </div>
 
-        `;
+            <div class="badge-category">
 
-    },
+                ${adventure.Category}
+
+            </div>
+
+            <div class="badge-footer">
+
+                <span class="badge-id">
+
+                    ${adventure.ID}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+},
 
     //------------------------------------
     // Achievement Card
