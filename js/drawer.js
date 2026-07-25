@@ -9,6 +9,9 @@ const Drawer = {
 
     MAX_GALLERY_IMAGES: 6,
 
+    DEFAULT_HERO_IMAGE:
+        "assets/images/adventures/default-hero.jpg",
+
     async init() {
 
         const closeButton =
@@ -587,9 +590,26 @@ const Drawer = {
         const uniquePhotos =
             [...new Set(validPhotos)];
 
+        //--------------------------------------------------
+        // Default Hero Fallback
+        //--------------------------------------------------
+
         if (uniquePhotos.length === 0) {
 
-            return;
+            const defaultHeroExists =
+                await this.imageExists(
+                    this.DEFAULT_HERO_IMAGE
+                );
+
+            if (!defaultHeroExists) {
+
+                return;
+
+            }
+
+            uniquePhotos.push(
+                this.DEFAULT_HERO_IMAGE
+            );
 
         }
 
@@ -618,7 +638,7 @@ const Drawer = {
 
         photoSection.hidden = false;
 
-        //--------------------------------------------------
+                //--------------------------------------------------
         // Gallery
         //--------------------------------------------------
 
