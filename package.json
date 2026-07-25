@@ -2,10 +2,7 @@
   "name": "wac-adventure-app",
   "version": "1.0.0",
   "description": "Workman Adventure Compound",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
+  "private": true,
   "dependencies": {
     "axios": "^1.18.1",
     "cors": "^2.8.5",
