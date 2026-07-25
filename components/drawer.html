@@ -4,7 +4,9 @@
 
         <button
             id="drawerClose"
-            class="drawer-close">
+            class="drawer-close"
+            type="button"
+            aria-label="Close adventure details">
 
             ✕
 
@@ -40,67 +42,117 @@
 
                 <div class="drawer-chip-row">
 
-    <div
-        id="drawerPoints"
-        class="chip">
+                    <div
+                        id="drawerPoints"
+                        class="chip">
 
-        100 Points
+                        100 Points
 
-    </div>
+                    </div>
 
-    <div
-        id="drawerStatus"
-        class="chip">
+                    <div
+                        id="drawerStatus"
+                        class="chip">
 
-        Available
+                        Available
 
-    </div>
+                    </div>
 
-</div>
+                </div>
 
-<div class="drawer-summary">
+                <div class="drawer-summary">
 
-    <div class="summary-item">
+                    <div class="summary-item">
 
-        ⭐
-        <span id="drawerDifficultyHeader">
-            Moderate
-        </span>
+                        ⭐
+                        <span id="drawerDifficultyHeader">
+                            Moderate
+                        </span>
 
-    </div>
+                    </div>
 
-    <div class="summary-item">
+                    <div class="summary-item">
 
-        ⏱
-        <span id="drawerTimeHeader">
-            2 Hours
-        </span>
+                        ⏱
+                        <span id="drawerTimeHeader">
+                            2 Hours
+                        </span>
 
-    </div>
+                    </div>
 
-    <div class="summary-item">
+                    <div class="summary-item">
 
-        📍
-        <span id="drawerLocationHeader">
-            WAC Property
-        </span>
+                        📍
+                        <span id="drawerLocationHeader">
+                            WAC Property
+                        </span>
 
-    </div>
+                    </div>
 
-    <div class="summary-item">
+                    <div class="summary-item">
 
-        🌲
-        <span id="drawerSeasonHeader">
-            All Seasons
-        </span>
+                        🌲
+                        <span id="drawerSeasonHeader">
+                            All Seasons
+                        </span>
 
-    </div>
+                    </div>
 
-</div>
+                </div>
 
             </div>
 
         </header>
+
+        <!-- ====================================== -->
+        <!-- Adventure Photos -->
+        <!-- Hidden when no photos are available -->
+        <!-- ====================================== -->
+
+        <section
+            id="drawerPhotos"
+            class="drawer-photos"
+            hidden>
+
+            <button
+                id="drawerHeroButton"
+                class="drawer-hero-button"
+                type="button"
+                aria-label="View full-size adventure photo">
+
+                <img
+                    id="drawerHeroImage"
+                    class="drawer-hero-image"
+                    src=""
+                    alt="">
+
+            </button>
+
+            <div
+                id="drawerGalleryHeader"
+                class="drawer-gallery-header"
+                hidden>
+
+                <h3>Adventure Gallery</h3>
+
+                <span
+                    id="drawerPhotoCount"
+                    class="drawer-photo-count">
+
+                    0 Photos
+
+                </span>
+
+            </div>
+
+            <div
+                id="drawerGallery"
+                class="drawer-gallery"
+                hidden>
+
+            </div>
+
+        </section>
 
         <!-- ====================================== -->
         <!-- Adventure Overview -->
@@ -118,7 +170,7 @@
 
         </section>
 
-                        <!-- ====================================== -->
+        <!-- ====================================== -->
         <!-- Adventure Stats -->
         <!-- ====================================== -->
 
@@ -172,7 +224,7 @@
 
         <section class="drawer-section mission-card">
 
-    <h3>🧭 Mission</h3>
+            <h3>🧭 Mission</h3>
 
             <p id="drawerMission"></p>
 
@@ -184,7 +236,7 @@
 
         <section class="drawer-section why-card">
 
-    <h3>⭐ Why It Matters</h3>
+            <h3>⭐ Why It Matters</h3>
 
             <p id="drawerWhy"></p>
 
@@ -196,7 +248,7 @@
 
         <section class="drawer-section note-card">
 
-    <h3>💬 President's Note</h3>
+            <h3>💬 President's Note</h3>
 
             <p id="drawerNote"></p>
 
@@ -208,23 +260,31 @@
 
         <section class="drawer-section">
 
-    <h3>Required Equipment</h3>
+            <h3>Required Equipment</h3>
 
-    <div id="drawerEquipment" class="drawer-list">
+            <div
+                id="drawerEquipment"
+                class="drawer-list">
 
-    </div>
+            </div>
 
-</section>
+        </section>
 
-<section class="drawer-section">
+        <!-- ====================================== -->
+        <!-- Prerequisites -->
+        <!-- ====================================== -->
 
-    <h3>Prerequisites</h3>
+        <section class="drawer-section">
 
-    <div id="drawerPrerequisite" class="drawer-list">
+            <h3>Prerequisites</h3>
 
-    </div>
+            <div
+                id="drawerPrerequisite"
+                class="drawer-list">
 
-</section>
+            </div>
+
+        </section>
 
         <!-- ====================================== -->
         <!-- Footer -->
@@ -234,7 +294,8 @@
 
             <button
                 id="completeAdventure"
-                class="button">
+                class="button"
+                type="button">
 
                 Complete Adventure
 

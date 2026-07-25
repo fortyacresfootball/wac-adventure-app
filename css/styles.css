@@ -1506,6 +1506,193 @@ HEADER
 }
 
 /*==============================
+ADVENTURE PHOTOS
+==============================*/
+
+.drawer-photos{
+
+    margin:28px 0 34px;
+
+}
+
+.drawer-hero-button{
+
+    display:block;
+
+    width:100%;
+
+    padding:0;
+
+    border:none;
+
+    border-radius:22px;
+
+    background:#e9ebe6;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    box-shadow:0 14px 32px rgba(0,0,0,.16);
+
+}
+
+.drawer-hero-image{
+
+    display:block;
+
+    width:100%;
+
+    height:360px;
+
+    object-fit:contain;
+
+    background:#111;
+
+    transition:transform .35s ease;
+
+}
+
+.drawer-hero-button:hover .drawer-hero-image{
+
+    transform:scale(1.025);
+
+}
+
+.drawer-gallery-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:16px;
+
+    margin-top:24px;
+
+    margin-bottom:14px;
+
+}
+
+.drawer-gallery-header h3{
+
+    margin:0;
+
+    color:var(--forest);
+
+    font-size:1.2rem;
+
+}
+
+.drawer-photo-count{
+
+    color:#6b6b63;
+
+    font-size:.9rem;
+
+    font-weight:700;
+
+}
+
+.drawer-gallery{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:12px;
+
+}
+
+.drawer-gallery-item{
+
+    position:relative;
+
+    padding:0;
+
+    aspect-ratio:4 / 3;
+
+    border:2px solid transparent;
+
+    border-radius:14px;
+
+    background:#e9ebe6;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+
+}
+
+.drawer-gallery-item:hover{
+
+    transform:translateY(-2px);
+
+    border-color:var(--gold);
+
+    box-shadow:0 8px 18px rgba(0,0,0,.14);
+
+}
+
+.drawer-gallery-item img{
+
+    display:block;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.drawer-photos[hidden],
+.drawer-gallery[hidden],
+.drawer-gallery-header[hidden]{
+
+    display:none;
+
+}
+
+@media (max-width:700px){
+
+    .drawer-hero-image{
+
+        height:280px;
+
+    }
+
+    .drawer-gallery{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    .drawer-hero-image{
+
+        height:220px;
+
+    }
+
+    .drawer-gallery{
+
+        gap:9px;
+
+    }
+
+}
+
+/*==============================
 CONTENT
 ==============================*/
 

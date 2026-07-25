@@ -1,11 +1,13 @@
 // ======================================
 // WAC Adventure Drawer
-// Version 6.0
+// Version 6.1
 // ======================================
 
 const Drawer = {
 
     currentAdventure: null,
+
+    MAX_GALLERY_IMAGES: 6,
 
     async init() {
 
@@ -23,9 +25,9 @@ const Drawer = {
 
         if (overlay) {
 
-            overlay.onclick = (e) => {
+            overlay.onclick = (event) => {
 
-                if (e.target === overlay) {
+                if (event.target === overlay) {
 
                     this.close();
 
@@ -46,7 +48,10 @@ const Drawer = {
 
             completeButton.onclick = async () => {
 
-                if (!this.currentAdventure) return;
+                const completedAdventure =
+                    this.currentAdventure;
+
+                if (!completedAdventure) return;
 
                 const member =
                     window.WAC.selectedMember ||
@@ -56,7 +61,7 @@ const Drawer = {
                     await API.completeAdventure(
 
                         member["Member ID"],
-                        this.currentAdventure["ID"]
+                        completedAdventure["ID"]
 
                     );
 
@@ -76,24 +81,24 @@ const Drawer = {
                     member["Member ID"]
                 );
 
-                this.close();
-
                 const stats =
                     await ProgressEngine.getMemberStats(
                         member["Member ID"]
                     );
 
+                this.close();
+
                 SuccessModal.open({
 
                     title:
-                        this.currentAdventure.Title,
+                        completedAdventure.Title,
 
                     message:
                         "Adventure successfully completed!",
 
                     points:
                         Number(
-                            this.currentAdventure["Points"] || 100
+                            completedAdventure["Points"] || 100
                         ),
 
                     rank:
@@ -120,6 +125,8 @@ const Drawer = {
     },
 
     //--------------------------------------------------
+    // Open Drawer
+    //--------------------------------------------------
 
     async open(adventure) {
 
@@ -129,6 +136,8 @@ const Drawer = {
 
         const overlay =
             document.getElementById("drawerOverlay");
+
+        if (!overlay) return;
 
         overlay.classList.add("open");
 
@@ -141,7 +150,7 @@ const Drawer = {
         );
 
         //--------------------------------------------------
-        // Helper
+        // Text Helper
         //--------------------------------------------------
 
         const set = (id, value) => {
@@ -174,6 +183,8 @@ const Drawer = {
 
             badge.onerror = () => {
 
+                badge.onerror = null;
+
                 badge.src =
                     `assets/badges/${adventure["ID"]}.png`;
 
@@ -181,142 +192,230 @@ const Drawer = {
 
         }
 
-                //--------------------------------------------------
-        // Populate
+        //--------------------------------------------------
+        // Populate Header
         //--------------------------------------------------
 
         set("drawerTitle", adventure.Title);
         set("drawerCategory", adventure.Category);
-        set("drawerPoints", `${adventure["Points"] || 100} Points`);
 
-        // Summary Banner
-        set("drawerDifficultyHeader", adventure["Difficulty"]);
-        set("drawerTimeHeader", adventure["Estimated Time"]);
-        set("drawerLocationHeader", adventure["Location"]);
-        set("drawerSeasonHeader", adventure["Season"]);
+        set(
+            "drawerPoints",
+            `${adventure["Points"] || 100} Points`
+        );
 
-        // Detail Cards
-        set("drawerDifficulty", adventure["Difficulty"]);
-        set("drawerTime", adventure["Estimated Time"]);
-        set("drawerSeason", adventure["Season"]);
-        
         //--------------------------------------------------
-// Adventure Type
-//--------------------------------------------------
+        // Summary Banner
+        //--------------------------------------------------
 
-const category =
-    (adventure.Category || "").toLowerCase();
+        set(
+            "drawerDifficultyHeader",
+            adventure["Difficulty"]
+        );
 
-let type = "Outdoor";
+        set(
+            "drawerTimeHeader",
+            adventure["Estimated Time"]
+        );
 
-if (category.includes("hunt")) type = "Hunting";
-else if (category.includes("fish")) type = "Fishing";
-else if (category.includes("camp")) type = "Camping";
-else if (category.includes("craft")) type = "Craft";
-else if (category.includes("food")) type = "Cooking";
-else if (category.includes("history")) type = "History";
-else if (category.includes("shoot")) type = "Shooting";
-else if (category.includes("water")) type = "Water";
+        set(
+            "drawerLocationHeader",
+            adventure["Location"]
+        );
 
-set("drawerType", type);
-        set("drawerAge", adventure["Minimum Age"]);
+        set(
+            "drawerSeasonHeader",
+            adventure["Season"]
+        );
 
+        //--------------------------------------------------
+        // Adventure Type
+        //--------------------------------------------------
+
+        const category =
+            (adventure.Category || "").toLowerCase();
+
+        let type = "Outdoor";
+
+        if (category.includes("hunt")) {
+
+            type = "Hunting";
+
+        } else if (category.includes("fish")) {
+
+            type = "Fishing";
+
+        } else if (category.includes("camp")) {
+
+            type = "Camping";
+
+        } else if (category.includes("craft")) {
+
+            type = "Craft";
+
+        } else if (category.includes("food")) {
+
+            type = "Cooking";
+
+        } else if (category.includes("history")) {
+
+            type = "History";
+
+        } else if (category.includes("shoot")) {
+
+            type = "Shooting";
+
+        } else if (category.includes("water")) {
+
+            type = "Water";
+
+        }
+
+        set("drawerType", type);
+
+        set(
+            "drawerAge",
+            adventure["Minimum Age"] || "All Ages"
+        );
+
+        //--------------------------------------------------
         // Content
+        //--------------------------------------------------
+
         set("drawerMission", adventure["Mission"]);
         set("drawerWhy", adventure["Why It Matters"]);
         set("drawerVibe", adventure["Vibe"]);
         set("drawerNote", adventure["Presidents Note"]);
 
-        // Adventure Details
         //--------------------------------------------------
-// Equipment List
-//--------------------------------------------------
+        // Equipment List
+        //--------------------------------------------------
 
-const equipment =
-    document.getElementById("drawerEquipment");
+        const equipment =
+            document.getElementById("drawerEquipment");
 
-if (equipment) {
+        if (equipment) {
 
-    equipment.innerHTML = "";
+            equipment.innerHTML = "";
 
-    const items =
-        (adventure["Equipment"] || "")
-            .split(/\r?\n|,/)
-            .map(i => i.trim())
-            .filter(i => i.length);
+            const equipmentItems =
+                this.parseList(adventure["Equipment"]);
 
-    if (items.length === 0) {
+            if (equipmentItems.length === 0) {
 
-        equipment.innerHTML =
-            "<div class='list-item'>None Required</div>";
+                equipment.innerHTML =
+                    "<div class='list-item'>None Required</div>";
 
-    } else {
+            } else {
 
-        items.forEach(item => {
+                equipmentItems.forEach((item) => {
 
-            equipment.innerHTML += `
+                    const listItem =
+                        document.createElement("div");
 
-                <div class="list-item">
+                    listItem.className =
+                        "list-item";
 
-                    <span class="list-icon">🧰</span>
+                    const icon =
+                        document.createElement("span");
 
-                    <span>${item}</span>
+                    icon.className =
+                        "list-icon";
 
-                </div>
+                    icon.textContent =
+                        "🧰";
 
-            `;
+                    const text =
+                        document.createElement("span");
 
-        });
+                    text.textContent =
+                        item;
 
-    }
+                    listItem.append(
+                        icon,
+                        text
+                    );
 
-}
+                    equipment.appendChild(
+                        listItem
+                    );
 
-//--------------------------------------------------
-// Prerequisites
-//--------------------------------------------------
+                });
 
-const prereq =
-    document.getElementById("drawerPrerequisite");
+            }
 
-if (prereq) {
+        }
 
-    prereq.innerHTML = "";
+        //--------------------------------------------------
+        // Prerequisites
+        //--------------------------------------------------
 
-    const items =
-        (adventure["Prerequisite"] || "")
-            .split(/\r?\n|,/)
-            .map(i => i.trim())
-            .filter(i => i.length);
+        const prerequisite =
+            document.getElementById(
+                "drawerPrerequisite"
+            );
 
-    if (items.length === 0) {
+        if (prerequisite) {
 
-        prereq.innerHTML =
-            "<div class='list-item'>None</div>";
+            prerequisite.innerHTML = "";
 
-    } else {
+            const prerequisiteItems =
+                this.parseList(
+                    adventure["Prerequisite"]
+                );
 
-        items.forEach(item => {
+            if (prerequisiteItems.length === 0) {
 
-            prereq.innerHTML += `
+                prerequisite.innerHTML =
+                    "<div class='list-item'>None</div>";
 
-                <div class="list-item">
+            } else {
 
-                    <span class="list-icon">✓</span>
+                prerequisiteItems.forEach((item) => {
 
-                    <span>${item}</span>
+                    const listItem =
+                        document.createElement("div");
 
-                </div>
+                    listItem.className =
+                        "list-item";
 
-            `;
+                    const icon =
+                        document.createElement("span");
 
-        });
+                    icon.className =
+                        "list-icon";
 
-    }
+                    icon.textContent =
+                        "✓";
 
-}
-        set("drawerLocation", adventure["Location"]);
-        set("drawerGPS", adventure["GPS Coordinates"]);
+                    const text =
+                        document.createElement("span");
+
+                    text.textContent =
+                        item;
+
+                    listItem.append(
+                        icon,
+                        text
+                    );
+
+                    prerequisite.appendChild(
+                        listItem
+                    );
+
+                });
+
+            }
+
+        }
+
+        //--------------------------------------------------
+        // Adventure Photos
+        //--------------------------------------------------
+
+        await this.loadAdventurePhotos(
+            adventure
+        );
 
         //--------------------------------------------------
         // Completion Status
@@ -339,46 +438,459 @@ if (prereq) {
                 "Completed ✓"
             );
 
-            button.textContent =
-                "Completed ✓";
+            if (button) {
 
-            button.disabled = true;
+                button.textContent =
+                    "Completed ✓";
 
-            button.classList.add(
-                "button-disabled"
-            );
+                button.disabled = true;
 
-        }
+                button.classList.add(
+                    "button-disabled"
+                );
 
-        else {
+            }
+
+        } else {
 
             set(
                 "drawerStatus",
                 "Available"
             );
 
-            button.textContent =
-                "Complete Adventure";
+            if (button) {
 
-            button.disabled = false;
+                button.textContent =
+                    "Complete Adventure";
 
-            button.classList.remove(
-                "button-disabled"
-            );
+                button.disabled = false;
+
+                button.classList.remove(
+                    "button-disabled"
+                );
+
+            }
 
         }
 
     },
 
     //--------------------------------------------------
+    // Parse Text List
+    //--------------------------------------------------
+
+    parseList(value) {
+
+        return String(value || "")
+            .split(/\r?\n|,/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+
+    },
+
+    //--------------------------------------------------
+    // Adventure Photos
+    //--------------------------------------------------
+
+    async loadAdventurePhotos(adventure) {
+
+        const photoSection =
+            document.getElementById("drawerPhotos");
+
+        const heroButton =
+            document.getElementById("drawerHeroButton");
+
+        const heroImage =
+            document.getElementById("drawerHeroImage");
+
+        const galleryHeader =
+            document.getElementById("drawerGalleryHeader");
+
+        const gallery =
+            document.getElementById("drawerGallery");
+
+        const photoCount =
+            document.getElementById("drawerPhotoCount");
+
+        if (
+            !photoSection ||
+            !heroButton ||
+            !heroImage ||
+            !galleryHeader ||
+            !gallery ||
+            !photoCount
+        ) {
+
+            return;
+
+        }
+
+        //--------------------------------------------------
+        // Reset Previous Adventure
+        //--------------------------------------------------
+
+        photoSection.hidden = true;
+        galleryHeader.hidden = true;
+        gallery.hidden = true;
+
+        heroImage.src = "";
+        heroImage.alt = "";
+
+        heroButton.onclick = null;
+
+        gallery.innerHTML = "";
+
+        photoCount.textContent = "";
+
+        const adventureID =
+            String(adventure["ID"] || "").trim();
+
+        if (!adventureID) return;
+
+        //--------------------------------------------------
+        // Find Available Photos
+        //--------------------------------------------------
+
+        const photoCandidates =
+            this.getPhotoCandidates(adventure);
+
+        const validPhotos = [];
+
+        for (const candidateGroup of photoCandidates) {
+
+            const validPhoto =
+                await this.findFirstValidImage(
+                    candidateGroup
+                );
+
+            if (validPhoto) {
+
+                validPhotos.push(validPhoto);
+
+            }
+
+        }
+
+        //--------------------------------------------------
+        // Prevent Stale Drawer Updates
+        //--------------------------------------------------
+
+        if (
+            !this.currentAdventure ||
+            this.currentAdventure["ID"] !== adventure["ID"]
+        ) {
+
+            return;
+
+        }
+
+        const uniquePhotos =
+            [...new Set(validPhotos)];
+
+        if (uniquePhotos.length === 0) {
+
+            return;
+
+        }
+
+        //--------------------------------------------------
+        // Hero Image
+        //--------------------------------------------------
+
+        const heroPhoto =
+            uniquePhotos[0];
+
+        heroImage.src =
+            heroPhoto;
+
+        heroImage.alt =
+            `${adventure.Title || "Adventure"} photo`;
+
+        heroButton.onclick = () => {
+
+            window.open(
+                heroImage.src,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        };
+
+        photoSection.hidden = false;
+
+        //--------------------------------------------------
+        // Gallery
+        //--------------------------------------------------
+
+        if (uniquePhotos.length > 1) {
+
+            galleryHeader.hidden = false;
+            gallery.hidden = false;
+
+            photoCount.textContent =
+                `${uniquePhotos.length} Photos`;
+
+            uniquePhotos.forEach(
+                (photoSource, index) => {
+
+                    const thumbnailButton =
+                        document.createElement("button");
+
+                    thumbnailButton.type =
+                        "button";
+
+                    thumbnailButton.className =
+                        "drawer-gallery-item";
+
+                    thumbnailButton.setAttribute(
+                        "aria-label",
+                        `View adventure photo ${index + 1}`
+                    );
+
+                    const thumbnail =
+                        document.createElement("img");
+
+                    thumbnail.src =
+                        photoSource;
+
+                    thumbnail.alt =
+                        `${adventure.Title || "Adventure"} photo ${index + 1}`;
+
+                    thumbnail.loading =
+                        "lazy";
+
+                    thumbnailButton.appendChild(
+                        thumbnail
+                    );
+
+                    thumbnailButton.onclick = () => {
+
+                        heroImage.src =
+                            photoSource;
+
+                        heroImage.alt =
+                            thumbnail.alt;
+
+                        heroImage.scrollIntoView({
+
+                            behavior: "smooth",
+                            block: "nearest"
+
+                        });
+
+                    };
+
+                    gallery.appendChild(
+                        thumbnailButton
+                    );
+
+                }
+            );
+
+        } else {
+
+            photoCount.textContent =
+                "1 Photo";
+
+        }
+
+    },
+
+    //--------------------------------------------------
+    // Build Photo Candidate Paths
+    //--------------------------------------------------
+
+    getPhotoCandidates(adventure) {
+
+        const adventureID =
+            String(adventure["ID"] || "").trim();
+
+        const heroField =
+            adventure["Hero Image"] ||
+            adventure["HeroImage"] ||
+            adventure["Adventure Hero"] ||
+            "";
+
+        const galleryField =
+            adventure["Gallery"] ||
+            adventure["Adventure Photos"] ||
+            adventure["Photos"] ||
+            "";
+
+        const candidateGroups = [];
+
+        //--------------------------------------------------
+        // Explicit Hero Image
+        //--------------------------------------------------
+
+        const explicitHeroImages =
+            this.parsePhotoField(heroField);
+
+        if (explicitHeroImages.length > 0) {
+
+            candidateGroups.push(
+                explicitHeroImages
+            );
+
+        }
+
+        //--------------------------------------------------
+        // Conventional Hero Image
+        //--------------------------------------------------
+
+        candidateGroups.push([
+
+            `assets/images/adventures/${adventureID}/hero.webp`,
+            `assets/images/adventures/${adventureID}/hero.png`,
+            `assets/images/adventures/${adventureID}/hero.jpg`,
+            `assets/images/adventures/${adventureID}/hero.jpeg`,
+
+            `assets/images/adventures/${adventureID}-hero.webp`,
+            `assets/images/adventures/${adventureID}-hero.png`,
+            `assets/images/adventures/${adventureID}-hero.jpg`,
+            `assets/images/adventures/${adventureID}-hero.jpeg`
+
+        ]);
+
+        //--------------------------------------------------
+        // Explicit Gallery Images
+        //--------------------------------------------------
+
+        const explicitGalleryImages =
+            this.parsePhotoField(galleryField);
+
+        explicitGalleryImages.forEach(
+            (photoSource) => {
+
+                candidateGroups.push([
+                    photoSource
+                ]);
+
+            }
+        );
+
+        //--------------------------------------------------
+        // Conventional Gallery Images
+        //--------------------------------------------------
+
+        for (
+            let imageNumber = 1;
+            imageNumber <= this.MAX_GALLERY_IMAGES;
+            imageNumber += 1
+        ) {
+
+            const paddedNumber =
+                String(imageNumber).padStart(2, "0");
+
+            candidateGroups.push([
+
+                `assets/images/adventures/${adventureID}/${paddedNumber}.webp`,
+                `assets/images/adventures/${adventureID}/${paddedNumber}.png`,
+                `assets/images/adventures/${adventureID}/${paddedNumber}.jpg`,
+                `assets/images/adventures/${adventureID}/${paddedNumber}.jpeg`,
+
+                `assets/images/adventures/${adventureID}-${paddedNumber}.webp`,
+                `assets/images/adventures/${adventureID}-${paddedNumber}.png`,
+                `assets/images/adventures/${adventureID}-${paddedNumber}.jpg`,
+                `assets/images/adventures/${adventureID}-${paddedNumber}.jpeg`
+
+            ]);
+
+        }
+
+        return candidateGroups;
+
+    },
+
+    //--------------------------------------------------
+    // Parse Photo Field
+    //--------------------------------------------------
+
+    parsePhotoField(value) {
+
+        return String(value || "")
+            .split(/\r?\n|,|;|\|/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+
+    },
+
+    //--------------------------------------------------
+    // Find First Existing Image
+    //--------------------------------------------------
+
+    async findFirstValidImage(candidates) {
+
+        for (const source of candidates) {
+
+            const exists =
+                await this.imageExists(source);
+
+            if (exists) {
+
+                return source;
+
+            }
+
+        }
+
+        return null;
+
+    },
+
+    //--------------------------------------------------
+    // Test Image Path
+    //--------------------------------------------------
+
+    imageExists(source) {
+
+        return new Promise((resolve) => {
+
+            if (!source) {
+
+                resolve(false);
+                return;
+
+            }
+
+            const image =
+                new Image();
+
+            image.onload = () => {
+
+                resolve(true);
+
+            };
+
+            image.onerror = () => {
+
+                resolve(false);
+
+            };
+
+            image.src =
+                source;
+
+        });
+
+    },
+
+    //--------------------------------------------------
+    // Close Drawer
+    //--------------------------------------------------
 
     close() {
 
         this.currentAdventure = null;
 
-        document
-            .getElementById("drawerOverlay")
-            .classList.remove("open");
+        const overlay =
+            document.getElementById("drawerOverlay");
+
+        if (overlay) {
+
+            overlay.classList.remove("open");
+
+        }
 
     }
 
