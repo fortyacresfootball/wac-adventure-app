@@ -1,6 +1,6 @@
 // ==========================================
 // WAC Database Service
-// Version 3.0
+// Version 3.1
 // ==========================================
 
 const API_URL =
@@ -12,7 +12,7 @@ const Database = {
 
         const response = await fetch(
 
-            `${API_URL}?sheet=${sheet}`
+            `${API_URL}?sheet=${encodeURIComponent(sheet)}`
 
         );
 
@@ -89,6 +89,16 @@ const Database = {
     async getLocations() {
 
         return await this.load("Locations");
+
+    },
+
+    //--------------------------------------------------
+    // Adventure Checklists
+    //--------------------------------------------------
+
+    async getChecklist() {
+
+        return await this.load("Checklist");
 
     }
 

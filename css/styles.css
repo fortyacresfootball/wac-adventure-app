@@ -2410,3 +2410,380 @@ DRAWER CALLOUTS
     border-radius:14px;
 
 }
+/*======================================
+DRAWER ADVENTURE CHECKLIST
+======================================*/
+
+.checklist-card{
+
+    border-left:6px solid var(--gold);
+
+    background:linear-gradient(
+        145deg,
+        #fffdf4,
+        #f8f3df
+    );
+
+    padding:22px;
+
+    border-radius:16px;
+
+    box-shadow:0 10px 26px rgba(23,61,36,.08);
+
+}
+
+.checklist-card[hidden]{
+
+    display:none;
+
+}
+
+.checklist-card h3{
+
+    margin-bottom:6px;
+
+}
+
+.checklist-card > p{
+
+    margin-bottom:18px;
+
+    color:#666;
+
+    font-size:.96rem;
+
+}
+
+/*--------------------------------------
+Checklist Header
+--------------------------------------*/
+
+.checklist-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:16px;
+
+    margin-bottom:8px;
+
+}
+
+.checklist-header h3{
+
+    margin:0;
+
+}
+
+#drawerChecklistCount{
+
+    flex-shrink:0;
+
+    padding:6px 11px;
+
+    border-radius:999px;
+
+    background:var(--forest);
+
+    color:#fff;
+
+    font-size:.82rem;
+
+    font-weight:800;
+
+    letter-spacing:.3px;
+
+}
+
+/*--------------------------------------
+Checklist Progress Bar
+--------------------------------------*/
+
+.checklist-progress{
+
+    width:100%;
+
+    height:11px;
+
+    margin:16px 0 20px;
+
+    border-radius:999px;
+
+    background:#dedfd9;
+
+    overflow:hidden;
+
+    box-shadow:inset 0 1px 3px rgba(0,0,0,.12);
+
+}
+
+#drawerChecklistProgress{
+
+    width:0;
+
+    height:100%;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+        90deg,
+        var(--gold),
+        var(--gold-light)
+    );
+
+    transition:width .3s ease;
+
+}
+
+/*--------------------------------------
+Checklist Items
+--------------------------------------*/
+
+#drawerChecklist{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:11px;
+
+}
+
+.drawer-checklist-item{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:13px;
+
+    padding:14px 15px;
+
+    border:1px solid rgba(23,61,36,.10);
+
+    border-radius:14px;
+
+    background:#fff;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+
+}
+
+.drawer-checklist-item:hover{
+
+    transform:translateY(-1px);
+
+    border-color:rgba(212,170,34,.55);
+
+    box-shadow:0 7px 16px rgba(23,61,36,.09);
+
+}
+
+.drawer-checklist-checkbox{
+
+    position:absolute;
+
+    width:1px;
+
+    height:1px;
+
+    opacity:0;
+
+    pointer-events:none;
+
+}
+
+/*--------------------------------------
+Custom Checkbox
+--------------------------------------*/
+
+.drawer-checklist-control{
+
+    width:24px;
+
+    height:24px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-top:1px;
+
+    border:2px solid #a9afa8;
+
+    border-radius:7px;
+
+    background:#fff;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+
+}
+
+.drawer-checklist-checkbox:focus-visible
++ .drawer-checklist-control{
+
+    outline:3px solid rgba(212,170,34,.35);
+
+    outline-offset:3px;
+
+}
+
+.drawer-checklist-checkbox:checked
++ .drawer-checklist-control{
+
+    border-color:var(--forest);
+
+    background:var(--forest);
+
+}
+
+.drawer-checklist-checkbox:checked
++ .drawer-checklist-control::after{
+
+    content:"✓";
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:900;
+
+    line-height:1;
+
+}
+
+/*--------------------------------------
+Checklist Text
+--------------------------------------*/
+
+.drawer-checklist-content{
+
+    min-width:0;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:11px;
+
+    flex:1;
+
+}
+
+.drawer-checklist-number{
+
+    min-width:26px;
+
+    height:26px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    background:#f0ead2;
+
+    color:var(--forest-deep);
+
+    font-size:.78rem;
+
+    font-weight:900;
+
+}
+
+.drawer-checklist-label{
+
+    padding-top:1px;
+
+    color:#303630;
+
+    line-height:1.5;
+
+    font-weight:600;
+
+}
+
+/*--------------------------------------
+Completed Checklist Item
+--------------------------------------*/
+
+.drawer-checklist-item.completed{
+
+    border-color:rgba(23,61,36,.20);
+
+    background:#edf6ee;
+
+}
+
+.drawer-checklist-item.completed
+.drawer-checklist-number{
+
+    background:var(--forest);
+
+    color:#fff;
+
+}
+
+.drawer-checklist-item.completed
+.drawer-checklist-label{
+
+    color:#667067;
+
+    text-decoration:line-through;
+
+}
+
+/*--------------------------------------
+Checklist Mobile
+--------------------------------------*/
+
+@media(max-width:480px){
+
+    .checklist-card{
+
+        padding:18px;
+
+    }
+
+    .checklist-header{
+
+        align-items:flex-start;
+
+    }
+
+    .drawer-checklist-item{
+
+        gap:10px;
+
+        padding:13px;
+
+    }
+
+    .drawer-checklist-content{
+
+        gap:9px;
+
+    }
+
+}
