@@ -2994,3 +2994,805 @@ DASHBOARD LATEST NEWS
     font-weight:700;
 
 }
+/*======================================
+WAC EVENTS PAGE
+======================================*/
+
+.events-page{
+
+    padding-bottom:28px;
+
+}
+
+/*--------------------------------------
+Header Action
+--------------------------------------*/
+
+.events-scroll-link{
+
+    transition:
+        transform .2s ease,
+        background .2s ease;
+
+}
+
+.events-scroll-link:hover{
+
+    transform:translateY(-2px);
+
+    background:var(--forest-soft);
+
+}
+
+/*--------------------------------------
+Featured Event
+--------------------------------------*/
+
+.events-featured-section{
+
+    margin-top:12px;
+
+}
+
+.featured-event-card{
+
+    display:grid;
+
+    grid-template-columns:170px 1fr;
+
+    gap:34px;
+
+    align-items:stretch;
+
+    padding:34px;
+
+    border-radius:28px;
+
+    background:linear-gradient(
+        145deg,
+        var(--forest),
+        var(--forest-deep)
+    );
+
+    color:#fff;
+
+    box-shadow:var(--shadow);
+
+}
+
+.featured-event-date-block{
+
+    min-height:220px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.10);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    text-align:center;
+
+}
+
+.featured-event-date-block
+.event-date-month{
+
+    color:var(--gold-light);
+
+}
+
+.featured-event-date-block
+.event-date-day{
+
+    color:#fff;
+
+}
+
+.featured-event-date-block
+.event-date-year{
+
+    color:rgba(255,255,255,.76);
+
+}
+
+.featured-event-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    min-width:0;
+
+}
+
+.featured-event-category{
+
+    margin-bottom:10px;
+
+    color:var(--gold-light);
+
+    font-size:.82rem;
+
+    font-weight:900;
+
+    letter-spacing:1.6px;
+
+    text-transform:uppercase;
+
+}
+
+.featured-event-content h2{
+
+    color:#fff;
+
+    font-size:clamp(32px,4vw,52px);
+
+    line-height:1.05;
+
+}
+
+.featured-event-date,
+.featured-event-location{
+
+    margin-top:12px;
+
+    color:rgba(255,255,255,.88);
+
+    font-weight:700;
+
+}
+
+.featured-event-content p{
+
+    max-width:780px;
+
+    margin-top:18px;
+
+    color:rgba(255,255,255,.85);
+
+    font-size:1.05rem;
+
+    line-height:1.65;
+
+}
+
+.featured-event-actions{
+
+    margin-top:24px;
+
+}
+
+.featured-event-actions
+.small-button{
+
+    margin-top:0;
+
+    border:none;
+
+    background:linear-gradient(
+        135deg,
+        var(--gold-light),
+        var(--gold)
+    );
+
+    color:var(--forest-deep);
+
+}
+
+/*--------------------------------------
+Upcoming Events
+--------------------------------------*/
+
+.events-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.event-list-card{
+
+    display:grid;
+
+    grid-template-columns:100px 1fr auto;
+
+    gap:22px;
+
+    align-items:center;
+
+    padding:24px;
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    background:#fff;
+
+    box-shadow:var(--shadow-soft);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+
+}
+
+.event-list-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:rgba(212,170,34,.45);
+
+    box-shadow:var(--shadow);
+
+}
+
+.event-list-card.next-event{
+
+    border-left:6px solid var(--gold);
+
+}
+
+.event-date-block{
+
+    min-height:94px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:18px;
+
+    background:#f4f0df;
+
+    text-align:center;
+
+}
+
+.event-date-month{
+
+    color:var(--forest);
+
+    font-size:.78rem;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+}
+
+.event-date-day{
+
+    margin:2px 0;
+
+    color:var(--forest-deep);
+
+    font-size:2.2rem;
+
+    line-height:1;
+
+}
+
+.event-date-year{
+
+    color:var(--muted);
+
+    font-size:.75rem;
+
+    font-weight:700;
+
+}
+
+.event-list-content{
+
+    min-width:0;
+
+}
+
+.event-list-heading{
+
+    display:flex;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+}
+
+.event-list-heading h3{
+
+    margin:0;
+
+    color:var(--forest-deep);
+
+    font-size:1.35rem;
+
+}
+
+.event-next-label{
+
+    padding:5px 9px;
+
+    border-radius:999px;
+
+    background:var(--forest);
+
+    color:#fff;
+
+    font-size:.72rem;
+
+    font-weight:900;
+
+    letter-spacing:.4px;
+
+    text-transform:uppercase;
+
+}
+
+.event-list-meta{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px 16px;
+
+    margin-top:8px;
+
+    color:#687069;
+
+    font-size:.88rem;
+
+    font-weight:700;
+
+}
+
+.event-list-content p{
+
+    margin-top:10px;
+
+    color:var(--muted);
+
+}
+
+.event-row-button{
+
+    padding:11px 16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:var(--forest);
+
+    color:#fff;
+
+    font-weight:800;
+
+    transition:
+        background .2s ease,
+        transform .2s ease;
+
+}
+
+.event-row-button:hover{
+
+    background:var(--forest-soft);
+
+    transform:translateY(-2px);
+
+}
+
+/*--------------------------------------
+Annual Traditions
+--------------------------------------*/
+
+#annualTraditionsSection[hidden]{
+
+    display:none;
+
+}
+
+.events-tradition-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,minmax(0,1fr));
+
+    gap:20px;
+
+}
+
+.event-tradition-card{
+
+    min-height:310px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:24px;
+
+    border-radius:24px;
+
+    background:linear-gradient(
+        145deg,
+        var(--forest),
+        var(--forest-deep)
+    );
+
+    color:#fff;
+
+    box-shadow:var(--shadow-soft);
+
+}
+
+.event-tradition-icon{
+
+    font-size:2.5rem;
+
+}
+
+.event-tradition-date{
+
+    margin-top:16px;
+
+    color:var(--gold-light);
+
+    font-size:.78rem;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+}
+
+.event-tradition-card h3{
+
+    margin-top:10px;
+
+    color:#fff;
+
+    font-size:1.45rem;
+
+    line-height:1.2;
+
+}
+
+.event-tradition-card p{
+
+    margin-top:12px;
+
+    color:rgba(255,255,255,.82);
+
+}
+
+.event-tradition-button{
+
+    margin-top:auto;
+
+    padding:11px 14px;
+
+    border:1px solid rgba(255,255,255,.22);
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.08);
+
+    color:#fff;
+
+    font-weight:800;
+
+}
+
+.event-tradition-button:hover{
+
+    background:rgba(255,255,255,.15);
+
+}
+
+/*--------------------------------------
+Empty and Loading States
+--------------------------------------*/
+
+.events-loading,
+.events-empty-state{
+
+    width:100%;
+
+    padding:34px;
+
+    border-radius:22px;
+
+    background:#fff;
+
+    border:1px solid var(--border);
+
+    color:var(--muted);
+
+    text-align:center;
+
+}
+
+.featured-event-card
+.events-loading,
+.featured-event-card
+.events-empty-state{
+
+    grid-column:1 / -1;
+
+    background:rgba(255,255,255,.08);
+
+    border-color:rgba(255,255,255,.15);
+
+    color:rgba(255,255,255,.82);
+
+}
+
+.events-empty-icon{
+
+    font-size:2.4rem;
+
+}
+
+.events-empty-state h3{
+
+    margin-top:10px;
+
+    color:var(--forest-deep);
+
+}
+
+.featured-event-card
+.events-empty-state h3{
+
+    color:#fff;
+
+}
+
+.events-empty-state p{
+
+    margin-top:8px;
+
+}
+
+/*--------------------------------------
+Event Detail Dialog
+--------------------------------------*/
+
+.event-dialog-open{
+
+    overflow:hidden;
+
+}
+
+.event-detail-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:7000;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:24px;
+
+    background:rgba(0,0,0,.58);
+
+    backdrop-filter:blur(4px);
+
+}
+
+.event-detail-dialog{
+
+    position:relative;
+
+    width:min(620px,100%);
+
+    max-height:90vh;
+
+    overflow-y:auto;
+
+    padding:34px;
+
+    border-radius:26px;
+
+    background:#fff;
+
+    box-shadow:0 24px 70px rgba(0,0,0,.34);
+
+}
+
+.event-detail-close{
+
+    position:absolute;
+
+    top:16px;
+
+    right:18px;
+
+    border:none;
+
+    background:none;
+
+    color:#777;
+
+    font-size:32px;
+
+}
+
+.event-detail-close:hover{
+
+    color:#000;
+
+}
+
+.event-detail-icon{
+
+    margin-bottom:10px;
+
+    font-size:3rem;
+
+}
+
+.event-detail-dialog h2{
+
+    margin-top:4px;
+
+    color:var(--forest-deep);
+
+    font-size:2rem;
+
+    line-height:1.15;
+
+}
+
+.event-detail-line{
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:flex-start;
+
+    margin-top:14px;
+
+    padding:12px 14px;
+
+    border-radius:14px;
+
+    background:#f6f6f2;
+
+    color:#39413b;
+
+    font-weight:700;
+
+}
+
+.event-detail-line span:first-child{
+
+    flex-shrink:0;
+
+}
+
+.event-detail-description{
+
+    margin-top:20px;
+
+    color:#4d554f;
+
+    line-height:1.7;
+
+}
+
+/*--------------------------------------
+Responsive
+--------------------------------------*/
+
+@media(max-width:1000px){
+
+    .events-tradition-grid{
+
+        grid-template-columns:repeat(2,minmax(0,1fr));
+
+    }
+
+}
+
+@media(max-width:760px){
+
+    .featured-event-card{
+
+        grid-template-columns:1fr;
+
+        padding:24px;
+
+    }
+
+    .featured-event-date-block{
+
+        min-height:150px;
+
+    }
+
+    .event-list-card{
+
+        grid-template-columns:82px 1fr;
+
+    }
+
+    .event-row-button{
+
+        grid-column:1 / -1;
+
+        width:100%;
+
+    }
+
+}
+
+@media(max-width:520px){
+
+    .events-tradition-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .event-list-card{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .event-date-block{
+
+        min-height:80px;
+
+        flex-direction:row;
+
+        gap:8px;
+
+    }
+
+    .event-date-day{
+
+        font-size:1.5rem;
+
+    }
+
+    .event-detail-dialog{
+
+        padding:28px 22px;
+
+    }
+
+}

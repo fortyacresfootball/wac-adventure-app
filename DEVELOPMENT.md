@@ -329,3 +329,25 @@ The completed application should feel like a premium outdoor adventure platform.
 Members should be excited to open the app before arriving at the WAC.
 
 The application should preserve memories for decades while encouraging new adventures for future generations.
+
+Version 0.9 — Dashboard Latest News
+Recovery commit: 4a57b53
+Branch: feature/adventure-checklists
+Status: working tree clean
+
+## Next Planned Feature
+
+### Version 1.0 — Events Page Rebuild
+
+Replace the placeholder Events page with a live event system connected to the WAC `Events` sheet.
+
+Planned capabilities:
+
+- load active events directly from the database
+- ignore inactive and cancelled events
+- separate featured annual traditions from upcoming events
+- sort upcoming events by start date
+- display event date, location, category, organizer, and description
+- open an event detail view when selected
+- provide a useful empty state when no future events exist
+- prepare the page for future RSVP and attendance features
