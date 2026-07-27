@@ -398,3 +398,5 @@ Status: working tree clean
 - display latest completed adventure
 - calculate current points leader
 - show compound-wide adventure completion progress
+
+3275cd6 (HEAD -> feature/adventure-checklists, origin/feature/adventure-checklists) Rebuild Family and Friends page with live member statistics
