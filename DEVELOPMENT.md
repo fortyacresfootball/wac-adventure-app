@@ -351,3 +351,50 @@ Planned capabilities:
 - open an event detail view when selected
 - provide a useful empty state when no future events exist
 - prepare the page for future RSVP and attendance features
+
+Version 1.0 — Live Events Page
+Recovery commit: 48198fb
+Branch: feature/adventure-checklists
+Status: working tree clean
+
+## Version 1.0 — Live Events Page
+
+Status: Complete
+
+Completed work:
+
+- replaced the placeholder Events page
+- connected the page to the Events sheet
+- displays the next active upcoming event
+- lists all upcoming active events in chronological order
+- ignores inactive, cancelled, completed, and deleted events
+- automatically removes expired events from Upcoming Events
+- added working event detail dialogs
+- added annual tradition support based on event category
+- added responsive desktop and mobile layouts
+- retained the existing WAC visual design
+
+Deferred:
+
+- Past Events section
+- RSVP tracking
+- attendance tracking
+- event reminders
+- recurring-event automation
+- event photos
+
+Recovery commit: [paste commit hash]
+Branch: [paste current branch]
+Status: working tree clean
+
+## Version 1.1 — Family & Friends Page
+
+- rename Family to Family & Friends
+- update the dashboard Quick Access label
+- load active members from the Members sheet
+- load compound totals from Adventures and Logs
+- add member image support with fallback
+- show member badge and point totals
+- display latest completed adventure
+- calculate current points leader
+- show compound-wide adventure completion progress

@@ -1,9 +1,9 @@
-<section class="page-section page-enter">
+<section class="page-section page-enter family-page">
 
     <div class="container">
 
         <!-- ===================================================== -->
-        <!-- Hero -->
+        <!-- Page Header -->
         <!-- ===================================================== -->
 
         <div class="page-header">
@@ -11,54 +11,59 @@
             <div>
 
                 <div class="eyebrow">
-
                     Workman Adventure Compound
-
                 </div>
 
                 <h1 class="section-title">
-
-                    The WAC Family
-
+                    Family &amp; Friends
                 </h1>
 
                 <p class="section-subtitle">
-
-                    Every adventure begins with the people who make
-                    the Workman Adventure Compound feel like home.
-
+                    The people who make the Workman Adventure Compound
+                    what it is—family, friends, teammates and fellow adventurers.
                 </p>
 
             </div>
 
             <div class="chip">
-
-                Family Since 2009
-
+                WAC Community Since 2009
             </div>
 
         </div>
 
         <!-- ===================================================== -->
-        <!-- Family Summary -->
+        <!-- Compound Snapshot -->
         <!-- ===================================================== -->
 
-        <div class="stats-grid">
+        <div class="family-section-heading">
+
+            <div>
+
+                <div class="eyebrow">
+                    Compound Snapshot
+                </div>
+
+                <h2 class="family-section-title">
+                    WAC Community at a Glance
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="stats-grid family-stats-grid">
 
             <div class="stat-card">
 
                 <div
                     id="familyMembers"
-                    class="stat-number">
-
+                    class="stat-number"
+                >
                     0
-
                 </div>
 
                 <div class="stat-label">
-
-                    Members
-
+                    Active Members
                 </div>
 
             </div>
@@ -67,16 +72,13 @@
 
                 <div
                     id="familyAdventures"
-                    class="stat-number">
-
-                    136
-
+                    class="stat-number"
+                >
+                    0
                 </div>
 
                 <div class="stat-label">
-
                     Adventures
-
                 </div>
 
             </div>
@@ -85,16 +87,13 @@
 
                 <div
                     id="familyBadges"
-                    class="stat-number">
-
+                    class="stat-number"
+                >
                     0
-
                 </div>
 
                 <div class="stat-label">
-
                     Badges Earned
-
                 </div>
 
             </div>
@@ -103,16 +102,13 @@
 
                 <div
                     id="familyPoints"
-                    class="stat-number">
-
+                    class="stat-number"
+                >
                     0
-
                 </div>
 
                 <div class="stat-label">
-
                     WAC Points
-
                 </div>
 
             </div>
@@ -120,14 +116,45 @@
         </div>
 
         <!-- ===================================================== -->
-        <!-- Family Directory -->
+        <!-- Community Directory -->
         <!-- ===================================================== -->
+
+        <div class="family-section-heading family-directory-heading">
+
+            <div>
+
+                <div class="eyebrow">
+                    WAC Community
+                </div>
+
+                <h2 class="family-section-title">
+                    Meet the Family &amp; Friends
+                </h2>
+
+                <p class="family-section-description">
+                    Select a member to open their personal Adventure Record.
+                </p>
+
+            </div>
+
+            <div
+                class="chip"
+                id="familyDirectoryCount"
+            >
+                Loading Members
+            </div>
+
+        </div>
 
         <div
             id="familyGrid"
-            class="card-grid">
+            class="family-member-grid"
+            aria-live="polite"
+        >
 
-            <!-- Loaded by JavaScript -->
+            <div class="family-loading-state">
+                Loading the WAC community...
+            </div>
 
         </div>
 
@@ -135,7 +162,11 @@
 
 </section>
 
-<section class="page-section">
+<!-- ========================================================= -->
+<!-- Community Highlights -->
+<!-- ========================================================= -->
+
+<section class="page-section family-highlights-section">
 
     <div class="container">
 
@@ -144,104 +175,117 @@
             <div>
 
                 <div class="eyebrow">
-
                     Compound Activity
-
                 </div>
 
                 <h2 class="section-title">
-
-                    Family Highlights
-
+                    WAC Community Highlights
                 </h2>
+
+                <p class="section-subtitle">
+                    Recent accomplishments, current leaders and progress
+                    toward completing every WAC adventure.
+                </p>
 
             </div>
 
         </div>
 
-        <div class="dashboard-grid">
+        <div class="family-highlight-grid">
 
-            <div class="panel panel-large">
+            <!-- Latest Badge -->
 
-                <div class="panel-label">
+            <article class="family-highlight-card family-highlight-latest">
 
-                    Latest Adventure
-
+                <div class="family-highlight-icon">
+                    🏅
                 </div>
 
-                <h3>
+                <div class="panel-label">
+                    Latest Badge Earned
+                </div>
 
+                <h3 id="familyLatestTitle">
                     Waiting for the next adventure...
-
                 </h3>
 
-                <p>
-
-                    Once adventures begin being completed,
-                    the latest activity from every family
-                    member will appear here.
-
+                <p id="familyLatestDescription">
+                    Completed adventures from all active members will appear here.
                 </p>
 
-            </div>
+                <div
+                    class="family-highlight-meta"
+                    id="familyLatestMeta"
+                    hidden
+                ></div>
 
-            <div class="panel panel-medium">
+            </article>
 
-                <div class="panel-label">
+            <!-- Current Leader -->
 
-                    Current Leader
+            <article class="family-highlight-card family-highlight-leader">
 
-                </div>
-
-                <div class="metric">
-
+                <div class="family-highlight-icon">
                     🏆
-
                 </div>
-
-                <h3>
-
-                    Coming Soon
-
-                </h3>
-
-                <p>
-
-                    Automatically calculated from
-                    completed adventures.
-
-                </p>
-
-            </div>
-
-            <div class="panel panel-medium">
 
                 <div class="panel-label">
-
-                    Family Goal
-
+                    Current Points Leader
                 </div>
 
-                <div class="metric">
+                <h3 id="familyLeaderName">
+                    No Leader Yet
+                </h3>
 
+                <p id="familyLeaderDescription">
+                    The points leader will appear after adventures are completed.
+                </p>
+
+                <div
+                    class="family-highlight-meta"
+                    id="familyLeaderMeta"
+                    hidden
+                ></div>
+
+            </article>
+
+            <!-- Compound Goal -->
+
+            <article class="family-highlight-card family-highlight-goal">
+
+                <div class="family-highlight-icon">
                     🌲
+                </div>
 
+                <div class="panel-label">
+                    Compound Goal
                 </div>
 
                 <h3>
-
                     Complete Every Adventure
-
                 </h3>
 
-                <p>
-
-                    The ultimate goal of the
-                    Workman Adventure Compound.
-
+                <p id="familyGoalDescription">
+                    Loading compound-wide adventure progress...
                 </p>
 
-            </div>
+                <div class="family-goal-progress">
+
+                    <div
+                        class="family-goal-progress-fill"
+                        id="familyGoalProgressFill"
+                    ></div>
+
+                </div>
+
+                <div
+                    class="family-highlight-meta"
+                    id="familyGoalMeta"
+                >
+                    0 of 0 adventures completed
+                </div>
+
+            </article>
 
         </div>
 
