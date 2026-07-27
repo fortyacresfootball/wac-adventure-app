@@ -12,8 +12,9 @@
             loadAdventureCount(),
             loadNextEvent(),
             loadCompoundBadgeCount(),
-            loadCabinWeather()
-            
+            loadCabinWeather(),
+            loadLatestNews()
+
         ]);
 
     }
@@ -1002,5 +1003,281 @@ function getWeatherDetails(code) {
         icon: "🌤️",
         condition: "Mixed Conditions"
     };
+
+}
+//--------------------------------------------------
+// Latest Active News
+//--------------------------------------------------
+
+async function loadLatestNews() {
+
+    const icon =
+        document.getElementById(
+            "homeNewsIcon"
+        );
+
+    const title =
+        document.getElementById(
+            "homeNewsTitle"
+        );
+
+    const message =
+        document.getElementById(
+            "homeNewsMessage"
+        );
+
+    const meta =
+        document.getElementById(
+            "homeNewsMeta"
+        );
+
+    if (
+        !icon ||
+        !title ||
+        !message
+    ) {
+
+        return;
+
+    }
+
+    try {
+
+        const newsItems =
+            await Database.getNews();
+
+        const latestNews =
+            findLatestActiveNews(
+                newsItems
+            );
+
+        if (!latestNews) {
+
+            showNoActiveNews(
+                icon,
+                title,
+                message,
+                meta
+            );
+
+            return;
+
+        }
+
+        icon.textContent =
+            "📣";
+
+        title.textContent =
+            latestNews["Title"] ||
+            "WAC Announcement";
+
+        message.textContent =
+            latestNews["Message"] ||
+            "A new WAC announcement has been posted.";
+
+        if (meta) {
+
+            const metaParts = [];
+
+            const date =
+                parseNewsDate(
+                    latestNews["Date"]
+                );
+
+            if (date) {
+
+                metaParts.push(
+                    date.toLocaleDateString(
+                        "en-US",
+                        {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric"
+                        }
+                    )
+                );
+
+            }
+
+            const postedBy =
+                String(
+                    latestNews["Posted By"] || ""
+                ).trim();
+
+            if (postedBy) {
+
+                metaParts.push(
+                    `Posted by ${postedBy}`
+                );
+
+            }
+
+            if (metaParts.length > 0) {
+
+                meta.textContent =
+                    metaParts.join(" • ");
+
+                meta.hidden = false;
+
+            } else {
+
+                meta.hidden = true;
+
+            }
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to load latest news.",
+            error
+        );
+
+        showNoActiveNews(
+            icon,
+            title,
+            message,
+            meta
+        );
+
+    }
+
+}
+
+//--------------------------------------------------
+// Find Most Recent Active News Item
+//--------------------------------------------------
+
+function findLatestActiveNews(newsItems) {
+
+    return newsItems
+        .map((newsItem) => {
+
+            return {
+
+                newsItem,
+
+                date:
+                    parseNewsDate(
+                        newsItem["Date"]
+                    )
+
+            };
+
+        })
+        .filter((entry) => {
+
+            const status =
+                String(
+                    entry.newsItem["Status"] || ""
+                )
+                    .trim()
+                    .toLowerCase();
+
+            return (
+                status === "active" &&
+                entry.date
+            );
+
+        })
+        .sort((firstItem, secondItem) => {
+
+            return (
+                secondItem.date -
+                firstItem.date
+            );
+
+        })[0]?.newsItem || null;
+
+}
+
+//--------------------------------------------------
+// Parse News Date
+//--------------------------------------------------
+
+function parseNewsDate(value) {
+
+    const dateText =
+        String(value || "").trim();
+
+    if (!dateText) {
+
+        return null;
+
+    }
+
+    const slashDate =
+        dateText.match(
+            /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+        );
+
+    if (slashDate) {
+
+        return new Date(
+
+            Number(slashDate[3]),
+            Number(slashDate[1]) - 1,
+            Number(slashDate[2])
+
+        );
+
+    }
+
+    const dashDate =
+        dateText.match(
+            /^(\d{4})-(\d{1,2})-(\d{1,2})$/
+        );
+
+    if (dashDate) {
+
+        return new Date(
+
+            Number(dashDate[1]),
+            Number(dashDate[2]) - 1,
+            Number(dashDate[3])
+
+        );
+
+    }
+
+    const parsedDate =
+        new Date(dateText);
+
+    return Number.isNaN(
+        parsedDate.getTime()
+    )
+        ? null
+        : parsedDate;
+
+}
+
+//--------------------------------------------------
+// Empty News State
+//--------------------------------------------------
+
+function showNoActiveNews(
+    icon,
+    title,
+    message,
+    meta
+) {
+
+    icon.textContent =
+        "📣";
+
+    title.textContent =
+        "Welcome to the WAC";
+
+    message.textContent =
+        "The official Workman Adventure Compound application is now online.";
+
+    if (meta) {
+
+        meta.hidden = true;
+
+    }
 
 }

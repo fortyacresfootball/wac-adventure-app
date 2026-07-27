@@ -2979,3 +2979,18 @@ DASHBOARD CABIN WEATHER
     }
 
 }
+/*======================================
+DASHBOARD LATEST NEWS
+======================================*/
+
+.home-news-meta{
+
+    margin-top:14px !important;
+
+    color:var(--muted);
+
+    font-size:.85rem !important;
+
+    font-weight:700;
+
+}
