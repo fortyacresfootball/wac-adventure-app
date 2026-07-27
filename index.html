@@ -4,13 +4,18 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
 
-    <title>Workman Adventure Compound</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet"
-          href="css/styles.css">
+    <title>
+        Workman Adventure Compound
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css">
 
 </head>
 
@@ -35,28 +40,111 @@
 
                 <div class="nav-links">
 
-                    <a href="#"
-                       data-page="home"
-                       class="active">
+                    <a
+                        href="#"
+                        data-page="home"
+                        class="active">
                         Home
                     </a>
 
-                    <a href="#"
-                       data-page="adventures">
+                    <a
+                        href="#"
+                        data-page="adventures">
                         Adventures
                     </a>
 
-                    <a href="#"
-                       data-page="events">
+                    <a
+                        href="#"
+                        data-page="events">
                         Events
                     </a>
 
-                    <a href="#" data-page="family">Family &amp; Friends</a>
+                    <a
+                        href="#"
+                        data-page="family">
+                        Family &amp; Friends
+                    </a>
 
-                    <a href="#"
-                       data-page="resources">
+                    <a
+                        href="#"
+                        data-page="resources">
                         Resources
                     </a>
+
+                </div>
+
+                <!-- ========================================== -->
+                <!-- Member Authentication Controls -->
+                <!-- ========================================== -->
+
+                <div
+                    id="authNavigation"
+                    class="auth-navigation">
+
+                    <button
+                        id="memberSignInButton"
+                        class="auth-sign-in-button"
+                        type="button">
+                        Member Sign In
+                    </button>
+
+                    <div
+                        id="signedInMemberMenu"
+                        class="signed-in-member-menu"
+                        hidden>
+
+                        <button
+                            id="signedInMemberButton"
+                            class="signed-in-member-button"
+                            type="button"
+                            aria-expanded="false">
+
+                            <span
+                                id="signedInMemberInitials"
+                                class="signed-in-member-initials">
+                                W
+                            </span>
+
+                            <span
+                                id="signedInMemberName"
+                                class="signed-in-member-name">
+                                WAC Member
+                            </span>
+
+                        </button>
+
+                        <div
+                            id="signedInMemberDropdown"
+                            class="signed-in-member-dropdown"
+                            hidden>
+
+                            <div class="signed-in-member-summary">
+
+                                <strong id="signedInMemberDropdownName">
+                                    WAC Member
+                                </strong>
+
+                                <span id="signedInMemberEmail">
+                                    Member account
+                                </span>
+
+                            </div>
+
+                            <button
+                                id="openMyProfileButton"
+                                type="button">
+                                My Profile
+                            </button>
+
+                            <button
+                                id="memberSignOutButton"
+                                type="button">
+                                Sign Out
+                            </button>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -80,18 +168,17 @@
                     Where Memories Become Tradition
                 </p>
 
-                <a href="#"
-                   class="button"
-                   data-page="adventures">
+                <a
+                    href="#"
+                    class="button"
+                    data-page="adventures">
 
                     Explore Adventures
 
                 </a>
 
                 <div class="scroll-indicator">
-
                     ↓ SCROLL
-
                 </div>
 
             </section>
@@ -104,11 +191,30 @@
 
 <main id="app-content"></main>
 
+<!-- ========================================== -->
 <!-- Global Components -->
+<!-- ========================================== -->
 
 <div id="globalComponents"></div>
 
+<!-- ========================================== -->
+<!-- Firebase Authentication -->
+<!-- ========================================== -->
+
+<script
+    src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js">
+</script>
+
+<script
+    src="https://www.gstatic.com/firebasejs/12.16.0/firebase-auth-compat.js">
+</script>
+
+<script src="js/firebaseConfig.js"></script>
+<script src="js/authService.js"></script>
+
+<!-- ========================================== -->
 <!-- Core -->
+<!-- ========================================== -->
 
 <script src="js/database.js"></script>
 <script src="js/api.js"></script>
@@ -118,13 +224,18 @@
 <script src="js/memberState.js"></script>
 <script src="js/achievementEngine.js"></script>
 
+<!-- ========================================== -->
 <!-- Components -->
+<!-- ========================================== -->
 
 <script src="js/componentLoader.js"></script>
 <script src="js/successModal.js"></script>
 <script src="js/drawer.js"></script>
+<script src="js/authModal.js"></script>
 
+<!-- ========================================== -->
 <!-- Application -->
+<!-- ========================================== -->
 
 <script src="js/router.js"></script>
 <script src="js/app.js"></script>

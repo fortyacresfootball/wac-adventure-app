@@ -429,3 +429,25 @@ Status: working tree clean
 - replace the current hard-coded AchievementEngine rules
 
 e030dbb (HEAD -> feature/adventure-checklists, origin/feature/adventure-checklists) Streamline member profile and improve profile loading
+
+## Version 1.3 — WAC Resource Center
+
+Status: Complete
+
+Completed work:
+- rebuilt the Resources page as a live database-driven library
+- created the Resources sheet and starter catalog
+- added live resource, category, and latest-update statistics
+- added keyword search across titles, descriptions, categories, types, and tags
+- added dynamic category filters
+- added featured essential-resource cards
+- added complete responsive resource library cards
+- added resource type, version, access level, and update metadata
+- added internal app navigation for the Adventure Handbook
+- added Coming Soon states for resources without active links
+- added loading, error, empty, and reset states
+- added responsive desktop and mobile layouts
+
+Recovery commit: 5df3c08
+Branch: feature/adventure-checklists
+Status: working tree clean
