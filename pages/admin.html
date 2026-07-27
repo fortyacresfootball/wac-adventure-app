@@ -1,0 +1,119 @@
+<section class="page-section page-enter admin-page">
+
+    <div class="container">
+
+        <div class="profile-back-row">
+
+            <a
+                href="#"
+                class="profile-back-link"
+                data-page="home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+        <section class="profile-summary-card">
+
+            <div class="profile-summary-content">
+
+                <div class="eyebrow">
+                    Administrator Access
+                </div>
+
+                <h1>
+                    Completion Approval Queue
+                </h1>
+
+                <p class="profile-summary-quote">
+                    Review pending WAC adventure submissions before badges,
+                    points, and rank credit are awarded.
+                </p>
+
+            </div>
+
+            <div class="profile-rank-block">
+
+                <div class="profile-level-circle">
+
+                    <strong id="adminPendingCount">
+                        0
+                    </strong>
+
+                    <span>
+                        Pending
+                    </span>
+
+                </div>
+
+                <div class="profile-rank-label">
+                    Review Queue
+                </div>
+
+                <div class="profile-rank-name">
+                    Administrator
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="profile-content-section">
+
+            <div class="profile-section-header">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Awaiting Review
+                    </div>
+
+                    <h2 class="profile-section-title">
+                        Pending Submissions
+                    </h2>
+
+                </div>
+
+                <button
+                    id="refreshAdminQueue"
+                    class="small-button"
+                    type="button">
+                    Refresh Queue
+                </button>
+
+            </div>
+
+            <div
+                id="adminQueueMessage"
+                class="auth-modal-message"
+                hidden
+                role="status">
+            </div>
+
+            <div
+                id="adminApprovalQueue"
+                class="profile-recent-list">
+
+                <div class="profile-empty-state">
+
+                    <div class="profile-empty-icon">
+                        ⏳
+                    </div>
+
+                    <h3>
+                        Loading Pending Submissions
+                    </h3>
+
+                    <p>
+                        The administrator review queue is being loaded.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</section>

@@ -52,14 +52,19 @@
         );
 
     const profileButton =
-        document.getElementById(
-            "openMyProfileButton"
-        );
+    document.getElementById(
+        "openMyProfileButton"
+    );
 
-    const signOutButton =
-        document.getElementById(
-            "memberSignOutButton"
-        );
+const adminPageButton =
+    document.getElementById(
+        "openAdminPageButton"
+    );
+
+const signOutButton =
+    document.getElementById(
+        "memberSignOutButton"
+    );
 
     //--------------------------------------------------
     // Create Authentication Modal
@@ -420,6 +425,43 @@
     }
 
     //--------------------------------------------------
+// Open Administrator Approval Queue
+//--------------------------------------------------
+
+if (adminPageButton) {
+
+    adminPageButton.addEventListener(
+        "click",
+        async () => {
+
+            if (
+                !AuthService.isSignedIn() ||
+                !AuthService.isAdmin()
+            ) {
+
+                return;
+
+            }
+
+            closeMemberDropdown();
+
+            if (
+                typeof WACRouter !== "undefined" &&
+                typeof WACRouter.loadPage === "function"
+            ) {
+
+                await WACRouter.loadPage(
+                    "admin"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+    //--------------------------------------------------
     // Sign Out
     //--------------------------------------------------
 
@@ -718,13 +760,21 @@
 
         }
 
-        if (!signedIn) {
+        if (adminPageButton) {
 
-            closeMemberDropdown();
+    adminPageButton.hidden =
+        !signedIn ||
+        !AuthService.isAdmin();
 
-            return;
+}
 
-        }
+if (!signedIn) {
+
+    closeMemberDropdown();
+
+    return;
+
+}
 
         const displayName =
             getAuthenticationMemberName(

@@ -3,14 +3,25 @@
 // ======================================
 
 // Global App State
-window.WAC = {
+window.WAC =
+    window.WAC ||
+    {};
 
-    selectedMember: null,
-    selectedBadge: null,
-    selectedEvent: null,
-    selectedLocation: null
+window.WAC.selectedMember =
+    window.WAC.selectedMember ||
+    null;
 
-};
+window.WAC.selectedBadge =
+    window.WAC.selectedBadge ||
+    null;
+
+window.WAC.selectedEvent =
+    window.WAC.selectedEvent ||
+    null;
+
+window.WAC.selectedLocation =
+    window.WAC.selectedLocation ||
+    null;
 
 const WACRouter = {
 
@@ -40,10 +51,38 @@ const WACRouter = {
 
     },
 
-    async loadPage(page, scroll = true) {
+        async loadPage(page, scroll = true) {
 
         const container =
-            document.getElementById("app-content");
+            document.getElementById(
+                "app-content"
+            );
+
+        //--------------------------------------------------
+        // Administrator Route Protection
+        //--------------------------------------------------
+
+        if (
+            page === "admin" &&
+            (
+                typeof AuthService === "undefined" ||
+                !AuthService.isSignedIn() ||
+                !AuthService.isAdmin()
+            )
+        ) {
+
+            console.warn(
+                "Unauthorized administrator page request blocked."
+            );
+
+            await this.loadPage(
+                "home",
+                scroll
+            );
+
+            return;
+
+        }
 
         try {
 
