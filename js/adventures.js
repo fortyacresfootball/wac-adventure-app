@@ -5,19 +5,22 @@
 
 (async function () {
 
+      //-------------------------------------------------
+    // Load Authenticated Member or Guest Mode
     //-------------------------------------------------
-    // Load Current Member
-    //-------------------------------------------------
-
-    const members =
-        await Database.getMembers();
 
     const member =
-        window.WAC?.selectedMember ||
-        members[0];
+        typeof AuthService !== "undefined"
+            ? AuthService.getCurrentMember()
+            : null;
+
+    const memberId =
+        String(
+            member?.["Member ID"] || ""
+        ).trim();
 
     await MemberState.load(
-        member["Member ID"]
+        memberId
     );
 
     //-------------------------------------------------

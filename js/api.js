@@ -1,31 +1,171 @@
 // ======================================
 // WAC API Service
-// Version 3.0
+// Version 4.0
 // ======================================
 
 const API = {
 
     //--------------------------------------------------
-    // Complete Adventure
+    // Submit Adventure Completion
     //--------------------------------------------------
 
-    async completeAdventure(memberId, adventureId) {
+    async submitCompletion(adventureId) {
 
-        const formData = new FormData();
+        const cleanAdventureId =
+            String(
+                adventureId || ""
+            ).trim();
 
-        formData.append("memberId", memberId);
-        formData.append("adventureId", adventureId);
-        formData.append("completedBy", memberId);
+        if (!cleanAdventureId) {
 
-        const response = await fetch(API_URL, {
+            throw new Error(
+                "A valid Adventure ID is required."
+            );
 
-            method: "POST",
+        }
 
-            body: formData
+        if (
+            typeof AuthService === "undefined" ||
+            !AuthService.isSignedIn()
+        ) {
 
-        });
+            throw new Error(
+                "Member sign-in is required before submitting an adventure."
+            );
 
-        return await response.json();
+        }
+
+        const idToken =
+            await AuthService.getIdToken(
+                true
+            );
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            action:
+                                "submitCompletion",
+
+                            idToken,
+
+                            adventureId:
+                                cleanAdventureId
+
+                        })
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "The completion service could not be reached."
+            );
+
+        }
+
+        const result =
+            await response.json();
+
+        if (!result.success) {
+
+            throw new Error(
+                result.error ||
+                result.message ||
+                "The adventure could not be submitted."
+            );
+
+        }
+
+        return result;
+
+    },
+
+    //--------------------------------------------------
+    // Load Current Authorized Member
+    //--------------------------------------------------
+
+    async getCurrentMember() {
+
+        if (
+            typeof AuthService === "undefined" ||
+            !AuthService.getCurrentUser()
+        ) {
+
+            throw new Error(
+                "Member sign-in is required."
+            );
+
+        }
+
+        const idToken =
+            await AuthService.getIdToken(
+                true
+            );
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            action:
+                                "getCurrentMember",
+
+                            idToken
+
+                        })
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "The member authorization service could not be reached."
+            );
+
+        }
+
+        const result =
+            await response.json();
+
+        if (
+            !result.success ||
+            !result.member
+        ) {
+
+            throw new Error(
+                result.error ||
+                "The authorized member record could not be loaded."
+            );
+
+        }
+
+        return result.member;
 
     }
 

@@ -47,83 +47,144 @@ const Drawer = {
 
         }
 
-        //--------------------------------------------------
-        // Complete Adventure
+                //--------------------------------------------------
+        // Submit Adventure Completion
         //--------------------------------------------------
 
         const completeButton =
-            document.getElementById("completeAdventure");
+            document.getElementById(
+                "completeAdventure"
+            );
 
         if (completeButton) {
 
             completeButton.onclick = async () => {
 
-                const completedAdventure =
+                const submittedAdventure =
                     this.currentAdventure;
 
-                if (!completedAdventure) return;
+                if (!submittedAdventure) {
 
-                const member =
-                    window.WAC.selectedMember ||
-                    (await Database.getMembers())[0];
+                    return;
 
-                const result =
-                    await API.completeAdventure(
+                }
 
-                        member["Member ID"],
-                        completedAdventure["ID"]
+                //--------------------------------------------------
+                // Require Authorized Member Sign-In
+                //--------------------------------------------------
 
-                    );
+                if (
+                    typeof AuthService === "undefined" ||
+                    !AuthService.isSignedIn()
+                ) {
 
-                if (!result.success) {
+                    const signInButton =
+                        document.getElementById(
+                            "memberSignInButton"
+                        );
+
+                    if (signInButton) {
+
+                        signInButton.click();
+
+                    } else {
+
+                        alert(
+                            "Member sign-in is required before submitting an adventure."
+                        );
+
+                    }
+
+                    return;
+
+                }
+
+                //--------------------------------------------------
+                // Verify Submission Permission
+                //--------------------------------------------------
+
+                if (
+                    !AuthService.canSubmitCompletions()
+                ) {
 
                     alert(
-                        result.message ||
-                        result.error ||
-                        "Unable to complete adventure."
+                        "Your WAC member account is not authorized to submit adventure completions."
                     );
 
                     return;
 
                 }
 
-                await MemberState.load(
-                    member["Member ID"]
+                const originalButtonText =
+                    completeButton.textContent;
+
+                completeButton.disabled =
+                    true;
+
+                completeButton.textContent =
+                    "Submitting...";
+
+                completeButton.classList.add(
+                    "button-disabled"
                 );
 
-                const stats =
-                    await ProgressEngine.getMemberStats(
-                        member["Member ID"]
+                try {
+
+                    const result =
+                        await API.submitCompletion(
+                            submittedAdventure["ID"]
+                        );
+
+                    completeButton.textContent =
+                        "Submitted — Pending Approval";
+
+                    completeButton.disabled =
+                        true;
+
+                    completeButton.classList.add(
+                        "button-disabled"
                     );
 
-                this.close();
+                    const status =
+                        document.getElementById(
+                            "drawerStatus"
+                        );
 
-                SuccessModal.open({
+                    if (status) {
 
-                    title:
-                        completedAdventure.Title,
+                        status.textContent =
+                            "Pending Approval";
 
-                    message:
-                        "Adventure successfully completed!",
+                    }
 
-                    points:
-                        Number(
-                            completedAdventure["Points"] || 100
-                        ),
+                    alert(
+                        result.message ||
+                        "Adventure submitted for administrator approval."
+                    );
 
-                    rank:
-                        stats.rank
+                }
 
-                });
+                catch (error) {
 
-                if (typeof WACRouter !== "undefined") {
+                    console.error(
+                        "Unable to submit adventure completion.",
+                        error
+                    );
 
-                    await WACRouter.loadPage(
+                    completeButton.disabled =
+                        false;
 
-                        WACRouter.currentPage,
+                    completeButton.textContent =
+                        originalButtonText ||
+                        "Complete Adventure";
 
-                        false
+                    completeButton.classList.remove(
+                        "button-disabled"
+                    );
 
+                    alert(
+                        error?.message ||
+                        "Unable to submit the adventure."
                     );
 
                 }
@@ -151,15 +212,18 @@ const Drawer = {
 
         overlay.classList.add("open");
 
-        const member =
-            window.WAC.selectedMember ||
-            (await Database.getMembers())[0];
+               const member =
+            typeof AuthService !== "undefined"
+                ? AuthService.getCurrentMember()
+                : null;
 
         this.currentMemberId =
-            String(member["Member ID"] || "").trim();
+            String(
+                member?.["Member ID"] || ""
+            ).trim();
 
         await MemberState.load(
-            member["Member ID"]
+            this.currentMemberId
         );
 
         //--------------------------------------------------
@@ -439,8 +503,8 @@ const Drawer = {
             adventure
         );
 
-        //--------------------------------------------------
-        // Completion Status
+               //--------------------------------------------------
+        // Completion and Submission Status
         //--------------------------------------------------
 
         const completed =
@@ -452,6 +516,79 @@ const Drawer = {
             document.getElementById(
                 "completeAdventure"
             );
+
+        let pending =
+            false;
+
+        const authenticatedMember =
+            typeof AuthService !== "undefined"
+                ? AuthService.getCurrentMember()
+                : null;
+
+        const authenticatedMemberId =
+            String(
+                authenticatedMember?.["Member ID"] ||
+                ""
+            ).trim();
+
+        //--------------------------------------------------
+        // Check for Existing Pending Submission
+        //--------------------------------------------------
+
+        if (
+            !completed &&
+            authenticatedMemberId &&
+            authenticatedMemberId ===
+                this.currentMemberId
+        ) {
+
+            try {
+
+                const logs =
+                    await Database.getLogs();
+
+                pending =
+                    logs.some((log) => {
+
+                        return (
+
+                            String(
+                                log["Member ID"] || ""
+                            ).trim() ===
+                                authenticatedMemberId &&
+
+                            String(
+                                log["Badge ID"] || ""
+                            ).trim() ===
+                                String(
+                                    adventure["ID"] || ""
+                                ).trim() &&
+
+                            String(
+                                log.Status || ""
+                            ).trim().toLowerCase() ===
+                                "pending"
+
+                        );
+
+                    });
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Unable to check pending adventure submissions.",
+                    error
+                );
+
+            }
+
+        }
+
+        //--------------------------------------------------
+        // Completed
+        //--------------------------------------------------
 
         if (completed) {
 
@@ -465,7 +602,8 @@ const Drawer = {
                 button.textContent =
                     "Completed ✓";
 
-                button.disabled = true;
+                button.disabled =
+                    true;
 
                 button.classList.add(
                     "button-disabled"
@@ -473,7 +611,40 @@ const Drawer = {
 
             }
 
-        } else {
+        }
+
+        //--------------------------------------------------
+        // Pending Approval
+        //--------------------------------------------------
+
+        else if (pending) {
+
+            set(
+                "drawerStatus",
+                "Pending Approval"
+            );
+
+            if (button) {
+
+                button.textContent =
+                    "Submitted — Pending Approval";
+
+                button.disabled =
+                    true;
+
+                button.classList.add(
+                    "button-disabled"
+                );
+
+            }
+
+        }
+
+        //--------------------------------------------------
+        // Available to Submit
+        //--------------------------------------------------
+
+        else {
 
             set(
                 "drawerStatus",
@@ -485,7 +656,8 @@ const Drawer = {
                 button.textContent =
                     "Complete Adventure";
 
-                button.disabled = false;
+                button.disabled =
+                    false;
 
                 button.classList.remove(
                     "button-disabled"
