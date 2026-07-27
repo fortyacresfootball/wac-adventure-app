@@ -87,29 +87,28 @@
 
             </div>
 
-            <!-- Progress -->
+            <!-- Compound Progress -->
 
             <div class="panel panel-third">
 
                 <div class="panel-label">
-                    Current Progress
+                    Compound Progress
                 </div>
 
-                <div class="metric">
+                <div
+                    class="metric"
+                    id="homeCompoundBadgeCount"
+                >
                     0
                 </div>
 
                 <h3>
-                    Badges Completed
+                    Badges Earned
                 </h3>
 
-                <p>
-                    Your completed adventures will be tracked here.
+                <p id="homeCompoundBadgeDescription">
+                    Combined total across all WAC member profiles.
                 </p>
-
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
 
             </div>
 
@@ -137,26 +136,31 @@
 
             <!-- Weather -->
 
-            <div class="panel panel-third">
+<div class="panel panel-third weather-panel">
 
-                <div class="panel-label">
-                    Weather
-                </div>
+    <div class="panel-label">
+        Cabin Weather
+    </div>
 
-                <div class="metric">
-                    ☀️
-                </div>
+    <h3 class="weather-location">
+        Eight Point Lake Cabin
+    </h3>
 
-                <h3>
-                    Weather Module
-                </h3>
+    <p class="weather-updated" id="homeWeatherUpdated">
+        Loading three-day forecast...
+    </p>
 
-                <p>
-                    Live weather for the cabin will appear here.
-                </p>
+    <div
+        class="weather-forecast"
+        id="homeWeatherForecast"
+        aria-live="polite"
+    >
+        <div class="weather-loading">
+            Checking cabin weather...
+        </div>
+    </div>
 
-            </div>
-
+</div>
         </div>
 
     </div>
