@@ -1,11 +1,11 @@
 // ======================================
 // WAC Adventure Explorer
-// Version 5.0
+// Version 5.1
 // ======================================
 
 (async function () {
 
-      //-------------------------------------------------
+    //-------------------------------------------------
     // Load Authenticated Member or Guest Mode
     //-------------------------------------------------
 
@@ -31,29 +31,53 @@
         await Database.getAdventures();
 
     const grid =
-        document.getElementById("adventureGrid");
+        document.getElementById(
+            "adventureGrid"
+        );
 
     const count =
-        document.getElementById("adventureCount");
+        document.getElementById(
+            "adventureCount"
+        );
 
     const search =
-        document.getElementById("adventureSearch");
+        document.getElementById(
+            "adventureSearch"
+        );
 
     const category =
-        document.getElementById("categoryFilter");
+        document.getElementById(
+            "categoryFilter"
+        );
 
     const empty =
-        document.getElementById("adventureEmpty");
+        document.getElementById(
+            "adventureEmpty"
+        );
+
+    const quickGuideButton =
+        document.getElementById(
+            "openQuickGuide"
+        );
 
     //-------------------------------------------------
     // Load Drawer
     //-------------------------------------------------
 
     const drawerHTML =
-        await fetch("components/drawer.html")
-            .then(r => r.text());
+        await fetch(
+            "components/drawer.html"
+        )
+            .then(
+                (response) =>
+                    response.text()
+            );
 
-    if (!document.getElementById("drawerOverlay")) {
+    if (
+        !document.getElementById(
+            "drawerOverlay"
+        )
+    ) {
 
         document.body.insertAdjacentHTML(
             "beforeend",
@@ -71,16 +95,27 @@
     category.innerHTML =
         `<option value="">All Categories</option>`;
 
-    [...new Set(adventures.map(a => a.Category))]
+    [...new Set(
+        adventures.map(
+            (adventure) =>
+                adventure.Category
+        )
+    )]
         .sort()
-        .forEach(cat => {
+        .forEach(
+            (categoryName) => {
 
-            if (!cat) return;
+                if (!categoryName) {
 
-            category.innerHTML +=
-                `<option value="${cat}">${cat}</option>`;
+                    return;
 
-        });
+                }
+
+                category.innerHTML +=
+                    `<option value="${categoryName}">${categoryName}</option>`;
+
+            }
+        );
 
     //-------------------------------------------------
     // Render Adventures
@@ -89,38 +124,55 @@
     function render() {
 
         const text =
-            search.value.toLowerCase();
+            search.value
+                .toLowerCase();
 
         const selected =
             category.value;
 
         const filtered =
-            adventures.filter(a => {
+            adventures.filter(
+                (adventure) => {
 
-                const title =
-                    (a.Title || "").toLowerCase();
+                    const title =
+                        String(
+                            adventure.Title || ""
+                        ).toLowerCase();
 
-                const cat =
-                    (a.Category || "").toLowerCase();
+                    const categoryName =
+                        String(
+                            adventure.Category || ""
+                        ).toLowerCase();
 
-                return (
+                    return (
 
-                    (title.includes(text) ||
-                     cat.includes(text))
+                        (
+                            title.includes(
+                                text
+                            ) ||
+                            categoryName.includes(
+                                text
+                            )
+                        )
 
-                    &&
+                        &&
 
-                    (selected === "" ||
-                     a.Category === selected)
+                        (
+                            selected === "" ||
+                            adventure.Category ===
+                                selected
+                        )
 
-                );
+                    );
 
-            });
+                }
+            );
 
         count.textContent =
             `${filtered.length} Adventures`;
 
-        grid.innerHTML = "";
+        grid.innerHTML =
+            "";
 
         empty.classList.toggle(
             "hidden",
@@ -131,87 +183,108 @@
         // Cards
         //-------------------------------------------------
 
-        filtered.forEach(adventure => {
+        filtered.forEach(
+            (adventure) => {
 
-            const completed =
-                MemberState.isCompleted(
-                    adventure["ID"]
-                );
+                const completed =
+                    MemberState.isCompleted(
+                        adventure["ID"]
+                    );
 
-            grid.innerHTML += `
+                grid.innerHTML += `
 
-                <div class="card dark-card ${completed ? "completed-card" : ""}">
+                    <div class="card dark-card ${
+                        completed
+                            ? "completed-card"
+                            : ""
+                    }">
 
-                    <div class="card-image">
+                        <div class="card-image">
 
-    <img
-        src="assets/badges/${adventure["ID"]}.webp"
-        alt="${adventure.Title}"
-        loading="lazy"
-        onerror="this.src='assets/badges/${adventure["ID"]}.png'">
+                            <img
+                                src="assets/badges/${adventure["ID"]}.webp"
+                                alt="${adventure.Title}"
+                                loading="lazy"
+                                onerror="this.src='assets/badges/${adventure["ID"]}.png'">
 
-</div>
+                        </div>
 
-                    <span class="badge">
+                        <span class="badge">
 
-                        ${adventure["ID"]}
+                            ${adventure["ID"]}
 
-                    </span>
+                        </span>
 
-                    <h3>
+                        <h3>
 
-                        ${adventure.Title}
+                            ${adventure.Title}
 
-                    </h3>
+                        </h3>
 
-                    <p>
+                        <p>
 
-                        ${adventure.Category || ""}
+                            ${adventure.Category || ""}
 
-                    </p>
+                        </p>
 
-                    <button
-                        class="small-button viewAdventure"
-                        data-id="${adventure["ID"]}">
+                        <button
+                            class="small-button viewAdventure"
+                            data-id="${adventure["ID"]}">
 
-                        ${completed
-                            ? "Completed ✓"
-                            : "Open Adventure"}
+                            ${
+                                completed
+                                    ? "Completed ✓"
+                                    : "Open Adventure"
+                            }
 
-                    </button>
+                        </button>
 
-                </div>
+                    </div>
 
-            `;
+                `;
 
-        });
+            }
+        );
 
         //-------------------------------------------------
-        // Button Events
+        // Adventure Button Events
         //-------------------------------------------------
 
         document
-            .querySelectorAll(".viewAdventure")
-            .forEach(button => {
+            .querySelectorAll(
+                ".viewAdventure"
+            )
+            .forEach(
+                (button) => {
 
-                button.onclick = () => {
+                    button.onclick =
+                        () => {
 
-                    const adventure =
-                        adventures.find(a =>
+                            const adventure =
+                                adventures.find(
+                                    (item) => {
 
-                            a["ID"] ===
-                            button.dataset.id
+                                        return (
+                                            item["ID"] ===
+                                            button.dataset.id
+                                        );
 
-                        );
+                                    }
+                                );
 
-                    Drawer.open(adventure);
+                            Drawer.open(
+                                adventure
+                            );
 
-                };
+                        };
 
-            });
+                }
+            );
 
     }
 
+    //-------------------------------------------------
+    // Search and Category Events
     //-------------------------------------------------
 
     search.addEventListener(
@@ -223,6 +296,38 @@
         "change",
         render
     );
+
+    //-------------------------------------------------
+    // Quick Guide Button
+    //-------------------------------------------------
+
+    if (quickGuideButton) {
+
+        quickGuideButton.addEventListener(
+            "click",
+            async () => {
+
+                if (
+                    typeof WACRouter !==
+                        "undefined" &&
+                    typeof WACRouter.loadPage ===
+                        "function"
+                ) {
+
+                    await WACRouter.loadPage(
+                        "quick-guide"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+    //-------------------------------------------------
+    // Initial Render
+    //-------------------------------------------------
 
     render();
 
