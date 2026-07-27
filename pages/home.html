@@ -63,17 +63,27 @@
                     Next Event
                 </div>
 
-                <div class="metric">
+                <div class="metric" id="homeEventIcon">
                     📅
                 </div>
 
-                <h3>
-                    No Event Scheduled
+                <h3 id="homeEventName">
+                    Loading next event...
                 </h3>
 
-                <p>
-                    Upcoming WAC gatherings will appear here.
+                <p id="homeEventDetails">
+                    Checking the WAC event calendar.
                 </p>
+
+                <a
+                    href="#"
+                    class="small-button"
+                    id="homeEventButton"
+                    data-page="events"
+                    hidden
+                >
+                    View Events
+                </a>
 
             </div>
 
