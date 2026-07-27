@@ -1,214 +1,270 @@
-<section class="page-section page-enter">
+<section class="page-section page-enter resources-page">
 
     <div class="container">
 
-        <div class="page-header">
+        <!-- ===================================================== -->
+        <!-- Resource Center Hero -->
+        <!-- ===================================================== -->
 
-            <div>
+        <header class="resources-hero">
+
+            <div class="resources-hero-content">
 
                 <div class="eyebrow">
-                    Library
+                    WAC Library
                 </div>
 
-                <h1 class="section-title">
-                    WAC Resources
+                <h1>
+                    WAC Resource Center
                 </h1>
 
-                <p class="section-subtitle">
-                    Everything you need for the Workman Adventure Compound in one place.
-                </p>
-
-            </div>
-
-            <div class="chip">
-                Digital Library
-            </div>
-
-        </div>
-
-        <div class="card-grid">
-
-            <div class="card dark-card">
-
-                <div class="card-icon">📖</div>
-
-                <h3>
-                    Adventure Handbook
-                </h3>
-
                 <p>
-                    Browse every WAC adventure and badge requirement.
+                    Documents, maps, guides, checklists, and essential
+                    Compound information—all in one place.
                 </p>
 
             </div>
 
-            <div class="card dark-card">
+            <div class="resources-hero-stats">
 
-                <div class="card-icon">🗺️</div>
+                <div class="resources-hero-stat">
 
-                <h3>
-                    Property Maps
-                </h3>
+                    <strong id="resourceTotal">
+                        0
+                    </strong>
 
-                <p>
-                    Cabin maps, trails, food plots, stands and GPS locations.
-                </p>
+                    <span>
+                        Resources
+                    </span>
 
-            </div>
-
-            <div class="card dark-card">
-
-                <div class="card-icon">📋</div>
-
-                <h3>
-                    Rules & Policies
-                </h3>
-
-                <p>
-                    WAC Code, bylaws and operating procedures.
-                </p>
-
-            </div>
-
-            <div class="card dark-card">
-
-                <div class="card-icon">🩺</div>
-
-                <h3>
-                    Emergency Information
-                </h3>
-
-                <p>
-                    Emergency plans, contacts and safety documents.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section class="page-section">
-
-    <div class="container">
-
-        <div class="page-header">
-
-            <div>
-
-                <div class="eyebrow">
-                    Documents
                 </div>
 
-                <h2 class="section-title">
-                    Resource Library
-                </h2>
+                <div class="resources-hero-stat">
+
+                    <strong id="resourceCategoryTotal">
+                        0
+                    </strong>
+
+                    <span>
+                        Categories
+                    </span>
+
+                </div>
+
+                <div class="resources-hero-stat resources-update-stat">
+
+                    <strong id="resourceLatestUpdate">
+                        —
+                    </strong>
+
+                    <span>
+                        Latest Update
+                    </span>
+
+                </div>
 
             </div>
 
-        </div>
+        </header>
 
-        <div class="list">
+        <!-- ===================================================== -->
+        <!-- Search and Filters -->
+        <!-- ===================================================== -->
 
-            <div class="list-item">
+        <section class="resources-toolbar">
+
+            <div class="resources-search">
+
+                <span
+                    class="resources-search-icon"
+                    aria-hidden="true"
+                >
+                    🔎
+                </span>
+
+                <input
+                    id="resourceSearch"
+                    type="search"
+                    placeholder="Search resources, categories, or tags..."
+                    autocomplete="off"
+                    aria-label="Search WAC resources">
+
+                <button
+                    id="resourceSearchClear"
+                    class="resources-search-clear"
+                    type="button"
+                    aria-label="Clear resource search"
+                    hidden
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <div
+                id="resourceFilters"
+                class="resources-filter-row"
+                aria-label="Resource categories"
+            >
+
+                <button
+                    class="resources-filter active"
+                    type="button"
+                    data-resource-category="all"
+                >
+                    All
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- Essential Resources -->
+        <!-- ===================================================== -->
+
+        <section
+            id="featuredResourcesSection"
+            class="resources-section"
+        >
+
+            <div class="resources-section-header">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Quick Access
+                    </div>
+
+                    <h2>
+                        Essential Resources
+                    </h2>
+
+                    <p>
+                        Important documents and information for members and guests.
+                    </p>
+
+                </div>
+
+                <div
+                    id="featuredResourceCount"
+                    class="chip"
+                >
+                    0 Featured
+                </div>
+
+            </div>
+
+            <div
+                id="featuredResources"
+                class="resources-featured-grid"
+            >
+
+                <div class="resources-loading-state">
+
+                    <div class="resources-loading-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        Loading Essential Resources
+                    </h3>
+
+                    <p>
+                        Preparing the WAC resource library.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- Complete Resource Library -->
+        <!-- ===================================================== -->
+
+        <section class="resources-section">
+
+            <div class="resources-section-header">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Complete Library
+                    </div>
+
+                    <h2>
+                        All Resources
+                    </h2>
+
+                    <p>
+                        Browse the complete collection of active WAC documents and guides.
+                    </p>
+
+                </div>
+
+                <div
+                    id="visibleResourceCount"
+                    class="chip"
+                >
+                    0 Resources
+                </div>
+
+            </div>
+
+            <div
+                id="resourceGrid"
+                class="resources-library-grid"
+            >
+
+                <div class="resources-loading-state">
+
+                    <div class="resources-loading-icon">
+                        🗂️
+                    </div>
+
+                    <h3>
+                        Loading Resource Library
+                    </h3>
+
+                    <p>
+                        Gathering the latest WAC resources.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div
+                id="resourceEmptyState"
+                class="resources-empty-state"
+                hidden
+            >
+
+                <div class="resources-empty-icon">
+                    🔍
+                </div>
 
                 <h3>
-                    WAC Constitution & Bylaws
+                    No Resources Found
                 </h3>
 
                 <p>
-                    Official governance documents for the Workman Adventure Compound.
+                    Try another search term or select a different category.
                 </p>
 
-            </div>
-
-            <div class="list-item">
-
-                <h3>
-                    WAC Code
-                </h3>
-
-                <p>
-                    Standards, expectations and member responsibilities.
-                </p>
+                <button
+                    id="resourceResetButton"
+                    class="small-button"
+                    type="button"
+                >
+                    Show All Resources
+                </button>
 
             </div>
 
-            <div class="list-item">
-
-                <h3>
-                    Cabin Operations Manual
-                </h3>
-
-                <p>
-                    Water system, maintenance schedules, equipment and seasonal startup procedures.
-                </p>
-
-            </div>
-
-            <div class="list-item">
-
-                <h3>
-                    Hunting & Fishing Guides
-                </h3>
-
-                <p>
-                    Local regulations, seasons, fishing locations and wildlife information.
-                </p>
-
-            </div>
-
-            <div class="list-item">
-
-                <h3>
-                    Recipes
-                </h3>
-
-                <p>
-                    Campfire meals, smoker recipes, cabin favorites and outdoor cooking guides.
-                </p>
-
-            </div>
-
-            <div class="list-item">
-
-                <h3>
-                    Equipment Checklists
-                </h3>
-
-                <p>
-                    Packing lists, maintenance reminders and seasonal preparation checklists.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section class="page-section">
-
-    <div class="container">
-
-        <div class="panel panel-wide">
-
-            <div class="panel-label">
-                Future Feature
-            </div>
-
-            <h3>
-                Searchable Digital Library
-            </h3>
-
-            <p>
-                Soon every document will be searchable with instant access to PDFs, maps, videos, photos, equipment manuals, adventure guides and member-only resources.
-            </p>
-
-        </div>
+        </section>
 
     </div>
 

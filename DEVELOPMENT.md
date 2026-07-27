@@ -400,3 +400,32 @@ Status: working tree clean
 - show compound-wide adventure completion progress
 
 3275cd6 (HEAD -> feature/adventure-checklists, origin/feature/adventure-checklists) Rebuild Family and Friends page with live member statistics
+
+## Next Planned Feature
+
+### Version 1.2 — Streamlined Member Profile
+
+- reduce the Profile page to its most useful sections
+- remove duplicate and unsupported placeholder sections
+- use the selected member directly without searching again
+- load Adventures and Logs only once
+- show badges, points, rank and completion progress
+- combine rank, milestone and challenge information
+- display recent completed adventures
+- display earned badge collection
+- hide empty Category Progress and Achievements sections
+- add Back to Family & Friends navigation
+- improve profile loading speed
+
+## Future Feature — WAC Achievement System
+
+- populate and use the Achievement Catalog sheet
+- define automatic achievement rules
+- connect achievement definitions to earned member records
+- prevent duplicate awards
+- record earned dates
+- display earned achievements on member profiles
+- decide whether locked achievements should be visible
+- replace the current hard-coded AchievementEngine rules
+
+e030dbb (HEAD -> feature/adventure-checklists, origin/feature/adventure-checklists) Streamline member profile and improve profile loading
