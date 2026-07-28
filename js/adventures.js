@@ -193,7 +193,7 @@
 
                 grid.innerHTML += `
 
-                    <div class="card dark-card ${
+                    <div class="card dark-card adventure-card ${
                         completed
                             ? "completed-card"
                             : ""

@@ -7214,3 +7214,143 @@ QUICK GUIDE PRINT VIEW
     }
 
 }
+/*======================================
+ADVENTURE ELIGIBILITY BANNER
+======================================*/
+
+.adventure-eligibility-banner{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
+
+    margin-bottom:24px;
+
+    padding:18px 22px;
+
+    border-left:6px solid var(--gold);
+
+    border-radius:16px;
+
+    background:linear-gradient(
+        145deg,
+        #fff9df,
+        #f6edc7
+    );
+
+    color:var(--forest-deep);
+
+    box-shadow:var(--shadow-soft);
+
+}
+
+.adventure-eligibility-banner strong{
+
+    font-size:.88rem;
+
+    font-weight:900;
+
+    letter-spacing:1.2px;
+
+    text-transform:uppercase;
+
+}
+
+.adventure-eligibility-banner span{
+
+    font-size:1rem;
+
+    font-weight:700;
+
+    line-height:1.55;
+
+}
+
+@media(max-width:500px){
+
+    .adventure-eligibility-banner{
+
+        padding:16px 18px;
+
+    }
+
+    .adventure-eligibility-banner span{
+
+        font-size:.94rem;
+
+    }
+
+}
+/*======================================
+COMPACT ADVENTURE CARDS
+======================================*/
+
+#adventureGrid{
+
+    gap:16px;
+
+}
+
+#adventureGrid .adventure-card{
+
+    min-height:180px;
+
+    padding:18px;
+
+    border-radius:20px;
+
+}
+
+#adventureGrid .adventure-card h3{
+
+    font-size:1.15rem;
+
+    line-height:1.25;
+
+}
+
+#adventureGrid .adventure-card p{
+
+    margin-top:5px;
+
+    font-size:.9rem;
+
+}
+
+#adventureGrid .adventure-card .badge{
+
+    margin-bottom:9px;
+
+    padding:5px 10px;
+
+    font-size:.75rem;
+
+}
+
+#adventureGrid .adventure-card .small-button{
+
+    margin-top:14px;
+
+    padding:10px 14px;
+
+    font-size:.9rem;
+
+}
+
+#adventureGrid .adventure-card .card-image{
+
+    margin-bottom:12px;
+
+}
+
+#adventureGrid .adventure-card .card-image img{
+
+    max-height:105px;
+
+    margin:0 auto;
+
+    object-fit:contain;
+
+}
