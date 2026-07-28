@@ -1,6 +1,6 @@
 // ==========================================
 // WAC Database Service
-// Version 3.1
+// Version 3.2
 // ==========================================
 
 const API_URL =
@@ -23,12 +23,78 @@ const Database = {
     },
 
     //--------------------------------------------------
+    // Authenticated API Request
+    //--------------------------------------------------
+
+    async authenticatedPost(action, data = {}) {
+
+        if (
+            typeof AuthService === "undefined" ||
+            typeof AuthService.getIdToken !== "function"
+        ) {
+
+            throw new Error(
+                "Authentication service is unavailable."
+            );
+
+        }
+
+        const idToken =
+            await AuthService.getIdToken();
+
+        if (!idToken) {
+
+            throw new Error(
+                "Member sign-in is required."
+            );
+
+        }
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            action,
+                            idToken,
+                            ...data
+                        })
+                }
+            );
+
+        const json =
+            await response.json();
+
+        if (!json.success) {
+
+            throw new Error(
+                json.error ||
+                "The WAC request could not be completed."
+            );
+
+        }
+
+        return json;
+
+    },
+
+    //--------------------------------------------------
     // Adventures
     //--------------------------------------------------
 
     async getAdventures() {
 
-        return await this.load("Adventures");
+        return await this.load(
+            "Adventures"
+        );
 
     },
 
@@ -38,7 +104,9 @@ const Database = {
 
     async getMembers() {
 
-        return await this.load("Members");
+        return await this.load(
+            "Members"
+        );
 
     },
 
@@ -48,7 +116,9 @@ const Database = {
 
     async getLogs() {
 
-        return await this.load("Logs");
+        return await this.load(
+            "Logs"
+        );
 
     },
 
@@ -58,7 +128,9 @@ const Database = {
 
     async getEvents() {
 
-        return await this.load("Events");
+        return await this.load(
+            "Events"
+        );
 
     },
 
@@ -68,7 +140,9 @@ const Database = {
 
     async getResources() {
 
-        return await this.load("Resources");
+        return await this.load(
+            "Resources"
+        );
 
     },
 
@@ -78,7 +152,9 @@ const Database = {
 
     async getNews() {
 
-        return await this.load("News");
+        return await this.load(
+            "News"
+        );
 
     },
 
@@ -88,7 +164,9 @@ const Database = {
 
     async getLocations() {
 
-        return await this.load("Locations");
+        return await this.load(
+            "Locations"
+        );
 
     },
 
@@ -98,7 +176,21 @@ const Database = {
 
     async getChecklist() {
 
-        return await this.load("Checklist");
+        return await this.load(
+            "Checklist"
+        );
+
+    },
+
+    //--------------------------------------------------
+    // Waiver Status
+    //--------------------------------------------------
+
+    async getWaiverStatus() {
+
+        return await this.authenticatedPost(
+            "getWaiverStatus"
+        );
 
     }
 

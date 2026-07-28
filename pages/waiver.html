@@ -1,0 +1,289 @@
+<section class="page-section page-enter waiver-page">
+
+    <div class="container">
+
+        <!-- ===================================================== -->
+        <!-- Back Navigation -->
+        <!-- ===================================================== -->
+
+        <div class="profile-back-row">
+
+            <a
+                href="#"
+                class="profile-back-link"
+                data-page="profile"
+            >
+                ← Back to Personal Profile
+            </a>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- Page Header -->
+        <!-- ===================================================== -->
+
+        <section class="profile-summary-card">
+
+            <div class="profile-summary-content">
+
+                <div class="eyebrow">
+                    Participation Requirement
+                </div>
+
+                <h1>
+                    WAC Participation Waiver
+                </h1>
+
+                <p class="profile-summary-quote">
+                    Review and electronically sign the current waiver before submitting an official adventure completion.
+                </p>
+
+            </div>
+
+            <div class="profile-rank-block">
+
+                <div
+                    id="waiverStatusChip"
+                    class="chip"
+                >
+                    Checking Status
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- Loading State -->
+        <!-- ===================================================== -->
+
+        <section
+            id="waiverLoadingSection"
+            class="profile-content-section"
+        >
+
+            <div class="profile-empty-state">
+
+                <h3>
+                    Verifying Waiver Status
+                </h3>
+
+                <p>
+                    Please wait while your member account and current waiver are verified.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- Error State -->
+        <!-- ===================================================== -->
+
+        <section
+            id="waiverErrorSection"
+            class="profile-content-section"
+            hidden
+        >
+
+            <div class="profile-empty-state">
+
+                <h3>
+                    Waiver Unavailable
+                </h3>
+
+                <p id="waiverErrorMessage">
+                    The current waiver could not be loaded.
+                </p>
+
+                <a
+                    href="#"
+                    class="small-button"
+                    data-page="profile"
+                >
+                    Return to Profile
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- Signed State -->
+        <!-- ===================================================== -->
+
+        <section
+            id="waiverSignedSection"
+            class="profile-content-section"
+            hidden
+        >
+
+            <div class="profile-section-header">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Current Record
+                    </div>
+
+                    <h2 class="profile-section-title">
+                        Waiver Signature on File
+                    </h2>
+
+                </div>
+
+                <div class="chip">
+                    Signed
+                </div>
+
+            </div>
+
+            <p>
+                Your current WAC participation waiver has been electronically signed and recorded.
+            </p>
+
+            <p id="waiverSignedMeta">
+                Signature details are being loaded.
+            </p>
+
+            <a
+                id="waiverSignedDocumentLink"
+                href="#"
+                class="small-button"
+                target="_blank"
+                rel="noopener"
+                hidden
+            >
+                Review Signed Waiver Version
+            </a>
+
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- Signing Form -->
+        <!-- ===================================================== -->
+
+        <section
+            id="waiverSigningSection"
+            class="profile-content-section"
+            hidden
+        >
+
+            <div class="profile-section-header">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Electronic Acknowledgment
+                    </div>
+
+                    <h2 class="profile-section-title">
+                        Review and Sign
+                    </h2>
+
+                </div>
+
+                <div
+                    id="waiverVersionChip"
+                    class="chip"
+                >
+                    Version
+                </div>
+
+            </div>
+
+            <div class="profile-progress-card">
+
+                <h3 id="waiverDocumentTitle">
+                    WAC Participation Waiver
+                </h3>
+
+                <p>
+                    Read the complete waiver before signing. Your electronic signature confirms that you reviewed and accepted the current document.
+                </p>
+
+                <a
+                    id="waiverDocumentLink"
+                    href="#"
+                    class="small-button"
+                    target="_blank"
+                    rel="noopener"
+                    hidden
+                >
+                    Open Waiver Document
+                </a>
+
+                <p
+                    id="waiverDocumentPending"
+                    hidden
+                >
+                    The final waiver document is not yet available for electronic signature.
+                </p>
+
+            </div>
+
+            <form id="waiverSigningForm">
+
+                <div class="profile-progress-card">
+
+                    <label for="waiverTypedSignature">
+
+                        <strong>
+                            Type Your Full Legal Name
+                        </strong>
+
+                    </label>
+
+                    <p>
+                        Your typed name must match the name associated with your WAC member account.
+                    </p>
+
+                    <input
+                        id="waiverTypedSignature"
+                        name="typedSignature"
+                        type="text"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+                <div class="profile-progress-card">
+
+                    <label>
+
+                        <input
+                            id="waiverAcknowledgment"
+                            name="acknowledgment"
+                            type="checkbox"
+                            required
+                        >
+
+                        I confirm that I have reviewed the complete waiver, understand its terms, voluntarily accept those terms, and intend my typed name to serve as my electronic signature.
+
+                    </label>
+
+                </div>
+
+                <div
+                    id="waiverFormMessage"
+                    class="profile-progress-card"
+                    hidden
+                ></div>
+
+                <button
+                    id="waiverSubmitButton"
+                    class="small-button"
+                    type="submit"
+                    disabled
+                >
+                    Electronically Sign Waiver
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</section>

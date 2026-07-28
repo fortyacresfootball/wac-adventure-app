@@ -1,6 +1,6 @@
 // ======================================
 // WAC Adventure Record
-// Version 10.0
+// Version 10.1
 // ======================================
 
 (async function () {
@@ -135,12 +135,16 @@
         );
 
         renderCategoryProgress(
-            completionRecords
-        );
+    completionRecords
+);
 
-        //--------------------------------------------------
-        // Load Optional Achievements After Core Page
-        //--------------------------------------------------
+await renderProfileWaiverStatus(
+    member
+);
+
+//--------------------------------------------------
+// Load Optional Achievements After Core Page
+//--------------------------------------------------
     }
 
     catch (error) {
@@ -1275,7 +1279,226 @@ function renderCategoryProgress(
     section.hidden = false;
 
 }
+//--------------------------------------------------
+// Participation Waiver Status
+//--------------------------------------------------
 
+async function renderProfileWaiverStatus(
+    member
+) {
+
+    const section =
+        document.getElementById(
+            "profileWaiverSection"
+        );
+
+    if (!section) {
+
+        return;
+
+    }
+
+    const authenticatedMember =
+        typeof AuthService !== "undefined"
+            ? AuthService.getCurrentMember()
+            : null;
+
+    const authenticatedMemberId =
+        String(
+            authenticatedMember?.["Member ID"] || ""
+        ).trim();
+
+    const profileMemberId =
+        String(
+            member?.["Member ID"] || ""
+        ).trim();
+
+    //--------------------------------------------------
+    // Waiver status is private to the signed-in member.
+    //--------------------------------------------------
+
+    if (
+        !authenticatedMemberId ||
+        authenticatedMemberId !== profileMemberId
+    ) {
+
+        section.hidden = true;
+        return;
+
+    }
+
+    section.hidden = false;
+
+    const statusElement =
+        document.getElementById(
+            "profileWaiverStatus"
+        );
+
+    const descriptionElement =
+        document.getElementById(
+            "profileWaiverDescription"
+        );
+
+    const metaElement =
+        document.getElementById(
+            "profileWaiverMeta"
+        );
+
+    const documentLink =
+        document.getElementById(
+            "profileWaiverDocument"
+        );
+
+    try {
+
+        const response =
+            await Database.getWaiverStatus();
+
+        const waiver =
+            response?.waiver || {};
+
+        const signed =
+            waiver.signed === true;
+
+        if (statusElement) {
+
+            statusElement.textContent =
+                signed
+                    ? "Signed"
+                    : "Not Signed";
+
+        }
+
+        if (descriptionElement) {
+
+            descriptionElement.textContent =
+                signed
+                    ? "Your current WAC participation waiver is on file."
+                    : "You must review and electronically sign the current waiver before submitting your first official adventure completion.";
+
+        }
+
+        const version =
+            String(
+                waiver.version || ""
+            ).trim();
+
+        const signedDate =
+            String(
+                waiver.signedDateTime || ""
+            ).trim();
+
+        if (metaElement) {
+
+            if (signed) {
+
+                metaElement.textContent =
+                    signedDate
+                        ? `Waiver Version ${version || "Current"} • Signed ${signedDate}`
+                        : `Waiver Version ${version || "Current"} • Signature on file`;
+
+            } else {
+
+                metaElement.textContent =
+                    version
+                        ? `Required waiver version: ${version}`
+                        : "A valid waiver is required before your first official adventure submission.";
+
+            }
+
+        }
+
+        const documentUrl =
+            String(
+                waiver.documentUrl || ""
+            ).trim();
+
+        const documentHash =
+            String(
+                waiver.documentHash || ""
+            ).trim();
+
+        const documentReady =
+            Boolean(documentUrl) &&
+            Boolean(documentHash) &&
+            !documentHash
+                .toUpperCase()
+                .includes(
+                    "PENDING"
+                );
+
+        if (documentLink) {
+
+    if (documentReady) {
+
+        documentLink.href =
+    "#";
+
+documentLink.dataset.page =
+    "waiver";
+    
+        documentLink.hidden =
+            false;
+
+        documentLink.style.display =
+            "inline-flex";
+
+    } else {
+
+        documentLink.removeAttribute(
+            "href"
+        );
+
+        documentLink.hidden =
+            true;
+
+        documentLink.style.display =
+            "none";
+
+    }
+
+}
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to load waiver status.",
+            error
+        );
+
+        if (statusElement) {
+
+            statusElement.textContent =
+                "Unavailable";
+
+        }
+
+        if (descriptionElement) {
+
+            descriptionElement.textContent =
+                "Your waiver status could not be verified at this time.";
+
+        }
+
+        if (metaElement) {
+
+            metaElement.textContent =
+                "Refresh the page or sign in again before attempting an adventure submission.";
+
+        }
+
+        if (documentLink) {
+
+            documentLink.hidden =
+                true;
+
+        }
+
+    }
+
+}
 //--------------------------------------------------
 // Optional Achievements
 //--------------------------------------------------
