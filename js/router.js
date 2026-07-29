@@ -176,20 +176,46 @@ const WACRouter = {
 
     highlightNavigation() {
 
-        document
-            .querySelectorAll("[data-page]")
-            .forEach(link => {
+    document
+        .querySelectorAll("[data-page]")
+        .forEach((link) => {
 
-                if (link.dataset.page === this.currentPage)
+            if (
+                link.dataset.page ===
+                this.currentPage
+            ) {
 
-                    link.classList.add("active");
+                link.classList.add(
+                    "active"
+                );
 
-                else
+            } else {
 
-                    link.classList.remove("active");
+                link.classList.remove(
+                    "active"
+                );
 
-            });
+            }
+
+        });
+
+    //--------------------------------------------------
+    // Persistent Home Button
+    //--------------------------------------------------
+
+    const homeButton =
+        document.getElementById(
+            "globalHomeButton"
+        );
+
+    if (homeButton) {
+
+        homeButton.hidden =
+            this.currentPage ===
+            "home";
 
     }
+
+}
 
 };
