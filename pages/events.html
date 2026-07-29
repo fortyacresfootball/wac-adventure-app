@@ -31,29 +31,29 @@
 
         <!-- Featured Next Event -->
 
-        <section
-            class="events-featured-section"
-            id="featuredEventSection"
-        >
+<section
+    class="events-featured-section"
+    id="featuredEventSection"
+>
 
-            <div class="panel-label">
-                Next WAC Event
-            </div>
+    <div class="panel-label">
+        Next WAC Event
+    </div>
 
-            <div
-                class="featured-event-card"
-                id="featuredEventCard"
-            >
+    <div
+        class="featured-event-card"
+        id="featuredEventCard"
+    >
 
-                <div class="events-loading">
-                    Loading the next WAC event...
-                </div>
-
-            </div>
-
-        </section>
+        <div class="events-loading">
+            Loading the next WAC event...
+        </div>
 
     </div>
+
+</section>
+
+</div>
 
 </section>
 
@@ -63,6 +63,10 @@
 >
 
     <div class="container">
+
+        <!-- ====================================== -->
+        <!-- Upcoming Events Header -->
+        <!-- ====================================== -->
 
         <div class="page-header">
 
@@ -82,7 +86,7 @@
 
             </div>
 
-                        <div class="events-view-controls">
+            <div class="events-view-controls">
 
                 <div
                     class="chip"
@@ -121,7 +125,64 @@
 
         </div>
 
-                <div
+        <!-- ====================================== -->
+        <!-- Event Search -->
+        <!-- ====================================== -->
+
+        <div class="events-search-panel">
+
+            <label
+                class="events-search-label"
+                for="eventsSearchInput"
+            >
+                Search Events
+            </label>
+
+            <div class="events-search-row">
+
+                <div class="events-search-input-wrap">
+
+                    <span
+                        class="events-search-icon"
+                        aria-hidden="true"
+                    >
+                        🔎
+                    </span>
+
+                    <input
+                        id="eventsSearchInput"
+                        class="events-search-input"
+                        type="search"
+                        placeholder="Search by event, location, category, organizer or description..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <button
+                    id="clearEventsSearch"
+                    class="events-search-clear"
+                    type="button"
+                    hidden
+                >
+                    Clear
+                </button>
+
+            </div>
+
+            <div
+                id="eventsSearchSummary"
+                class="events-search-summary"
+                aria-live="polite"
+            ></div>
+
+        </div>
+
+        <!-- ====================================== -->
+        <!-- Event List -->
+        <!-- ====================================== -->
+
+        <div
             class="events-list"
             id="upcomingEventsList"
         >
@@ -131,6 +192,10 @@
             </div>
 
         </div>
+
+        <!-- ====================================== -->
+        <!-- Calendar View -->
+        <!-- ====================================== -->
 
         <div
             class="events-calendar-view"
@@ -170,6 +235,7 @@
             ></div>
 
         </div>
+
     </div>
 
 </section>

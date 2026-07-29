@@ -1,12 +1,22 @@
 // ======================================
 // WAC Events Page
-// Version 1.1
+// Version 1.2
 // ======================================
 
-let eventsCalendarEvents = [];
+let eventsCalendarEvents =
+    [];
 
 let eventsCalendarDate =
     new Date();
+
+let allUpcomingEvents =
+    [];
+
+let filteredUpcomingEvents =
+    [];
+
+let eventsSearchTerm =
+    "";
 
 (async function () {
 
@@ -30,16 +40,22 @@ let eventsCalendarDate =
                 activeEvents
             );
 
+        allUpcomingEvents =
+            upcomingEvents;
+
+        filteredUpcomingEvents =
+            [...allUpcomingEvents];
+
         renderFeaturedEvent(
             upcomingEvents[0] || null
         );
 
         renderUpcomingEvents(
-            upcomingEvents
+            filteredUpcomingEvents
         );
 
         initializeEventsCalendar(
-            upcomingEvents
+            filteredUpcomingEvents
         );
 
         renderAnnualTraditions(
@@ -47,6 +63,8 @@ let eventsCalendarDate =
         );
 
         bindEventPageActions();
+
+        bindEventsSearch();
 
     }
 
@@ -62,6 +80,197 @@ let eventsCalendarDate =
     }
 
 })();
+
+//--------------------------------------------------
+// Bind Event Search
+//--------------------------------------------------
+
+function bindEventsSearch() {
+
+    const searchInput =
+        document.getElementById(
+            "eventsSearchInput"
+        );
+
+    const clearButton =
+        document.getElementById(
+            "clearEventsSearch"
+        );
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            function () {
+
+                eventsSearchTerm =
+                    String(
+                        searchInput.value || ""
+                    )
+                        .trim()
+                        .toLowerCase();
+
+                applyEventsSearch();
+
+            }
+        );
+
+    }
+
+    if (clearButton) {
+
+        clearButton.addEventListener(
+            "click",
+            function () {
+
+                eventsSearchTerm =
+                    "";
+
+                if (searchInput) {
+
+                    searchInput.value =
+                        "";
+
+                    searchInput.focus();
+
+                }
+
+                applyEventsSearch();
+
+            }
+        );
+
+    }
+
+    updateEventsSearchDisplay();
+
+}
+
+//--------------------------------------------------
+// Apply Event Search
+//--------------------------------------------------
+
+function applyEventsSearch() {
+
+    if (!eventsSearchTerm) {
+
+        filteredUpcomingEvents =
+            [...allUpcomingEvents];
+
+    } else {
+
+        filteredUpcomingEvents =
+            allUpcomingEvents.filter(
+                function (event) {
+
+                    const searchableText = [
+
+                        event["Event Name"],
+                        event["Description"],
+                        event["Location"],
+                        event["Category"],
+                        event["Organizer"],
+                        event["Start Date"],
+                        event["End Date"],
+                        formatEventPageDateRange(
+                            event
+                        )
+
+                    ]
+                        .map(
+                            function (value) {
+
+                                return String(
+                                    value || ""
+                                )
+                                    .trim()
+                                    .toLowerCase();
+
+                            }
+                        )
+                        .join(" ");
+
+                    return searchableText.includes(
+                        eventsSearchTerm
+                    );
+
+                }
+            );
+
+    }
+
+    renderUpcomingEvents(
+        filteredUpcomingEvents
+    );
+
+    eventsCalendarEvents =
+        [...filteredUpcomingEvents];
+
+    renderEventsCalendar();
+
+    updateEventsSearchDisplay();
+
+}
+
+//--------------------------------------------------
+// Update Event Search Display
+//--------------------------------------------------
+
+function updateEventsSearchDisplay() {
+
+    const clearButton =
+        document.getElementById(
+            "clearEventsSearch"
+        );
+
+    const summary =
+        document.getElementById(
+            "eventsSearchSummary"
+        );
+
+    if (clearButton) {
+
+        clearButton.hidden =
+            !eventsSearchTerm;
+
+    }
+
+    if (!summary) {
+
+        return;
+
+    }
+
+    if (!eventsSearchTerm) {
+
+        summary.textContent =
+            "";
+
+        return;
+
+    }
+
+    const resultCount =
+        filteredUpcomingEvents.length;
+
+    if (resultCount === 0) {
+
+        summary.textContent =
+            `No events match “${eventsSearchTerm}”.`;
+
+    } else if (resultCount === 1) {
+
+        summary.textContent =
+            `1 event matches “${eventsSearchTerm}”.`;
+
+    } else {
+
+        summary.textContent =
+            `${resultCount} events match “${eventsSearchTerm}”.`;
+
+    }
+
+}
 
 //--------------------------------------------------
 // Active Events
@@ -544,20 +753,48 @@ function createEventsCalendarDay(date) {
         dayNumber
     );
 
-    const matchingEvents =
-        eventsCalendarEvents.filter(
-            function (event) {
+    eventsCalendarEvents.forEach(
+        function (event) {
 
-                return eventOccursOnDate(
-                    event,
-                    date
+            const startDate =
+                parseEventPageDate(
+                    event["Start Date"]
                 );
 
-            }
-        );
+            const endDate =
+                parseEventPageDate(
+                    event["End Date"]
+                ) || startDate;
 
-    matchingEvents.forEach(
-        function (event) {
+            if (
+                !startDate ||
+                !endDate
+            ) {
+
+                return;
+
+            }
+
+            const isStartDate =
+                date.toDateString() ===
+                startDate.toDateString();
+
+            const isEndDate =
+                date.toDateString() ===
+                endDate.toDateString();
+
+            const isSingleDayEvent =
+                startDate.toDateString() ===
+                endDate.toDateString();
+
+            if (
+                !isStartDate &&
+                !isEndDate
+            ) {
+
+                return;
+
+            }
 
             const eventButton =
                 document.createElement("button");
@@ -565,15 +802,49 @@ function createEventsCalendarDay(date) {
             eventButton.type =
                 "button";
 
-            eventButton.className =
-                "events-calendar-event event-details-button";
-
             eventButton.dataset.eventId =
                 event["Event ID"] || "";
 
-            eventButton.textContent =
+            eventButton.className =
+                "event-details-button";
+
+            const eventName =
                 event["Event Name"] ||
                 "WAC Event";
+
+            if (
+                isSingleDayEvent
+            ) {
+
+                eventButton.classList.add(
+                    "events-calendar-event"
+                );
+
+                eventButton.textContent =
+                    eventName;
+
+            } else if (
+                isStartDate
+            ) {
+
+                eventButton.classList.add(
+                    "events-calendar-event",
+                    "events-calendar-event-start"
+                );
+
+                eventButton.textContent =
+                    `${eventName} — Starts`;
+
+            } else {
+
+                eventButton.classList.add(
+                    "events-calendar-event-end"
+                );
+
+                eventButton.textContent =
+                    `Ends: ${eventName}`;
+
+            }
 
             dayCell.appendChild(
                 eventButton
@@ -585,7 +856,6 @@ function createEventsCalendarDay(date) {
     return dayCell;
 
 }
-
 
 //--------------------------------------------------
 // Event Occurs on Calendar Date
