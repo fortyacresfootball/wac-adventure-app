@@ -7354,3 +7354,18 @@ COMPACT ADVENTURE CARDS
     object-fit:contain;
 
 }
+/*======================================
+HIDE ADVENTURE DRAWER HERO IMAGE
+======================================*/
+
+#drawerHeroButton{
+
+    display:none;
+
+}
+
+.drawer-photos .drawer-gallery-header{
+
+    margin-top:0;
+
+}
