@@ -1,6 +1,6 @@
 // ==========================================
 // WAC Database Service
-// Version 3.2
+// Version 3.3
 // ==========================================
 
 const API_URL =
@@ -130,6 +130,62 @@ const Database = {
 
         return await this.load(
             "Events"
+        );
+
+    },
+
+    //--------------------------------------------------
+    // Gallery
+    //--------------------------------------------------
+
+    async getGalleryPhotos() {
+
+        const rows =
+            await this.load(
+                "Gallery"
+            );
+
+        return rows.map(
+            (row) => {
+
+                return {
+
+                    photoId:
+                        row["Photo ID"] || "",
+
+                    memberName:
+                        row["Member Name"] || "",
+
+                    imageUrl:
+                        row["Image URL"] || "",
+
+                    thumbnailUrl:
+                        row["Thumbnail URL"] || "",
+
+                    caption:
+                        row["Caption"] || "",
+
+                    relatedType:
+                        row["Related Type"] || "",
+
+                    relatedId:
+                        row["Related ID"] || "",
+
+                    dateTaken:
+                        row["Date Taken"] || "",
+
+                    uploadDateTime:
+                        row["Upload DateTime"] || "",
+
+                    approvedDateTime:
+                        row["Approved DateTime"] || "",
+
+                    featured:
+                        row["Featured"] || false
+
+                };
+
+            }
         );
 
     },

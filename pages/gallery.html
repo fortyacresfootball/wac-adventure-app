@@ -1,0 +1,272 @@
+<section class="page-section gallery-page">
+
+    <div class="page-header">
+
+        <div>
+
+            <p class="eyebrow">
+                WAC MEMBER GALLERY
+            </p>
+
+            <h1>
+                Adventure Gallery
+            </h1>
+
+            <p class="page-intro">
+                The photographic evidence that these adventures actually happened.
+            </p>
+
+        </div>
+
+        <button
+            id="openGalleryUpload"
+            class="primary-button"
+            type="button"
+        >
+            Upload a Photo
+        </button>
+
+    </div>
+
+    <section
+        id="galleryUploadPanel"
+        class="gallery-upload-panel"
+        hidden
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <p class="eyebrow">
+                    SUBMIT A PHOTO
+                </p>
+
+                <h2>
+                    Add to the Gallery
+                </h2>
+
+            </div>
+
+            <button
+                id="closeGalleryUpload"
+                class="secondary-button"
+                type="button"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+        <form
+            id="galleryUploadForm"
+            class="gallery-upload-form"
+        >
+
+            <div class="gallery-photo-picker">
+
+                <input
+                    id="galleryPhotoInput"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    required
+                >
+
+                <div
+                    id="galleryPhotoPreviewWrap"
+                    class="gallery-photo-preview-wrap"
+                    hidden
+                >
+
+                    <img
+                        id="galleryPhotoPreview"
+                        class="gallery-photo-preview"
+                        alt="Selected gallery photo preview"
+                    >
+
+                </div>
+
+                <p class="form-help">
+                    JPEG, PNG, or WebP. The app will resize and compress the photo before uploading it.
+                </p>
+
+            </div>
+
+            <label class="form-field">
+
+                <span>
+                    Caption
+                </span>
+
+                <textarea
+                    id="galleryCaption"
+                    rows="5"
+                    minlength="10"
+                    maxlength="1000"
+                    placeholder="Tell us what was happening, where you were, and why this photo belongs in WAC history."
+                    required
+                ></textarea>
+
+                <small>
+                    <span id="galleryCaptionCount">0</span>/1000
+                </small>
+
+            </label>
+
+            <label class="form-field">
+
+                <span>
+                    Date Taken
+                </span>
+
+                <input
+                    id="galleryDateTaken"
+                    type="date"
+                >
+
+            </label>
+
+            <label class="form-field">
+
+                <span>
+                    Related To
+                </span>
+
+                <select id="galleryRelatedType">
+
+                    <option value="">
+                        General WAC Photo
+                    </option>
+
+                    <option value="Adventure">
+                        Adventure
+                    </option>
+
+                    <option value="Event">
+                        Event
+                    </option>
+
+                </select>
+
+            </label>
+
+            <label
+                id="galleryRelatedIdField"
+                class="form-field"
+                hidden
+            >
+
+                <span>
+                    Adventure or Event ID
+                </span>
+
+                <input
+                    id="galleryRelatedId"
+                    type="text"
+                    maxlength="100"
+                    placeholder="Enter the related ID"
+                >
+
+            </label>
+
+            <div
+                id="galleryUploadMessage"
+                class="form-message"
+                aria-live="polite"
+            ></div>
+
+            <button
+                id="submitGalleryPhoto"
+                class="primary-button"
+                type="submit"
+            >
+                Submit Photo for Approval
+            </button>
+
+        </form>
+
+    </section>
+
+    <section class="gallery-display-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <p class="eyebrow">
+                    APPROVED PHOTOS
+                </p>
+
+                <h2>
+                    WAC in the Wild
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div
+            id="galleryLoading"
+            class="empty-state"
+        >
+            Loading gallery photos...
+        </div>
+
+        <div
+            id="galleryEmpty"
+            class="empty-state"
+            hidden
+        >
+            No approved gallery photos have been posted yet.
+        </div>
+
+        <div
+            id="galleryGrid"
+            class="gallery-grid"
+            hidden
+        ></div>
+
+    </section>
+
+</section>
+
+<div
+    id="galleryLightbox"
+    class="gallery-lightbox"
+    hidden
+>
+
+    <button
+        id="closeGalleryLightbox"
+        class="gallery-lightbox-close"
+        type="button"
+        aria-label="Close photo"
+    >
+        ×
+    </button>
+
+    <div class="gallery-lightbox-content">
+
+        <img
+            id="galleryLightboxImage"
+            class="gallery-lightbox-image"
+            alt=""
+        >
+
+        <div class="gallery-lightbox-details">
+
+            <p
+                id="galleryLightboxCaption"
+                class="gallery-lightbox-caption"
+            ></p>
+
+            <p
+                id="galleryLightboxMeta"
+                class="gallery-lightbox-meta"
+            ></p>
+
+        </div>
+
+    </div>
+
+</div>

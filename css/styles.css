@@ -8261,3 +8261,509 @@ EVENT SEARCH
     margin-bottom:24px;
 
 }
+
+/*======================================
+WAC MEMBER GALLERY
+======================================*/
+
+.gallery-page{
+    width:100%;
+}
+
+.gallery-upload-panel{
+    margin:24px 0 32px;
+    padding:22px;
+    border:1px solid rgba(23,61,36,.14);
+    border-radius:18px;
+    background:#f8f5e9;
+}
+
+.gallery-upload-panel[hidden]{
+    display:none;
+}
+
+.gallery-upload-form{
+    display:grid;
+    gap:18px;
+    margin-top:18px;
+}
+
+.gallery-photo-picker{
+    display:grid;
+    gap:12px;
+}
+
+.gallery-photo-picker input[type="file"]{
+    width:100%;
+    min-height:46px;
+    padding:10px;
+    border:1px solid rgba(23,61,36,.2);
+    border-radius:12px;
+    background:#fff;
+    font:inherit;
+}
+
+.gallery-photo-preview-wrap{
+    overflow:hidden;
+    border:1px solid rgba(23,61,36,.14);
+    border-radius:16px;
+    background:#e9ede6;
+}
+
+.gallery-photo-preview-wrap[hidden]{
+    display:none;
+}
+
+.gallery-photo-preview{
+    display:block;
+    width:100%;
+    max-height:480px;
+    object-fit:contain;
+}
+
+.gallery-display-section{
+    margin-top:28px;
+}
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(240px,1fr)
+        );
+    gap:20px;
+}
+
+.gallery-grid[hidden]{
+    display:none;
+}
+
+.gallery-card{
+    overflow:hidden;
+    border:1px solid rgba(23,61,36,.13);
+    border-radius:16px;
+    background:#fff;
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.07);
+}
+
+.gallery-card-button{
+    display:block;
+    width:100%;
+    padding:0;
+    border:0;
+    background:none;
+    color:inherit;
+    font:inherit;
+    text-align:left;
+    cursor:pointer;
+}
+
+.gallery-card-image{
+    display:block;
+    width:100%;
+    aspect-ratio:4 / 3;
+    object-fit:cover;
+    background:#e8ebe6;
+}
+
+.gallery-card-details{
+    padding:14px 15px 16px;
+}
+
+.gallery-card-caption{
+    margin:0;
+    color:var(--forest-deep);
+    font-weight:800;
+    line-height:1.35;
+}
+
+.gallery-card-meta{
+    margin:8px 0 0;
+    color:#6c6c64;
+    font-size:.84rem;
+    line-height:1.4;
+}
+
+.gallery-upload-message{
+    min-height:24px;
+    padding:10px 12px;
+    border-radius:10px;
+    font-weight:700;
+}
+
+.gallery-upload-message-working{
+    background:#f2ead0;
+    color:#665119;
+}
+
+.gallery-upload-message-success{
+    background:#e6f1e3;
+    color:#234f2d;
+}
+
+.gallery-upload-message-error{
+    background:#f5e2df;
+    color:#7a2822;
+}
+
+.gallery-lightbox{
+    position:fixed;
+    inset:0;
+    z-index:5000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:rgba(10,16,11,.9);
+}
+
+.gallery-lightbox[hidden]{
+    display:none;
+}
+
+.gallery-lightbox-content{
+    width:min(100%,1000px);
+    max-height:92vh;
+    overflow:auto;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:
+        0 24px 60px
+        rgba(0,0,0,.4);
+}
+
+.gallery-lightbox-image{
+    display:block;
+    width:100%;
+    max-height:72vh;
+    object-fit:contain;
+    background:#101410;
+}
+
+.gallery-lightbox-details{
+    padding:18px 20px 22px;
+}
+
+.gallery-lightbox-caption{
+    margin:0;
+    color:var(--forest-deep);
+    font-size:1.06rem;
+    font-weight:800;
+    line-height:1.45;
+}
+
+.gallery-lightbox-meta{
+    margin:9px 0 0;
+    color:#66665f;
+    font-size:.9rem;
+}
+
+.gallery-lightbox-close{
+    position:fixed;
+    top:16px;
+    right:20px;
+    z-index:5001;
+    width:46px;
+    height:46px;
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:50%;
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    font-size:2rem;
+    line-height:1;
+    cursor:pointer;
+}
+
+.gallery-lightbox-open{
+    overflow:hidden;
+}
+
+@media(max-width:700px){
+
+    .gallery-page .page-header{
+        align-items:flex-start;
+        gap:16px;
+    }
+
+    .gallery-page .page-header .primary-button{
+        width:100%;
+    }
+
+    .gallery-upload-panel{
+        padding:17px;
+    }
+
+    .gallery-upload-panel .section-heading{
+        align-items:flex-start;
+        gap:12px;
+    }
+
+    .gallery-upload-panel .secondary-button{
+        width:100%;
+    }
+
+    .gallery-grid{
+        grid-template-columns:1fr;
+    }
+
+    .gallery-lightbox{
+        padding:10px;
+    }
+
+    .gallery-lightbox-content{
+        max-height:95vh;
+        border-radius:14px;
+    }
+
+    .gallery-lightbox-close{
+        top:10px;
+        right:10px;
+    }
+
+}
+
+/*======================================
+GALLERY PAGE WIDTH
+======================================*/
+
+.gallery-page{
+    width:min(100% - 40px, 1200px);
+    margin:0 auto;
+}
+
+@media(max-width:700px){
+
+    .gallery-page{
+        width:min(100% - 24px, 1200px);
+    }
+
+}
+
+/*======================================
+ADMIN GALLERY APPROVALS
+======================================*/
+
+.admin-queue-section-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin:28px 0 14px;
+    padding-bottom:10px;
+    border-bottom:1px solid rgba(23,61,36,.14);
+}
+
+.admin-queue-section-heading h2{
+    margin:4px 0 0;
+}
+
+.admin-queue-section-count{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:38px;
+    height:38px;
+    padding:0 10px;
+    border-radius:999px;
+    background:var(--forest-deep);
+    color:#fff;
+    font-weight:800;
+}
+
+.admin-gallery-card{
+    align-items:stretch;
+}
+
+.admin-gallery-photo-wrap{
+    width:220px;
+    min-width:220px;
+    overflow:hidden;
+    border-radius:14px;
+    background:#e8ebe6;
+}
+
+.admin-gallery-photo{
+    display:block;
+    width:100%;
+    height:100%;
+    min-height:240px;
+    object-fit:cover;
+    cursor:pointer;
+}
+
+.admin-gallery-photo:hover{
+    opacity:.92;
+}
+
+@media(max-width:760px){
+
+    .admin-queue-section-heading{
+        align-items:flex-start;
+    }
+
+    .admin-gallery-card{
+        display:block;
+    }
+
+    .admin-gallery-photo-wrap{
+        width:100%;
+        min-width:0;
+        margin-bottom:16px;
+    }
+
+    .admin-gallery-photo{
+        width:100%;
+        height:auto;
+        min-height:0;
+        max-height:420px;
+        object-fit:contain;
+    }
+
+}
+
+/*======================================
+ADMIN GALLERY CARD LAYOUT OVERRIDE
+======================================*/
+
+.admin-gallery-approval-list{
+    display:grid;
+    gap:22px;
+}
+
+.admin-gallery-card{
+    display:block;
+    overflow:hidden;
+}
+
+.admin-gallery-photo-wrap{
+    width:100%;
+    min-width:0;
+    margin:0;
+    overflow:hidden;
+    border-radius:14px 14px 0 0;
+    background:#e8ebe6;
+}
+
+.admin-gallery-photo{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:620px;
+    min-height:0;
+    object-fit:contain;
+    background:#111;
+}
+
+.admin-gallery-card .profile-recent-content{
+    width:100%;
+    padding:20px;
+}
+
+.admin-section-description{
+    margin:8px 0 0;
+    color:#67675f;
+    line-height:1.5;
+}
+
+.admin-section-controls{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.admin-gallery-queue-section{
+    margin-top:32px;
+}
+
+@media(max-width:700px){
+
+    .admin-section-controls{
+        width:100%;
+        justify-content:space-between;
+    }
+
+    .admin-gallery-card .profile-recent-content{
+        padding:16px;
+    }
+
+    .admin-gallery-photo{
+        max-height:480px;
+    }
+
+}
+
+/*======================================
+PUBLIC GALLERY THUMBNAIL GRID
+======================================*/
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(220px, 1fr)
+        );
+    gap:18px;
+}
+
+.gallery-card{
+    overflow:hidden;
+}
+
+.gallery-card-image{
+    width:100%;
+    height:220px;
+    aspect-ratio:auto;
+    object-fit:cover;
+}
+
+.gallery-card-details{
+    padding:12px 14px 14px;
+}
+
+.gallery-card-caption{
+    display:-webkit-box;
+    overflow:hidden;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+}
+
+@media(max-width:700px){
+
+    .gallery-grid{
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+        gap:12px;
+    }
+
+    .gallery-card-image{
+        height:160px;
+    }
+
+    .gallery-card-details{
+        padding:10px;
+    }
+
+    .gallery-card-meta{
+        font-size:.76rem;
+    }
+
+}
+
+@media(max-width:430px){
+
+    .gallery-grid{
+        grid-template-columns:1fr;
+    }
+
+    .gallery-card-image{
+        height:220px;
+    }
+
+}

@@ -13,6 +13,10 @@
 
         </div>
 
+        <!-- ======================================
+        ADMINISTRATOR SUMMARY
+        ======================================= -->
+
         <section class="profile-summary-card">
 
             <div class="profile-summary-content">
@@ -22,12 +26,12 @@
                 </div>
 
                 <h1>
-                    Completion Approval Queue
+                    Administrator Review Center
                 </h1>
 
                 <p class="profile-summary-quote">
-                    Review pending WAC adventure submissions before badges,
-                    points, and rank credit are awarded.
+                    Review pending adventure completions and member gallery
+                    photos before they are approved.
                 </p>
 
             </div>
@@ -47,7 +51,7 @@
                 </div>
 
                 <div class="profile-rank-label">
-                    Review Queue
+                    Total Review Queue
                 </div>
 
                 <div class="profile-rank-name">
@@ -58,36 +62,59 @@
 
         </section>
 
-        <section class="profile-content-section">
+        <!-- ======================================
+        ADMINISTRATOR MESSAGE
+        ======================================= -->
+
+        <div
+            id="adminQueueMessage"
+            class="auth-modal-message"
+            hidden
+            role="status">
+        </div>
+
+        <!-- ======================================
+        ADVENTURE COMPLETION APPROVALS
+        ======================================= -->
+
+        <section class="profile-content-section admin-adventure-queue-section">
 
             <div class="profile-section-header">
 
                 <div>
 
                     <div class="eyebrow">
-                        Awaiting Review
+                        Adventure Approvals
                     </div>
 
                     <h2 class="profile-section-title">
-                        Pending Submissions
+                        Completion Approval Queue
                     </h2>
+
+                    <p class="admin-section-description">
+                        Review member completion stories before badges,
+                        points, and rank credit are awarded.
+                    </p>
 
                 </div>
 
-                <button
-                    id="refreshAdminQueue"
-                    class="small-button"
-                    type="button">
-                    Refresh Queue
-                </button>
+                <div class="admin-section-controls">
 
-            </div>
+                    <span
+                        id="adminAdventureCount"
+                        class="admin-queue-section-count">
+                        0
+                    </span>
 
-            <div
-                id="adminQueueMessage"
-                class="auth-modal-message"
-                hidden
-                role="status">
+                    <button
+                        id="refreshAdminQueue"
+                        class="small-button"
+                        type="button">
+                        Refresh Queue
+                    </button>
+
+                </div>
+
             </div>
 
             <div
@@ -101,11 +128,68 @@
                     </div>
 
                     <h3>
-                        Loading Pending Submissions
+                        Loading Adventure Submissions
                     </h3>
 
                     <p>
-                        The administrator review queue is being loaded.
+                        The adventure completion queue is being loaded.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================
+        GALLERY PHOTO APPROVALS
+        ======================================= -->
+
+        <section class="profile-content-section admin-gallery-queue-section">
+
+            <div class="profile-section-header">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Gallery Approvals
+                    </div>
+
+                    <h2 class="profile-section-title">
+                        Gallery Approval Queue
+                    </h2>
+
+                    <p class="admin-section-description">
+                        Review member photos and captions before they appear
+                        in the public WAC gallery.
+                    </p>
+
+                </div>
+
+                <span
+                    id="adminGalleryCount"
+                    class="admin-queue-section-count">
+                    0
+                </span>
+
+            </div>
+
+            <div
+                id="adminGalleryApprovalQueue"
+                class="admin-gallery-approval-list">
+
+                <div class="profile-empty-state">
+
+                    <div class="profile-empty-icon">
+                        ⏳
+                    </div>
+
+                    <h3>
+                        Loading Gallery Photos
+                    </h3>
+
+                    <p>
+                        The gallery photo approval queue is being loaded.
                     </p>
 
                 </div>
