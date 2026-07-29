@@ -82,16 +82,46 @@
 
             </div>
 
-            <div
-                class="chip"
-                id="upcomingEventCount"
-            >
-                Loading
+                        <div class="events-view-controls">
+
+                <div
+                    class="chip"
+                    id="upcomingEventCount"
+                >
+                    Loading
+                </div>
+
+                <div
+                    class="events-view-toggle"
+                    role="group"
+                    aria-label="Choose event view"
+                >
+
+                    <button
+                        id="eventsListViewButton"
+                        class="events-view-button active"
+                        type="button"
+                        aria-pressed="true"
+                    >
+                        List
+                    </button>
+
+                    <button
+                        id="eventsCalendarViewButton"
+                        class="events-view-button"
+                        type="button"
+                        aria-pressed="false"
+                    >
+                        Calendar
+                    </button>
+
+                </div>
+
             </div>
 
         </div>
 
-        <div
+                <div
             class="events-list"
             id="upcomingEventsList"
         >
@@ -102,6 +132,44 @@
 
         </div>
 
+        <div
+            class="events-calendar-view"
+            id="eventsCalendarView"
+            hidden
+        >
+
+            <div class="events-calendar-header">
+
+                <button
+                    id="eventsPreviousMonth"
+                    class="events-calendar-nav"
+                    type="button"
+                    aria-label="Previous month"
+                >
+                    ‹
+                </button>
+
+                <h3 id="eventsCalendarMonth">
+                    Calendar
+                </h3>
+
+                <button
+                    id="eventsNextMonth"
+                    class="events-calendar-nav"
+                    type="button"
+                    aria-label="Next month"
+                >
+                    ›
+                </button>
+
+            </div>
+
+            <div
+                class="events-calendar-grid"
+                id="eventsCalendarGrid"
+            ></div>
+
+        </div>
     </div>
 
 </section>

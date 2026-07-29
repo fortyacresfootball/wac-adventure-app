@@ -1,7 +1,12 @@
 // ======================================
 // WAC Events Page
-// Version 1.0
+// Version 1.1
 // ======================================
+
+let eventsCalendarEvents = [];
+
+let eventsCalendarDate =
+    new Date();
 
 (async function () {
 
@@ -11,19 +16,29 @@
             await Database.getEvents();
 
         const activeEvents =
-            getActiveEvents(events);
+            getActiveEvents(
+                events
+            );
 
         const upcomingEvents =
-            getUpcomingEvents(activeEvents);
+            getUpcomingEvents(
+                activeEvents
+            );
 
         const annualTraditions =
-            getAnnualTraditions(activeEvents);
+            getAnnualTraditions(
+                activeEvents
+            );
 
         renderFeaturedEvent(
             upcomingEvents[0] || null
         );
 
         renderUpcomingEvents(
+            upcomingEvents
+        );
+
+        initializeEventsCalendar(
             upcomingEvents
         );
 
@@ -145,6 +160,486 @@ function getUpcomingEvents(events) {
 
         })
         .map((entry) => entry.event);
+
+}
+//--------------------------------------------------
+// Events Calendar
+//--------------------------------------------------
+
+function initializeEventsCalendar(events) {
+
+    eventsCalendarEvents =
+        Array.isArray(events)
+            ? events
+            : [];
+
+    const firstEventDate =
+        eventsCalendarEvents.length > 0
+            ? parseEventPageDate(
+                eventsCalendarEvents[0]["Start Date"]
+            )
+            : null;
+
+    eventsCalendarDate =
+        firstEventDate
+            ? new Date(
+                firstEventDate.getFullYear(),
+                firstEventDate.getMonth(),
+                1
+            )
+            : new Date(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                1
+            );
+
+    renderEventsCalendar();
+
+    bindEventsCalendarControls();
+
+}
+
+
+//--------------------------------------------------
+// Bind Calendar Controls
+//--------------------------------------------------
+
+function bindEventsCalendarControls() {
+
+    const listButton =
+        document.getElementById(
+            "eventsListViewButton"
+        );
+
+    const calendarButton =
+        document.getElementById(
+            "eventsCalendarViewButton"
+        );
+
+    const previousButton =
+        document.getElementById(
+            "eventsPreviousMonth"
+        );
+
+    const nextButton =
+        document.getElementById(
+            "eventsNextMonth"
+        );
+
+    if (listButton) {
+
+        listButton.addEventListener(
+            "click",
+            function () {
+
+                setEventsView(
+                    "list"
+                );
+
+            }
+        );
+
+    }
+
+    if (calendarButton) {
+
+        calendarButton.addEventListener(
+            "click",
+            function () {
+
+                setEventsView(
+                    "calendar"
+                );
+
+            }
+        );
+
+    }
+
+    if (previousButton) {
+
+        previousButton.addEventListener(
+            "click",
+            function () {
+
+                eventsCalendarDate =
+                    new Date(
+                        eventsCalendarDate.getFullYear(),
+                        eventsCalendarDate.getMonth() - 1,
+                        1
+                    );
+
+                renderEventsCalendar();
+
+            }
+        );
+
+    }
+
+    if (nextButton) {
+
+        nextButton.addEventListener(
+            "click",
+            function () {
+
+                eventsCalendarDate =
+                    new Date(
+                        eventsCalendarDate.getFullYear(),
+                        eventsCalendarDate.getMonth() + 1,
+                        1
+                    );
+
+                renderEventsCalendar();
+
+            }
+        );
+
+    }
+
+}
+
+
+//--------------------------------------------------
+// Switch Events View
+//--------------------------------------------------
+
+function setEventsView(viewName) {
+
+    const list =
+        document.getElementById(
+            "upcomingEventsList"
+        );
+
+    const calendar =
+        document.getElementById(
+            "eventsCalendarView"
+        );
+
+    const listButton =
+        document.getElementById(
+            "eventsListViewButton"
+        );
+
+    const calendarButton =
+        document.getElementById(
+            "eventsCalendarViewButton"
+        );
+
+    const showCalendar =
+        viewName === "calendar";
+
+    if (list) {
+
+        list.hidden =
+            showCalendar;
+
+    }
+
+    if (calendar) {
+
+        calendar.hidden =
+            !showCalendar;
+
+    }
+
+    if (listButton) {
+
+        listButton.classList.toggle(
+            "active",
+            !showCalendar
+        );
+
+        listButton.setAttribute(
+            "aria-pressed",
+            String(!showCalendar)
+        );
+
+    }
+
+    if (calendarButton) {
+
+        calendarButton.classList.toggle(
+            "active",
+            showCalendar
+        );
+
+        calendarButton.setAttribute(
+            "aria-pressed",
+            String(showCalendar)
+        );
+
+    }
+
+}
+
+
+//--------------------------------------------------
+// Render Events Calendar
+//--------------------------------------------------
+
+function renderEventsCalendar() {
+
+    const monthLabel =
+        document.getElementById(
+            "eventsCalendarMonth"
+        );
+
+    const grid =
+        document.getElementById(
+            "eventsCalendarGrid"
+        );
+
+    if (
+        !monthLabel ||
+        !grid
+    ) {
+
+        return;
+
+    }
+
+    monthLabel.textContent =
+        eventsCalendarDate.toLocaleDateString(
+            "en-US",
+            {
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+    grid.innerHTML = "";
+
+    const weekdayNames = [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+    ];
+
+    weekdayNames.forEach(
+        function (weekdayName) {
+
+            const weekday =
+                document.createElement("div");
+
+            weekday.className =
+                "events-calendar-weekday";
+
+            weekday.textContent =
+                weekdayName;
+
+            grid.appendChild(
+                weekday
+            );
+
+        }
+    );
+
+    const year =
+        eventsCalendarDate.getFullYear();
+
+    const month =
+        eventsCalendarDate.getMonth();
+
+    const firstDay =
+        new Date(
+            year,
+            month,
+            1
+        );
+
+    const finalDay =
+        new Date(
+            year,
+            month + 1,
+            0
+        );
+
+    for (
+        let blankIndex = 0;
+        blankIndex < firstDay.getDay();
+        blankIndex += 1
+    ) {
+
+        const blankCell =
+            document.createElement("div");
+
+        blankCell.className =
+            "events-calendar-day events-calendar-day-empty";
+
+        grid.appendChild(
+            blankCell
+        );
+
+    }
+
+    for (
+        let dayNumber = 1;
+        dayNumber <= finalDay.getDate();
+        dayNumber += 1
+    ) {
+
+        const calendarDay =
+            new Date(
+                year,
+                month,
+                dayNumber
+            );
+
+        const dayCell =
+            createEventsCalendarDay(
+                calendarDay
+            );
+
+        grid.appendChild(
+            dayCell
+        );
+
+    }
+
+}
+
+
+//--------------------------------------------------
+// Create Calendar Day
+//--------------------------------------------------
+
+function createEventsCalendarDay(date) {
+
+    const dayCell =
+        document.createElement("div");
+
+    dayCell.className =
+        "events-calendar-day";
+
+    const dayNumber =
+        document.createElement("div");
+
+    dayNumber.className =
+        "events-calendar-day-number";
+
+    dayNumber.textContent =
+        String(
+            date.getDate()
+        );
+
+    const today =
+        new Date();
+
+    if (
+        date.toDateString() ===
+        today.toDateString()
+    ) {
+
+        dayCell.classList.add(
+            "today"
+        );
+
+    }
+
+    dayCell.appendChild(
+        dayNumber
+    );
+
+    const matchingEvents =
+        eventsCalendarEvents.filter(
+            function (event) {
+
+                return eventOccursOnDate(
+                    event,
+                    date
+                );
+
+            }
+        );
+
+    matchingEvents.forEach(
+        function (event) {
+
+            const eventButton =
+                document.createElement("button");
+
+            eventButton.type =
+                "button";
+
+            eventButton.className =
+                "events-calendar-event event-details-button";
+
+            eventButton.dataset.eventId =
+                event["Event ID"] || "";
+
+            eventButton.textContent =
+                event["Event Name"] ||
+                "WAC Event";
+
+            dayCell.appendChild(
+                eventButton
+            );
+
+        }
+    );
+
+    return dayCell;
+
+}
+
+
+//--------------------------------------------------
+// Event Occurs on Calendar Date
+//--------------------------------------------------
+
+function eventOccursOnDate(
+    event,
+    calendarDate
+) {
+
+    const startDate =
+        parseEventPageDate(
+            event["Start Date"]
+        );
+
+    const endDate =
+        parseEventPageDate(
+            event["End Date"]
+        ) || startDate;
+
+    if (
+        !startDate ||
+        !endDate
+    ) {
+
+        return false;
+
+    }
+
+    const comparisonDate =
+        new Date(
+            calendarDate.getFullYear(),
+            calendarDate.getMonth(),
+            calendarDate.getDate()
+        );
+
+    const comparisonStart =
+        new Date(
+            startDate.getFullYear(),
+            startDate.getMonth(),
+            startDate.getDate()
+        );
+
+    const comparisonEnd =
+        new Date(
+            endDate.getFullYear(),
+            endDate.getMonth(),
+            endDate.getDate()
+        );
+
+    return (
+        comparisonDate >= comparisonStart &&
+        comparisonDate <= comparisonEnd
+    );
 
 }
 
