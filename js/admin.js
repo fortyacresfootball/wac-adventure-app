@@ -363,285 +363,471 @@
         );
 
     //--------------------------------------------------
-    // Member Submission Story
-    //--------------------------------------------------
+// Adventure Requirements
+//--------------------------------------------------
 
-    const storySection =
-        document.createElement(
-            "section"
-        );
-
-    storySection.className =
-        "admin-review-section admin-submission-story";
-
-    const storyLabel =
-        document.createElement(
-            "div"
-        );
-
-    storyLabel.className =
-        "admin-review-label";
-
-    storyLabel.textContent =
-        "Member Submission Story";
-
-    const storyText =
-        document.createElement(
-            "p"
-        );
-
-    storyText.className =
-        "admin-review-text";
-
-    storyText.textContent =
-        String(
-            submission.submissionStory ||
-            ""
-        ).trim() ||
-        "No submission story was provided.";
-
-    storySection.append(
-        storyLabel,
-        storyText
+const requirementsSection =
+    document.createElement(
+        "section"
     );
 
-    //--------------------------------------------------
-    // Administrator Actions
-    //--------------------------------------------------
+requirementsSection.className =
+    "admin-review-section admin-adventure-requirements";
 
-    const actions =
-        document.createElement(
-            "div"
-        );
-
-    actions.className =
-        "admin-submission-actions";
-
-    const approveButton =
-        document.createElement(
-            "button"
-        );
-
-    approveButton.type =
-        "button";
-
-    approveButton.className =
-        "small-button";
-
-    approveButton.textContent =
-        "Approve";
-
-    const rejectButton =
-        document.createElement(
-            "button"
-        );
-
-    rejectButton.type =
-        "button";
-
-    rejectButton.className =
-        "small-button admin-reject-button";
-
-    rejectButton.textContent =
-        "Reject";
-
-    approveButton.addEventListener(
-        "click",
-        async () => {
-
-            await processDecision(
-                submission,
-                "completed",
-                approveButton,
-                rejectButton
-            );
-
-        }
+const requirementsLabel =
+    document.createElement(
+        "div"
     );
 
-    rejectButton.addEventListener(
-        "click",
-        async () => {
+requirementsLabel.className =
+    "admin-review-label";
 
-            const note =
-                window.prompt(
-                    "Optional rejection note:",
-                    ""
-                );
+requirementsLabel.textContent =
+    "Patch Requirements";
 
-            if (note === null) {
-
-                return;
-
-            }
-
-            await processDecision(
-                submission,
-                "rejected",
-                approveButton,
-                rejectButton,
-                note
-            );
-
-        }
+const requirementsText =
+    document.createElement(
+        "p"
     );
 
-    actions.append(
-        approveButton,
-        rejectButton
+requirementsText.className =
+    "admin-review-text";
+
+requirementsText.textContent =
+    String(
+        submission.requirements ||
+        ""
+    ).trim() ||
+    "No adventure requirements were provided.";
+
+requirementsSection.append(
+    requirementsLabel,
+    requirementsText
+);
+
+//--------------------------------------------------
+// Member Submission Story
+//--------------------------------------------------
+
+const storySection =
+    document.createElement(
+        "section"
     );
 
-    content.append(
-        category,
-        title,
-        meta,
-        storySection,
-        actions
+storySection.className =
+    "admin-review-section admin-submission-story";
+
+const storyLabel =
+    document.createElement(
+        "div"
     );
 
-    card.append(
-        badge,
-        content
+storyLabel.className =
+    "admin-review-label";
+
+storyLabel.textContent =
+    "Member Submission Story";
+
+const storyText =
+    document.createElement(
+        "p"
     );
 
-    return card;
+storyText.className =
+    "admin-review-text";
 
-}
+storyText.textContent =
+    String(
+        submission.submissionStory ||
+        ""
+    ).trim() ||
+    "No submission story was provided.";
+
+storySection.append(
+    storyLabel,
+    storyText
+);
 
     //--------------------------------------------------
-    // Submission Metadata
-    //--------------------------------------------------
+// Administrator Comment
+//--------------------------------------------------
 
-    function buildSubmissionMeta(
-        submission
-    ) {
+const commentSection =
+    document.createElement(
+        "section"
+    );
 
-        const parts = [];
+commentSection.className =
+    "admin-review-section admin-comment-section";
 
-        if (submission.memberName) {
+const commentLabel =
+    document.createElement(
+        "label"
+    );
 
-            parts.push(
-                submission.memberName
-            );
+commentLabel.className =
+    "admin-review-label";
 
-        }
+commentLabel.textContent =
+    "Administrator Comment";
 
-        if (submission.memberId) {
+const commentInput =
+    document.createElement(
+        "textarea"
+    );
 
-            parts.push(
-                submission.memberId
-            );
+commentInput.className =
+    "admin-comment-input";
 
-        }
+commentInput.rows =
+    4;
 
-        if (submission.submittedDate) {
+commentInput.maxLength =
+    1500;
 
-            parts.push(
-                `Submitted ${submission.submittedDate}`
-            );
+commentInput.placeholder =
+    "Leave an optional approval or denial comment. A comment is required when returning a submission for more information.";
 
-        }
+commentSection.append(
+    commentLabel,
+    commentInput
+);
 
-        if (submission.points) {
+//--------------------------------------------------
+// Administrator Actions
+//--------------------------------------------------
 
-            parts.push(
-                `${submission.points} Points`
-            );
+const actions =
+    document.createElement(
+        "div"
+    );
 
-        }
+actions.className =
+    "admin-submission-actions";
 
-        return parts.join(
-            " • "
+const approveButton =
+    document.createElement(
+        "button"
+    );
+
+approveButton.type =
+    "button";
+
+approveButton.className =
+    "small-button";
+
+approveButton.textContent =
+    "Approve";
+
+const returnButton =
+    document.createElement(
+        "button"
+    );
+
+returnButton.type =
+    "button";
+
+returnButton.className =
+    "small-button admin-return-button";
+
+returnButton.textContent =
+    "Return for More Information";
+
+const rejectButton =
+    document.createElement(
+        "button"
+    );
+
+rejectButton.type =
+    "button";
+
+rejectButton.className =
+    "small-button admin-reject-button";
+
+rejectButton.textContent =
+    "Deny";
+
+//--------------------------------------------------
+// Approve Submission
+//--------------------------------------------------
+
+approveButton.addEventListener(
+    "click",
+    async () => {
+
+        await processDecision(
+            submission,
+            "completed",
+            approveButton,
+            returnButton,
+            rejectButton,
+            commentInput.value
         );
 
     }
+);
 
-    //--------------------------------------------------
-    // Process Approval or Rejection
-    //--------------------------------------------------
+//--------------------------------------------------
+// Return Submission
+//--------------------------------------------------
 
-    async function processDecision(
-        submission,
-        decision,
-        approveButton,
-        rejectButton,
-        note = ""
-    ) {
+returnButton.addEventListener(
+    "click",
+    async () => {
 
-        const confirmationMessage =
-            decision === "completed"
-                ? `Approve ${submission.memberName}'s completion of ${submission.adventureTitle}?`
-                : `Reject ${submission.memberName}'s submission for ${submission.adventureTitle}?`;
+        const note =
+            String(
+                commentInput.value || ""
+            ).trim();
 
-        if (
-            !window.confirm(
-                confirmationMessage
-            )
-        ) {
+        if (!note) {
+
+            alert(
+                "Please explain what additional information the member must provide."
+            );
+
+            commentInput.focus();
 
             return;
 
         }
 
-        setDecisionLoading(
+        await processDecision(
+            submission,
+            "returned",
             approveButton,
+            returnButton,
             rejectButton,
-            decision
+            note
         );
 
-        clearAdminMessage();
+    }
+);
 
-        try {
+//--------------------------------------------------
+// Deny Submission
+//--------------------------------------------------
 
-            const result =
-                await submitAdminDecision(
-                    submission.logId,
-                    decision,
-                    note
-                );
+rejectButton.addEventListener(
+    "click",
+    async () => {
 
-            showAdminMessage(
-                decision === "completed"
-                    ? `${submission.adventureTitle} was approved for ${submission.memberName}.`
-                    : `${submission.adventureTitle} was rejected for ${submission.memberName}.`,
-                "success"
-            );
+        await processDecision(
+            submission,
+            "rejected",
+            approveButton,
+            returnButton,
+            rejectButton,
+            commentInput.value
+        );
 
-            await loadPendingQueue();
+    }
+);
 
-            return result;
+actions.append(
+    approveButton,
+    returnButton,
+    rejectButton
+);
 
-        }
+content.append(
+    category,
+    title,
+    meta,
+    requirementsSection,
+    storySection,
+    commentSection,
+    actions
+);
 
-        catch (error) {
+card.append(
+    badge,
+    content
+);
 
-            console.error(
-                "Unable to process administrator decision.",
-                error
-            );
+return card;
 
-            showAdminMessage(
-                error?.message ||
-                "The administrator decision could not be saved.",
-                "error"
-            );
+}
 
-            approveButton.disabled =
-                false;
+//--------------------------------------------------
+// Submission Metadata
+//--------------------------------------------------
 
-            rejectButton.disabled =
-                false;
+function buildSubmissionMeta(
+    submission
+) {
 
-            approveButton.textContent =
-                "Approve";
+    const parts = [];
 
-            rejectButton.textContent =
-                "Reject";
+    if (submission.memberName) {
 
-        }
+        parts.push(
+            submission.memberName
+        );
 
     }
 
+    if (submission.memberId) {
+
+        parts.push(
+            submission.memberId
+        );
+
+    }
+
+    if (submission.submittedDate) {
+
+        parts.push(
+            `Submitted ${submission.submittedDate}`
+        );
+
+    }
+
+    if (submission.points) {
+
+        parts.push(
+            `${submission.points} Points`
+        );
+
+    }
+
+    return parts.join(
+        " • "
+    );
+
+}
+
+//--------------------------------------------------
+// Process Administrator Decision
+//--------------------------------------------------
+
+async function processDecision(
+    submission,
+    decision,
+    approveButton,
+    returnButton,
+    rejectButton,
+    note = ""
+) {
+
+    const cleanNote =
+        String(
+            note || ""
+        ).trim();
+
+    let confirmationMessage =
+        "";
+
+    if (decision === "completed") {
+
+        confirmationMessage =
+            `Approve ${submission.memberName}'s completion of ${submission.adventureTitle}?`;
+
+    } else if (decision === "returned") {
+
+        confirmationMessage =
+            `Return ${submission.memberName}'s submission for ${submission.adventureTitle} and request more information?`;
+
+    } else {
+
+        confirmationMessage =
+            `Deny ${submission.memberName}'s submission for ${submission.adventureTitle}?`;
+
+    }
+
+    if (
+        !window.confirm(
+            confirmationMessage
+        )
+    ) {
+
+        return;
+
+    }
+
+    setDecisionLoading(
+        approveButton,
+        returnButton,
+        rejectButton,
+        decision
+    );
+
+    clearAdminMessage();
+
+    try {
+
+        const result =
+            await submitAdminDecision(
+                submission.logId,
+                decision,
+                cleanNote
+            );
+
+        let successMessage =
+            "";
+
+        if (decision === "completed") {
+
+            successMessage =
+                `${submission.adventureTitle} was approved for ${submission.memberName}.`;
+
+        } else if (decision === "returned") {
+
+            successMessage =
+                `${submission.adventureTitle} was returned to ${submission.memberName} for more information.`;
+
+        } else {
+
+            successMessage =
+                `${submission.adventureTitle} was denied for ${submission.memberName}.`;
+
+        }
+
+        showAdminMessage(
+            successMessage,
+            "success"
+        );
+
+        await loadPendingQueue();
+
+        return result;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to process administrator decision.",
+            error
+        );
+
+        showAdminMessage(
+            error?.message ||
+            "The administrator decision could not be saved.",
+            "error"
+        );
+
+        approveButton.disabled =
+            false;
+
+        returnButton.disabled =
+            false;
+
+        rejectButton.disabled =
+            false;
+
+        approveButton.textContent =
+            "Approve";
+
+        returnButton.textContent =
+            "Return for More Information";
+
+        rejectButton.textContent =
+            "Deny";
+
+    }
+
+}
     //--------------------------------------------------
     // Secure Decision Request
     //--------------------------------------------------
@@ -807,100 +993,109 @@
     }
 
     function setDecisionLoading(
-        approveButton,
-        rejectButton,
-        decision
-    ) {
+    approveButton,
+    returnButton,
+    rejectButton,
+    decision
+) {
 
-        approveButton.disabled =
-            true;
+    approveButton.disabled =
+        true;
 
-        rejectButton.disabled =
-            true;
+    returnButton.disabled =
+        true;
 
-        if (decision === "completed") {
+    rejectButton.disabled =
+        true;
 
-            approveButton.textContent =
-                "Approving...";
+    if (decision === "completed") {
 
-        } else {
+        approveButton.textContent =
+            "Approving...";
 
-            rejectButton.textContent =
-                "Rejecting...";
+    } else if (decision === "returned") {
 
-        }
+        returnButton.textContent =
+            "Returning...";
 
-    }
+    } else {
 
-    function showAdminMessage(
-        message,
-        type
-    ) {
-
-        if (!messageBox) {
-
-            return;
-
-        }
-
-        messageBox.textContent =
-            message;
-
-        messageBox.className =
-            `auth-modal-message auth-modal-message-${type}`;
-
-        messageBox.hidden =
-            false;
+        rejectButton.textContent =
+            "Denying...";
 
     }
 
-    function clearAdminMessage() {
+}
 
-        if (!messageBox) {
+function showAdminMessage(
+    message,
+    type
+) {
 
-            return;
+    if (!messageBox) {
 
-        }
-
-        messageBox.textContent =
-            "";
-
-        messageBox.className =
-            "auth-modal-message";
-
-        messageBox.hidden =
-            true;
+        return;
 
     }
 
-    function escapeAdminHTML(
-        value
-    ) {
+    messageBox.textContent =
+        message;
 
-        return String(
-            value || ""
+    messageBox.className =
+        `auth-modal-message auth-modal-message-${type}`;
+
+    messageBox.hidden =
+        false;
+
+}
+
+function clearAdminMessage() {
+
+    if (!messageBox) {
+
+        return;
+
+    }
+
+    messageBox.textContent =
+        "";
+
+    messageBox.className =
+        "auth-modal-message";
+
+    messageBox.hidden =
+        true;
+
+}
+
+function escapeAdminHTML(
+    value
+) {
+
+    return String(
+        value || ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
         )
-            .replaceAll(
-                "&",
-                "&amp;"
-            )
-            .replaceAll(
-                "<",
-                "&lt;"
-            )
-            .replaceAll(
-                ">",
-                "&gt;"
-            )
-            .replaceAll(
-                '"',
-                "&quot;"
-            )
-            .replaceAll(
-                "'",
-                "&#039;"
-            );
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
-    }
+}
 
 })();

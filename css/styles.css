@@ -7891,3 +7891,77 @@ ADMIN SUBMISSION REVIEW
     margin-top:18px;
 
 }
+
+/*======================================
+ADMIN REVIEW CONTROLS
+======================================*/
+
+.admin-adventure-requirements{
+
+    border-left:5px solid var(--forest);
+
+}
+
+.admin-comment-section{
+
+    border-left:5px solid #7a5a24;
+
+}
+
+.admin-comment-input{
+
+    width:100%;
+
+    min-height:110px;
+
+    padding:13px 14px;
+
+    border:1px solid rgba(23,61,36,.18);
+
+    border-radius:12px;
+
+    background:#fff;
+
+    color:var(--ink);
+
+    line-height:1.5;
+
+    resize:vertical;
+
+    outline:none;
+
+}
+
+.admin-comment-input:focus{
+
+    border-color:var(--gold);
+
+    box-shadow:0 0 0 3px rgba(212,170,34,.14);
+
+}
+
+.admin-submission-actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.admin-return-button{
+
+    background:#b98622;
+
+    color:#fff;
+
+}
+
+.admin-reject-button{
+
+    background:#8b2f2f;
+
+    color:#fff;
+
+}
