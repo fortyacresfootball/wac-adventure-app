@@ -48,153 +48,273 @@ const Drawer = {
         }
 
                 //--------------------------------------------------
-        // Submit Adventure Completion
-        //--------------------------------------------------
+// Submit Adventure Completion
+//--------------------------------------------------
 
-        const completeButton =
-            document.getElementById(
-                "completeAdventure"
-            );
+const completeButton =
+    document.getElementById(
+        "completeAdventure"
+    );
 
-        if (completeButton) {
+const storyInput =
+    document.getElementById(
+        "adventureSubmissionStory"
+    );
 
-            completeButton.onclick = async () => {
+const storyCount =
+    document.getElementById(
+        "adventureStoryCount"
+    );
 
-                const submittedAdventure =
-                    this.currentAdventure;
+//--------------------------------------------------
+// Adventure Story Character Counter
+//--------------------------------------------------
 
-                if (!submittedAdventure) {
+if (storyInput) {
 
-                    return;
+    const updateStoryCount = () => {
 
-                }
+        const characterCount =
+            storyInput.value.length;
 
-                //--------------------------------------------------
-                // Require Authorized Member Sign-In
-                //--------------------------------------------------
+        if (storyCount) {
 
-                if (
-                    typeof AuthService === "undefined" ||
-                    !AuthService.isSignedIn()
-                ) {
-
-                    const signInButton =
-                        document.getElementById(
-                            "memberSignInButton"
-                        );
-
-                    if (signInButton) {
-
-                        signInButton.click();
-
-                    } else {
-
-                        alert(
-                            "Member sign-in is required before submitting an adventure."
-                        );
-
-                    }
-
-                    return;
-
-                }
-
-                //--------------------------------------------------
-                // Verify Submission Permission
-                //--------------------------------------------------
-
-                if (
-                    !AuthService.canSubmitCompletions()
-                ) {
-
-                    alert(
-                        "Your WAC member account is not authorized to submit adventure completions."
-                    );
-
-                    return;
-
-                }
-
-                const originalButtonText =
-                    completeButton.textContent;
-
-                completeButton.disabled =
-                    true;
-
-                completeButton.textContent =
-                    "Submitting...";
-
-                completeButton.classList.add(
-                    "button-disabled"
-                );
-
-                try {
-
-                    const result =
-                        await API.submitCompletion(
-                            submittedAdventure["ID"]
-                        );
-
-                    completeButton.textContent =
-                        "Submitted — Pending Approval";
-
-                    completeButton.disabled =
-                        true;
-
-                    completeButton.classList.add(
-                        "button-disabled"
-                    );
-
-                    const status =
-                        document.getElementById(
-                            "drawerStatus"
-                        );
-
-                    if (status) {
-
-                        status.textContent =
-                            "Pending Approval";
-
-                    }
-
-                    alert(
-                        result.message ||
-                        "Adventure submitted for administrator approval."
-                    );
-
-                }
-
-                catch (error) {
-
-                    console.error(
-                        "Unable to submit adventure completion.",
-                        error
-                    );
-
-                    completeButton.disabled =
-                        false;
-
-                    completeButton.textContent =
-                        originalButtonText ||
-                        "Complete Adventure";
-
-                    completeButton.classList.remove(
-                        "button-disabled"
-                    );
-
-                    alert(
-                        error?.message ||
-                        "Unable to submit the adventure."
-                    );
-
-                }
-
-            };
+            storyCount.textContent =
+                `${characterCount} / 2500`;
 
         }
 
-    },
+    };
 
+    storyInput.addEventListener(
+        "input",
+        updateStoryCount
+    );
+
+    updateStoryCount();
+
+}
+
+//--------------------------------------------------
+// Submit Adventure Completion
+//--------------------------------------------------
+
+if (completeButton) {
+
+    completeButton.onclick = async () => {
+
+        const submittedAdventure =
+            this.currentAdventure;
+
+        if (!submittedAdventure) {
+
+            return;
+
+        }
+
+        //--------------------------------------------------
+        // Require Authorized Member Sign-In
+        //--------------------------------------------------
+
+        if (
+            typeof AuthService === "undefined" ||
+            !AuthService.isSignedIn()
+        ) {
+
+            const signInButton =
+                document.getElementById(
+                    "memberSignInButton"
+                );
+
+            if (signInButton) {
+
+                signInButton.click();
+
+            } else {
+
+                alert(
+                    "Member sign-in is required before submitting an adventure."
+                );
+
+            }
+
+            return;
+
+        }
+
+        //--------------------------------------------------
+        // Verify Submission Permission
+        //--------------------------------------------------
+
+        if (
+            !AuthService.canSubmitCompletions()
+        ) {
+
+            alert(
+                "Your WAC member account is not authorized to submit adventure completions."
+            );
+
+            return;
+
+        }
+
+        //--------------------------------------------------
+        // Validate Adventure Story
+        //--------------------------------------------------
+
+        const submissionStory =
+            String(
+                storyInput?.value || ""
+            ).trim();
+
+        if (!submissionStory) {
+
+            alert(
+                "Please tell the story of how you completed this adventure."
+            );
+
+            if (storyInput) {
+
+                storyInput.focus();
+
+            }
+
+            return;
+
+        }
+
+        if (submissionStory.length < 25) {
+
+            alert(
+                "Please provide a little more detail about how you completed the adventure."
+            );
+
+            if (storyInput) {
+
+                storyInput.focus();
+
+            }
+
+            return;
+
+        }
+
+        if (submissionStory.length > 2500) {
+
+            alert(
+                "Adventure stories cannot exceed 2,500 characters."
+            );
+
+            if (storyInput) {
+
+                storyInput.focus();
+
+            }
+
+            return;
+
+        }
+
+        //--------------------------------------------------
+        // Prepare Submission
+        //--------------------------------------------------
+
+        const originalButtonText =
+            completeButton.textContent;
+
+        completeButton.disabled =
+            true;
+
+        completeButton.textContent =
+            "Submitting...";
+
+        completeButton.classList.add(
+            "button-disabled"
+        );
+
+        if (storyInput) {
+
+            storyInput.disabled =
+                true;
+
+        }
+
+        try {
+
+            const result =
+                await API.submitCompletion(
+                    submittedAdventure["ID"],
+                    submissionStory
+                );
+
+            completeButton.textContent =
+                "Submitted — Pending Approval";
+
+            completeButton.disabled =
+                true;
+
+            completeButton.classList.add(
+                "button-disabled"
+            );
+
+            const status =
+                document.getElementById(
+                    "drawerStatus"
+                );
+
+            if (status) {
+
+                status.textContent =
+                    "Pending Approval";
+
+            }
+
+            alert(
+                result.message ||
+                "Adventure submitted for administrator approval."
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Unable to submit adventure completion.",
+                error
+            );
+
+            completeButton.disabled =
+                false;
+
+            completeButton.textContent =
+                originalButtonText ||
+                "Submit Adventure for Approval";
+
+            completeButton.classList.remove(
+                "button-disabled"
+            );
+
+            if (storyInput) {
+
+                storyInput.disabled =
+                    false;
+
+                storyInput.focus();
+
+            }
+
+            alert(
+                error?.message ||
+                "Unable to submit the adventure."
+            );
+
+        }
+
+    };
+
+}
+
+},
     //--------------------------------------------------
     // Open Drawer
     //--------------------------------------------------

@@ -6,93 +6,125 @@
 const API = {
 
     //--------------------------------------------------
-    // Submit Adventure Completion
-    //--------------------------------------------------
+// Submit Adventure Completion
+//--------------------------------------------------
 
-    async submitCompletion(adventureId) {
+async submitCompletion(adventureId, story) {
 
-        const cleanAdventureId =
-            String(
-                adventureId || ""
-            ).trim();
+    const cleanAdventureId =
+        String(
+            adventureId || ""
+        ).trim();
 
-        if (!cleanAdventureId) {
+    const cleanStory =
+        String(
+            story || ""
+        ).trim();
 
-            throw new Error(
-                "A valid Adventure ID is required."
-            );
+    if (!cleanAdventureId) {
 
-        }
+        throw new Error(
+            "A valid Adventure ID is required."
+        );
 
-        if (
-            typeof AuthService === "undefined" ||
-            !AuthService.isSignedIn()
-        ) {
+    }
 
-            throw new Error(
-                "Member sign-in is required before submitting an adventure."
-            );
+    if (!cleanStory) {
 
-        }
+        throw new Error(
+            "Please tell the story of how you completed this adventure."
+        );
 
-        const idToken =
-            await AuthService.getIdToken(
-                true
-            );
+    }
 
-        const response =
-            await fetch(
-                API_URL,
-                {
-                    method:
-                        "POST",
+    if (cleanStory.length < 25) {
 
-                    headers: {
+        throw new Error(
+            "Please provide a little more detail about how you completed the adventure."
+        );
 
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
+    }
 
-                    },
+    if (cleanStory.length > 2500) {
 
-                    body:
-                        JSON.stringify({
+        throw new Error(
+            "Adventure stories cannot exceed 2,500 characters."
+        );
 
-                            action:
-                                "submitCompletion",
+    }
 
-                            idToken,
+    if (
+        typeof AuthService === "undefined" ||
+        !AuthService.isSignedIn()
+    ) {
 
-                            adventureId:
-                                cleanAdventureId
+        throw new Error(
+            "Member sign-in is required before submitting an adventure."
+        );
 
-                        })
-                }
-            );
+    }
 
-        if (!response.ok) {
+    const idToken =
+        await AuthService.getIdToken(
+            true
+        );
 
-            throw new Error(
-                "The completion service could not be reached."
-            );
+    const response =
+        await fetch(
+            API_URL,
+            {
+                method:
+                    "POST",
 
-        }
+                headers: {
 
-        const result =
-            await response.json();
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
 
-        if (!result.success) {
+                },
 
-            throw new Error(
-                result.error ||
-                result.message ||
-                "The adventure could not be submitted."
-            );
+                body:
+                    JSON.stringify({
 
-        }
+                        action:
+                            "submitCompletion",
 
-        return result;
+                        idToken,
 
-    },
+                        adventureId:
+                            cleanAdventureId,
+
+                        story:
+                            cleanStory
+
+                    })
+            }
+        );
+
+    if (!response.ok) {
+
+        throw new Error(
+            "The completion service could not be reached."
+        );
+
+    }
+
+    const result =
+        await response.json();
+
+    if (!result.success) {
+
+        throw new Error(
+            result.error ||
+            result.message ||
+            "The adventure could not be submitted."
+        );
+
+    }
+
+    return result;
+
+},
 
     //--------------------------------------------------
     // Load Current Authorized Member

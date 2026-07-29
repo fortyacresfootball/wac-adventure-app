@@ -7663,3 +7663,231 @@ EVENTS LIST / CALENDAR VIEW
     display:none;
 
 }
+/*======================================
+ADVENTURE COMPLETION STORY
+======================================*/
+
+.drawer-submission-section{
+
+    margin-top:34px;
+
+    padding:24px;
+
+    border-left:6px solid var(--gold);
+
+    border-radius:18px;
+
+    background:linear-gradient(
+        145deg,
+        #fffdf4,
+        #f8f3df
+    );
+
+    box-shadow:0 10px 26px rgba(23,61,36,.08);
+
+}
+
+.drawer-submission-heading{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+    margin-bottom:20px;
+
+}
+
+.drawer-submission-heading h3{
+
+    margin:4px 0 6px;
+
+    color:var(--forest-deep);
+
+    font-size:1.35rem;
+
+}
+
+.drawer-submission-heading p{
+
+    margin:0;
+
+    color:#666;
+
+    line-height:1.55;
+
+}
+
+.drawer-submission-required{
+
+    flex-shrink:0;
+
+    padding:6px 10px;
+
+    border-radius:999px;
+
+    background:var(--forest);
+
+    color:#fff;
+
+    font-size:.76rem;
+
+    font-weight:900;
+
+    letter-spacing:.5px;
+
+    text-transform:uppercase;
+
+}
+
+.drawer-story-label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    color:var(--forest-deep);
+
+    font-weight:900;
+
+}
+
+.drawer-story-input{
+
+    width:100%;
+
+    min-height:170px;
+
+    padding:15px;
+
+    border:1px solid rgba(23,61,36,.18);
+
+    border-radius:14px;
+
+    background:#fff;
+
+    color:var(--ink);
+
+    line-height:1.55;
+
+    resize:vertical;
+
+    outline:none;
+
+}
+
+.drawer-story-input:focus{
+
+    border-color:var(--gold);
+
+    box-shadow:0 0 0 3px rgba(212,170,34,.14);
+
+}
+
+.drawer-story-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:16px;
+
+    margin-top:9px;
+
+    color:#6b6b63;
+
+    font-size:.82rem;
+
+}
+
+.drawer-story-footer span:last-child{
+
+    flex-shrink:0;
+
+    font-weight:800;
+
+}
+
+@media(max-width:500px){
+
+    .drawer-submission-section{
+
+        padding:18px;
+
+    }
+
+    .drawer-submission-heading{
+
+        flex-direction:column;
+
+    }
+
+    .drawer-story-footer{
+
+        flex-direction:column;
+
+        gap:4px;
+
+    }
+
+}
+/*======================================
+ADMIN SUBMISSION REVIEW
+======================================*/
+
+.admin-review-section{
+
+    margin-top:18px;
+
+    padding:18px;
+
+    border-radius:14px;
+
+    background:#f7f4e8;
+
+    border:1px solid rgba(23,61,36,.12);
+
+}
+
+.admin-review-label{
+
+    margin-bottom:8px;
+
+    color:var(--forest-deep);
+
+    font-size:.78rem;
+
+    font-weight:900;
+
+    letter-spacing:.7px;
+
+    text-transform:uppercase;
+
+}
+
+.admin-review-text{
+
+    margin:0;
+
+    color:var(--ink);
+
+    line-height:1.6;
+
+    white-space:pre-wrap;
+
+}
+
+.admin-submission-story{
+
+    border-left:5px solid var(--gold);
+
+}
+
+.admin-submission-actions{
+
+    margin-top:18px;
+
+}

@@ -265,192 +265,248 @@
     //--------------------------------------------------
 
     function createSubmissionCard(
-        submission
-    ) {
+    submission
+) {
 
-        const card =
-            document.createElement(
-                "article"
-            );
+    const card =
+        document.createElement(
+            "article"
+        );
 
-        card.className =
-            "profile-recent-card admin-submission-card";
+    card.className =
+        "profile-recent-card admin-submission-card";
 
-        const badge =
-            document.createElement(
-                "div"
-            );
+    //--------------------------------------------------
+    // Badge
+    //--------------------------------------------------
 
-        badge.className =
-            "profile-badge-image";
+    const badge =
+        document.createElement(
+            "div"
+        );
 
-        const image =
-            document.createElement(
-                "img"
-            );
+    badge.className =
+        "profile-badge-image";
 
-        image.loading =
-            "lazy";
+    const image =
+        document.createElement(
+            "img"
+        );
 
-        image.alt =
-            `${submission.adventureTitle || submission.adventureId} badge`;
+    image.loading =
+        "lazy";
+
+    image.alt =
+        `${submission.adventureTitle || submission.adventureId} badge`;
+
+    image.src =
+        `assets/badges/${submission.adventureId}.webp`;
+
+    image.onerror = () => {
+
+        image.onerror =
+            null;
 
         image.src =
-            `assets/badges/${submission.adventureId}.webp`;
+            `assets/badges/${submission.adventureId}.png`;
 
-        image.onerror = () => {
+    };
 
-            image.onerror =
-                null;
+    badge.appendChild(
+        image
+    );
 
-            image.src =
-                `assets/badges/${submission.adventureId}.png`;
+    //--------------------------------------------------
+    // Main Content
+    //--------------------------------------------------
 
-        };
-
-        badge.appendChild(
-            image
+    const content =
+        document.createElement(
+            "div"
         );
 
-        const content =
-            document.createElement(
-                "div"
+    content.className =
+        "profile-recent-content";
+
+    const category =
+        document.createElement(
+            "div"
+        );
+
+    category.className =
+        "profile-recent-category";
+
+    category.textContent =
+        submission.category ||
+        "WAC Adventure";
+
+    const title =
+        document.createElement(
+            "h3"
+        );
+
+    title.textContent =
+        submission.adventureTitle ||
+        submission.adventureId;
+
+    const meta =
+        document.createElement(
+            "div"
+        );
+
+    meta.className =
+        "profile-recent-meta";
+
+    meta.textContent =
+        buildSubmissionMeta(
+            submission
+        );
+
+    //--------------------------------------------------
+    // Member Submission Story
+    //--------------------------------------------------
+
+    const storySection =
+        document.createElement(
+            "section"
+        );
+
+    storySection.className =
+        "admin-review-section admin-submission-story";
+
+    const storyLabel =
+        document.createElement(
+            "div"
+        );
+
+    storyLabel.className =
+        "admin-review-label";
+
+    storyLabel.textContent =
+        "Member Submission Story";
+
+    const storyText =
+        document.createElement(
+            "p"
+        );
+
+    storyText.className =
+        "admin-review-text";
+
+    storyText.textContent =
+        String(
+            submission.submissionStory ||
+            ""
+        ).trim() ||
+        "No submission story was provided.";
+
+    storySection.append(
+        storyLabel,
+        storyText
+    );
+
+    //--------------------------------------------------
+    // Administrator Actions
+    //--------------------------------------------------
+
+    const actions =
+        document.createElement(
+            "div"
+        );
+
+    actions.className =
+        "admin-submission-actions";
+
+    const approveButton =
+        document.createElement(
+            "button"
+        );
+
+    approveButton.type =
+        "button";
+
+    approveButton.className =
+        "small-button";
+
+    approveButton.textContent =
+        "Approve";
+
+    const rejectButton =
+        document.createElement(
+            "button"
+        );
+
+    rejectButton.type =
+        "button";
+
+    rejectButton.className =
+        "small-button admin-reject-button";
+
+    rejectButton.textContent =
+        "Reject";
+
+    approveButton.addEventListener(
+        "click",
+        async () => {
+
+            await processDecision(
+                submission,
+                "completed",
+                approveButton,
+                rejectButton
             );
 
-        content.className =
-            "profile-recent-content";
+        }
+    );
 
-        const category =
-            document.createElement(
-                "div"
-            );
+    rejectButton.addEventListener(
+        "click",
+        async () => {
 
-        category.className =
-            "profile-recent-category";
-
-        category.textContent =
-            submission.category ||
-            "WAC Adventure";
-
-        const title =
-            document.createElement(
-                "h3"
-            );
-
-        title.textContent =
-            submission.adventureTitle ||
-            submission.adventureId;
-
-        const meta =
-            document.createElement(
-                "div"
-            );
-
-        meta.className =
-            "profile-recent-meta";
-
-        meta.textContent =
-            buildSubmissionMeta(
-                submission
-            );
-
-        const actions =
-            document.createElement(
-                "div"
-            );
-
-        actions.className =
-            "admin-submission-actions";
-
-        const approveButton =
-            document.createElement(
-                "button"
-            );
-
-        approveButton.type =
-            "button";
-
-        approveButton.className =
-            "small-button";
-
-        approveButton.textContent =
-            "Approve";
-
-        const rejectButton =
-            document.createElement(
-                "button"
-            );
-
-        rejectButton.type =
-            "button";
-
-        rejectButton.className =
-            "small-button admin-reject-button";
-
-        rejectButton.textContent =
-            "Reject";
-
-        approveButton.addEventListener(
-            "click",
-            async () => {
-
-                await processDecision(
-                    submission,
-                    "completed",
-                    approveButton,
-                    rejectButton
+            const note =
+                window.prompt(
+                    "Optional rejection note:",
+                    ""
                 );
 
-            }
-        );
+            if (note === null) {
 
-        rejectButton.addEventListener(
-            "click",
-            async () => {
-
-                const note =
-                    window.prompt(
-                        "Optional rejection note:",
-                        ""
-                    );
-
-                if (note === null) {
-
-                    return;
-
-                }
-
-                await processDecision(
-                    submission,
-                    "rejected",
-                    approveButton,
-                    rejectButton,
-                    note
-                );
+                return;
 
             }
-        );
 
-        actions.append(
-            approveButton,
-            rejectButton
-        );
+            await processDecision(
+                submission,
+                "rejected",
+                approveButton,
+                rejectButton,
+                note
+            );
 
-        content.append(
-            category,
-            title,
-            meta,
-            actions
-        );
+        }
+    );
 
-        card.append(
-            badge,
-            content
-        );
+    actions.append(
+        approveButton,
+        rejectButton
+    );
 
-        return card;
+    content.append(
+        category,
+        title,
+        meta,
+        storySection,
+        actions
+    );
 
-    }
+    card.append(
+        badge,
+        content
+    );
+
+    return card;
+
+}
 
     //--------------------------------------------------
     // Submission Metadata
