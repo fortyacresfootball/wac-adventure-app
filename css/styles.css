@@ -83,14 +83,14 @@ button {
     background:
         linear-gradient(
             180deg,
-            rgba(5, 15, 9, 0.62),
-            rgba(8, 24, 14, 0.28) 44%,
+            rgba(5, 15, 9, 0.55),
+            rgba(8, 24, 14, 0.22) 44%,
             rgba(8, 24, 14, 0.72)
         ),
-        url("../assets/images/hero.jpg");
+        url("../assets/images/wac-hero-logo.png");
 
     background-size: cover;
-    background-position: center;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 
@@ -8764,6 +8764,104 @@ PUBLIC GALLERY THUMBNAIL GRID
 
     .gallery-card-image{
         height:220px;
+    }
+
+}
+
+/* ==========================================================
+   HERO BRAND LOCKUP
+   ========================================================== */
+
+.hero{
+    position:relative;
+}
+
+.hero-content{
+    position:static;
+}
+
+.hero-brand-lockup{
+    position:absolute;
+    left:50%;
+    bottom:18px;
+    z-index:5;
+    transform:translateX(-50%);
+    width:min(90%,700px);
+    color:var(--gold);
+    text-align:center;
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.9);
+    pointer-events:none;
+}
+
+.hero-brand-lockup h1{
+    margin:0;
+    color:var(--gold);
+    font-size:clamp(1rem,1.7vw,1.45rem);
+    font-weight:800;
+    letter-spacing:.04em;
+    line-height:1.15;
+    text-transform:none;
+}
+
+.hero-brand-year{
+    margin-top:5px;
+    color:var(--gold);
+    font-size:clamp(.65rem,.9vw,.8rem);
+    font-weight:800;
+    letter-spacing:.22em;
+}
+
+@media(max-width:700px){
+
+    .hero-brand-lockup{
+        bottom:16px;
+        width:90%;
+    }
+
+    .hero-brand-lockup h1{
+        font-size:1rem;
+    }
+
+    .hero-brand-year{
+        font-size:.68rem;
+    }
+
+}
+
+/* ==========================================================
+   HERO BUTTON POSITION
+   ========================================================== */
+
+.hero-content{
+    position:absolute;
+    left:50%;
+    bottom:190px;
+    z-index:6;
+    transform:translateX(-50%);
+    width:min(90%,700px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    text-align:center;
+}
+
+.hero-content .cta-button,
+.hero-content .hero-button,
+.hero-content .small-button{
+    margin:0;
+}
+
+.hero-content .scroll-indicator{
+    margin-top:14px;
+}
+
+@media(max-width:700px){
+
+    .hero-content{
+        bottom:170px;
+        width:90%;
     }
 
 }
