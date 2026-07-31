@@ -1,6 +1,6 @@
 // ==========================================
 // WAC Database Service
-// Version 3.3
+// Version 3.4
 // ==========================================
 
 const API_URL =
@@ -118,6 +118,18 @@ const Database = {
 
         return await this.load(
             "Logs"
+        );
+
+    },
+
+    //--------------------------------------------------
+    // Achievement Catalog
+    //--------------------------------------------------
+
+    async getAchievementCatalog() {
+
+        return await this.load(
+            "Achievement Catalog"
         );
 
     },

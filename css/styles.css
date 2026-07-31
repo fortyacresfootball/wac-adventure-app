@@ -5076,14 +5076,18 @@ Category Progress
 }
 
 /*--------------------------------------
-Achievements
+Achievements / Trophy Room
 --------------------------------------*/
 
 .profile-achievement-grid{
 
     display:grid;
 
-    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0,1fr)
+        );
 
     gap:18px;
 
@@ -5091,35 +5095,264 @@ Achievements
 
 .profile-achievement-card{
 
-    padding:20px;
+    position:relative;
+
+    display:flex;
+
+    flex-direction:column;
+
+    min-height:250px;
+
+    padding:22px;
 
     border:1px solid var(--border);
 
-    border-radius:18px;
+    border-radius:20px;
 
-    background:#fafaf7;
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f7f7f2 100%
+        );
+
+    box-shadow:
+        0 10px 28px
+        rgba(18,42,26,.08);
+
+    overflow:hidden;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease,
+        opacity .2s ease;
+
+}
+
+.profile-achievement-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:5px;
+
+    background:
+        var(--gold);
+
+}
+
+.profile-achievement-card.is-earned{
+
+    border-color:
+        rgba(191,151,55,.5);
+
+    background:
+        linear-gradient(
+            180deg,
+            #fffdf5 0%,
+            #f8f3df 100%
+        );
+
+    box-shadow:
+        0 14px 34px
+        rgba(87,64,12,.14);
+
+}
+
+.profile-achievement-card.is-earned:hover{
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        0 18px 38px
+        rgba(87,64,12,.18);
+
+}
+
+.profile-achievement-card.is-locked{
+
+    opacity:.72;
+
+    filter:
+        grayscale(.35);
+
+    background:
+        linear-gradient(
+            180deg,
+            #f5f5f2 0%,
+            #ebebe6 100%
+        );
+
+}
+
+.profile-achievement-card.is-locked::before{
+
+    background:
+        #a9aaa5;
 
 }
 
 .profile-achievement-icon{
 
-    font-size:2.2rem;
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:72px;
+
+    height:72px;
+
+    border-radius:50%;
+
+    background:
+        rgba(191,151,55,.14);
+
+    border:
+        1px solid
+        rgba(191,151,55,.3);
+
+    font-size:2.25rem;
+
+    line-height:1;
+
+}
+
+.profile-achievement-card.is-locked
+.profile-achievement-icon{
+
+    background:
+        rgba(80,80,80,.08);
+
+    border-color:
+        rgba(80,80,80,.18);
+
+}
+
+.profile-achievement-icon img{
+
+    width:56px;
+
+    height:56px;
+
+    object-fit:contain;
 
 }
 
 .profile-achievement-card h3{
 
-    margin-top:10px;
+    margin:14px 0 0;
 
     color:var(--forest-deep);
+
+    font-size:1.08rem;
+
+    line-height:1.25;
 
 }
 
 .profile-achievement-card p{
 
-    margin-top:8px;
+    margin:9px 0 0;
 
     color:var(--muted);
+
+    line-height:1.5;
+
+}
+
+.profile-achievement-meta{
+
+    margin-top:auto;
+
+    padding-top:18px;
+
+    color:var(--muted);
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+    line-height:1.4;
+
+}
+
+.profile-achievement-status{
+
+    margin-top:12px;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    align-self:flex-start;
+
+    min-height:30px;
+
+    padding:6px 11px;
+
+    border-radius:999px;
+
+    background:
+        rgba(19,82,48,.1);
+
+    color:var(--forest-deep);
+
+    font-size:.76rem;
+
+    font-weight:800;
+
+    letter-spacing:.03em;
+
+    text-transform:uppercase;
+
+}
+
+.profile-achievement-card.is-locked
+.profile-achievement-status{
+
+    background:
+        rgba(80,80,80,.1);
+
+    color:#666;
+
+}
+
+@media(max-width:950px){
+
+    .profile-achievement-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+    }
+
+}
+
+@media(max-width:650px){
+
+    .profile-achievement-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .profile-achievement-card{
+
+        min-height:220px;
+
+    }
 
 }
 

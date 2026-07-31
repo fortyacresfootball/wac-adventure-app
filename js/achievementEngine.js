@@ -1,128 +1,94 @@
 // ======================================
 // WAC Achievement Engine
-// Version 1.1
+// Version 2.0
+// Secure Trophy Room Service
 // ======================================
 
 const AchievementEngine = {
 
+    //--------------------------------------------------
+    // Load Signed-In Member Trophy Room
+    //--------------------------------------------------
+
     async getMemberAchievements(memberId) {
 
-        const logs =
-            await Database.getLogs();
+        const requestedMemberId =
+            String(
+                memberId || ""
+            ).trim();
 
-        const adventures =
-            await Database.getAdventures();
+        if (!requestedMemberId) {
 
-        const completed =
-            logs
-                .filter(log =>
-                    log["Member ID"] === memberId &&
-                    log["Status"] === "Completed"
-                )
-                .sort((a,b)=>
-                    new Date(a["Completed DateTime"]) -
-                    new Date(b["Completed DateTime"])
-                );
-
-        const achievements = [];
-
-        //--------------------------------------------------
-        // Helper
-        //--------------------------------------------------
-
-        function award(id,title,description,icon,date){
-
-            achievements.push({
-
-                id,
-                title,
-                description,
-                icon,
-                earned:date
-
-            });
+            throw new Error(
+                "A valid Member ID is required."
+            );
 
         }
 
+        if (
+            typeof AuthService === "undefined" ||
+            !AuthService.isSignedIn()
+        ) {
+
+            return null;
+
+        }
+
+        const currentMember =
+            AuthService.getCurrentMember();
+
+        const currentMemberId =
+            String(
+                currentMember?.["Member ID"] || ""
+            ).trim();
+
         //--------------------------------------------------
-        // Adventure Count
+        // Achievement records are private to each member.
         //--------------------------------------------------
 
-        if (completed.length >= 1)
+        if (
+            !currentMemberId ||
+            currentMemberId !== requestedMemberId
+        ) {
 
-            award(
-                "FIRST",
-                "First Adventure",
-                "Completed your first WAC adventure.",
-                "⭐",
-                completed[0]["Completed DateTime"]
+            return null;
+
+        }
+
+        if (
+            typeof API === "undefined" ||
+            typeof API.getMemberAchievements !== "function"
+        ) {
+
+            throw new Error(
+                "The achievement service is unavailable."
             );
 
-        if (completed.length >= 5)
+        }
 
-            award(
-                "FIVE",
-                "Getting Started",
-                "Completed five adventures.",
-                "🏕️",
-                completed[4]["Completed DateTime"]
-            );
+        const result =
+            await API.getMemberAchievements();
 
-        if (completed.length >= 10)
+        return {
 
-            award(
-                "TEN",
-                "Seasoned Explorer",
-                "Completed ten adventures.",
-                "🥾",
-                completed[9]["Completed DateTime"]
-            );
+            summary:
+                result?.summary || {
 
-        //--------------------------------------------------
-        // Categories
-        //--------------------------------------------------
+                    earned: 0,
+                    available: 0,
+                    locked: 0,
+                    achievementPoints: 0
 
-        const totals = {};
+                },
 
-        completed.forEach(log=>{
+            achievements:
+                Array.isArray(
+                    result?.achievements
+                )
+                    ? result.achievements
+                    : []
 
-            const adventure =
-                adventures.find(a=>
-
-                    a["ID"]===log["Badge ID"]
-
-                );
-
-            if(!adventure) return;
-
-            totals[adventure.Category] =
-                (totals[adventure.Category]||0)+1;
-
-        });
-
-        Object.entries(totals).forEach(([category,count])=>{
-
-            if(count>=5){
-
-                award(
-
-                    category,
-
-                    `${category} Specialist`,
-
-                    `Completed ${count} adventures in ${category}.`,
-
-                    "🏆",
-
-                    ""
-
-                );
-
-            }
-
-        });
-
-        return achievements;
+        };
 
     }
 

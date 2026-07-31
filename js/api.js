@@ -448,6 +448,79 @@ async galleryAdminDecision(
 
 },
 
+//--------------------------------------------------
+// Load Current Member Achievements
+//--------------------------------------------------
+
+async getMemberAchievements() {
+
+    if (
+        typeof AuthService === "undefined" ||
+        !AuthService.isSignedIn()
+    ) {
+
+        throw new Error(
+            "Member sign-in is required."
+        );
+
+    }
+
+    const idToken =
+        await AuthService.getIdToken(
+            true
+        );
+
+    const response =
+        await fetch(
+            API_URL,
+            {
+                method:
+                    "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+
+                },
+
+                body:
+                    JSON.stringify({
+
+                        action:
+                            "getMemberAchievements",
+
+                        idToken
+
+                    })
+            }
+        );
+
+    if (!response.ok) {
+
+        throw new Error(
+            "The achievement service could not be reached."
+        );
+
+    }
+
+    const result =
+        await response.json();
+
+    if (!result.success) {
+
+        throw new Error(
+            result.error ||
+            result.message ||
+            "The achievement records could not be loaded."
+        );
+
+    }
+
+    return result;
+
+},
+
     //--------------------------------------------------
     // Load Current Authorized Member
     //--------------------------------------------------

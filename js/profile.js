@@ -143,8 +143,13 @@ await renderProfileWaiverStatus(
 );
 
 //--------------------------------------------------
-// Load Optional Achievements After Core Page
+// Load Member Trophy Room
 //--------------------------------------------------
+
+await loadProfileAchievements(
+    memberId
+);
+
     }
 
     catch (error) {
@@ -1503,104 +1508,305 @@ documentLink.dataset.page =
 // Optional Achievements
 //--------------------------------------------------
 
+//--------------------------------------------------
+// Member Trophy Room
+//--------------------------------------------------
+
 async function loadProfileAchievements(
     memberId
 ) {
 
+    const section =
+        document.getElementById(
+            "achievementSection"
+        );
+
+    const container =
+        document.getElementById(
+            "achievementList"
+        );
+
+    const count =
+        document.getElementById(
+            "achievementCount"
+        );
+
     if (
-        typeof AchievementEngine ===
-        "undefined"
+        !section ||
+        !container
     ) {
 
         return;
 
     }
 
+    if (
+        typeof AchievementEngine ===
+            "undefined"
+    ) {
+
+        section.hidden = true;
+        return;
+
+    }
+
     try {
 
-        const achievements =
+        const trophyRoom =
             await AchievementEngine
                 .getMemberAchievements(
                     memberId
                 );
 
+        //--------------------------------------------------
+        // Trophy Room is private to signed-in member.
+        //--------------------------------------------------
+
+        if (!trophyRoom) {
+
+            section.hidden = true;
+            return;
+
+        }
+
+        const achievements =
+            Array.isArray(
+                trophyRoom.achievements
+            )
+                ? trophyRoom.achievements
+                : [];
+
+        const summary =
+            trophyRoom.summary || {};
+
+        container.innerHTML = "";
+
+        //--------------------------------------------------
+        // Empty Catalog
+        //--------------------------------------------------
+
         if (
-            !Array.isArray(achievements) ||
             achievements.length === 0
         ) {
 
+            container.innerHTML = `
+
+                <div class="profile-empty-state">
+
+                    <div class="profile-empty-icon">
+                        🏆
+                    </div>
+
+                    <h3>
+                        Trophy Room Coming Soon
+                    </h3>
+
+                    <p>
+                        WAC achievements will appear here as they are earned.
+                    </p>
+
+                </div>
+
+            `;
+
+            if (count) {
+
+                count.textContent =
+                    "0 Awards";
+
+            }
+
+            section.hidden = false;
             return;
 
         }
 
-        const section =
-            document.getElementById(
-                "achievementSection"
-            );
-
-        const container =
-            document.getElementById(
-                "achievementList"
-            );
-
-        const count =
-            document.getElementById(
-                "achievementCount"
-            );
-
-        if (
-            !section ||
-            !container
-        ) {
-
-            return;
-
-        }
-
-        container.innerHTML = "";
+        //--------------------------------------------------
+        // Render Achievement Cards
+        //--------------------------------------------------
 
         achievements.forEach(
             (achievement) => {
 
                 const card =
-                    document.createElement("article");
+                    document.createElement(
+                        "article"
+                    );
 
                 card.className =
-                    "profile-achievement-card";
+                    achievement.earned
+                        ? "profile-achievement-card is-earned"
+                        : "profile-achievement-card is-locked";
+
+                //--------------------------------------------------
+                // Trophy Icon
+                //--------------------------------------------------
 
                 const icon =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
                 icon.className =
                     "profile-achievement-icon";
 
-                icon.textContent =
-                    achievement.Icon ||
-                    achievement["Icon"] ||
-                    "🏆";
+                const badgeImage =
+                    String(
+                        achievement.badgeImage || ""
+                    ).trim();
+
+                if (badgeImage) {
+
+                    const image =
+                        document.createElement(
+                            "img"
+                        );
+
+                    image.src =
+                        badgeImage;
+
+                    image.alt =
+                        `${achievement.title || "WAC Achievement"} trophy`;
+
+                    image.loading =
+                        "lazy";
+
+                    image.onerror = () => {
+
+                        icon.innerHTML =
+                            achievement.earned
+                                ? "🏆"
+                                : "🔒";
+
+                    };
+
+                    icon.appendChild(
+                        image
+                    );
+
+                } else {
+
+                    icon.textContent =
+                        achievement.earned
+                            ? "🏆"
+                            : "🔒";
+
+                }
+
+                //--------------------------------------------------
+                // Achievement Title
+                //--------------------------------------------------
 
                 const title =
-                    document.createElement("h3");
+                    document.createElement(
+                        "h3"
+                    );
 
                 title.textContent =
-                    achievement.Title ||
-                    achievement["Title"] ||
-                    achievement.Name ||
-                    achievement["Name"] ||
+                    achievement.title ||
                     "WAC Achievement";
 
+                //--------------------------------------------------
+                // Description
+                //--------------------------------------------------
+
                 const description =
-                    document.createElement("p");
+                    document.createElement(
+                        "p"
+                    );
 
                 description.textContent =
-                    achievement.Description ||
-                    achievement["Description"] ||
-                    "Achievement unlocked.";
+                    achievement.description ||
+                    "Complete the required WAC milestone.";
+
+                //--------------------------------------------------
+                // Achievement Details
+                //--------------------------------------------------
+
+                const details =
+                    document.createElement(
+                        "div"
+                    );
+
+                details.className =
+                    "profile-achievement-meta";
+
+                const pointValue =
+                    Number(
+                        achievement.points || 0
+                    ) || 0;
+
+                const detailParts = [
+
+                    `${pointValue} Points`
+
+                ];
+
+                if (
+                    achievement.earned &&
+                    achievement.dateEarned
+                ) {
+
+                    const earnedDate =
+                        parseProfileDate(
+                            achievement.dateEarned
+                        );
+
+                    if (earnedDate) {
+
+                        detailParts.push(
+
+                            `Earned ${earnedDate.toLocaleDateString(
+                                "en-US",
+                                {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric"
+                                }
+                            )}`
+
+                        );
+
+                    }
+
+                } else if (
+                    !achievement.earned
+                ) {
+
+                    detailParts.push(
+                        "Locked"
+                    );
+
+                }
+
+                details.textContent =
+                    detailParts.join(
+                        " • "
+                    );
+
+                //--------------------------------------------------
+                // Award Status
+                //--------------------------------------------------
+
+                const status =
+                    document.createElement(
+                        "div"
+                    );
+
+                status.className =
+                    "profile-achievement-status";
+
+                status.textContent =
+                    achievement.earned
+                        ? "Award Earned"
+                        : "Not Yet Earned";
 
                 card.append(
                     icon,
                     title,
-                    description
+                    description,
+                    details,
+                    status
                 );
 
                 container.appendChild(
@@ -1610,12 +1816,25 @@ async function loadProfileAchievements(
             }
         );
 
+        //--------------------------------------------------
+        // Trophy Room Summary
+        //--------------------------------------------------
+
         if (count) {
 
+            const earnedCount =
+                Number(
+                    summary.earned || 0
+                ) || 0;
+
+            const availableCount =
+                Number(
+                    summary.available ||
+                    achievements.length
+                ) || achievements.length;
+
             count.textContent =
-                achievements.length === 1
-                    ? "1 Achievement"
-                    : `${achievements.length} Achievements`;
+                `${earnedCount} of ${availableCount} Awards`;
 
         }
 
@@ -1629,6 +1848,8 @@ async function loadProfileAchievements(
             "Unable to load profile achievements.",
             error
         );
+
+        section.hidden = true;
 
     }
 
