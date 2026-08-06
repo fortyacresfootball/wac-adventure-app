@@ -1,0 +1,638 @@
+<!-- ====================================== -->
+<!-- WAC Cabin Opening Checklist -->
+<!-- ====================================== -->
+
+<section class="page-section cabin-checklist-page">
+
+    <div class="container">
+
+        <!-- ====================================== -->
+        <!-- Page Header -->
+        <!-- ====================================== -->
+
+        <div class="cabin-checklist-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    WAC Property Operations
+                </div>
+
+                <h1>
+                    Opening the WAC
+                </h1>
+
+                <p>
+                    Complete each step in order to prevent property damage
+                    and make sure the cabin is ready for use.
+                </p>
+
+            </div>
+
+            <button
+                id="exitCabinChecklist"
+                type="button"
+                class="small-button secondary-button"
+            >
+                Exit Checklist
+            </button>
+
+        </div>
+
+        <!-- ====================================== -->
+        <!-- Progress -->
+        <!-- ====================================== -->
+
+        <div class="cabin-progress-panel">
+
+            <div class="cabin-progress-heading">
+
+                <span id="cabinStepCounter">
+                    Step 1 of 8
+                </span>
+
+                <span id="cabinProgressPercent">
+                    0% Complete
+                </span>
+
+            </div>
+
+            <div
+                class="cabin-progress-track"
+                aria-hidden="true"
+            >
+
+                <div
+                    id="cabinProgressFill"
+                    class="cabin-progress-fill"
+                ></div>
+
+            </div>
+
+        </div>
+
+        <!-- ====================================== -->
+        <!-- Checklist Step -->
+        <!-- ====================================== -->
+
+        <article
+            id="cabinStepCard"
+            class="cabin-step-card"
+        >
+
+            <div class="cabin-step-label">
+                Current Step
+            </div>
+
+            <h2 id="cabinStepTitle">
+                Locate the Cabin Keys
+            </h2>
+
+            <div
+                id="cabinStepInstructions"
+                class="cabin-step-instructions"
+            ></div>
+
+            <div
+                id="cabinStepNotice"
+                class="cabin-step-notice"
+                hidden
+            ></div>
+
+            <label class="cabin-complete-control">
+
+                <input
+                    id="cabinStepComplete"
+                    type="checkbox"
+                >
+
+                <span>
+                    I completed this step
+                </span>
+
+            </label>
+
+        </article>
+
+        <!-- ====================================== -->
+        <!-- Navigation -->
+        <!-- ====================================== -->
+
+        <div class="cabin-navigation">
+
+            <button
+                id="previousCabinStep"
+                type="button"
+                class="small-button secondary-button"
+            >
+                Back
+            </button>
+
+            <button
+                id="nextCabinStep"
+                type="button"
+                class="small-button"
+            >
+                Next Step
+            </button>
+
+        </div>
+
+        <!-- ====================================== -->
+        <!-- Final Review -->
+        <!-- ====================================== -->
+
+        <section
+            id="cabinReviewSection"
+            class="cabin-review-section"
+            hidden
+        >
+
+            <div class="eyebrow">
+                Final Review
+            </div>
+
+            <h2>
+                Confirm the WAC Is Ready
+            </h2>
+
+            <p>
+                Review each completed step before finishing the checklist.
+            </p>
+
+            <div
+                id="cabinReviewList"
+                class="cabin-review-list"
+            ></div>
+
+            <div class="cabin-final-warning">
+
+                When something does not look right, stop and contact the
+                President. Do not guess or make up a solution.
+
+            </div>
+
+            <div class="cabin-review-actions">
+
+                <button
+                    id="returnToChecklist"
+                    type="button"
+                    class="small-button secondary-button"
+                >
+                    Return to Checklist
+                </button>
+
+                <button
+                    id="finishCabinChecklist"
+                    type="button"
+                    class="small-button"
+                >
+                    Finish Opening Checklist
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- ====================================== -->
+        <!-- Completion Message -->
+        <!-- ====================================== -->
+
+        <section
+            id="cabinCompletionSection"
+            class="cabin-completion-section"
+            hidden
+        >
+
+            <div class="cabin-completion-icon">
+                ✓
+            </div>
+
+            <div class="eyebrow">
+                Checklist Complete
+            </div>
+
+            <h2>
+                The WAC Is Open
+            </h2>
+
+            <p>
+                The cabin-opening checklist has been completed.
+            </p>
+
+            <p
+                id="cabinCompletionDetails"
+                class="cabin-completion-details"
+            ></p>
+
+            <button
+                id="returnToAdventures"
+                type="button"
+                class="small-button"
+            >
+                Return to Adventures
+            </button>
+
+        </section>
+
+        <!-- ====================================== -->
+        <!-- Closing Instructions -->
+        <!-- ====================================== -->
+
+        <section class="cabin-closing-panel">
+
+            <div class="eyebrow">
+                Before You Leave
+            </div>
+
+            <h2>
+                Closing the WAC
+            </h2>
+
+            <p>
+                Complete the opening steps in reverse order when leaving.
+            </p>
+
+            <ul>
+
+                <li>
+                    Return and secure all recreational equipment.
+                </li>
+
+                <li>
+                    Reattach all chains and locks.
+                </li>
+
+                <li>
+                    Close and lock the garage.
+                </li>
+
+                <li>
+                    Set the heat to 50°F.
+                </li>
+
+                <li>
+                    Turn off the water heater.
+                </li>
+
+                <li>
+                    Turn off the water pump.
+                </li>
+
+                <li>
+                    Turn off the water.
+                </li>
+
+                <li>
+                    During winter, confirm the access-panel light remains on.
+                </li>
+
+                <li>
+                    Secure the cabin and reactivate the alarm.
+                </li>
+
+                <li>
+                    Return the keys to their proper location.
+                </li>
+
+            </ul>
+
+        </section>
+
+    </div>
+
+</section>
+
+<style>
+
+    .cabin-checklist-page {
+        padding: 32px 0 64px;
+        color: #123422;
+    }
+
+    .cabin-checklist-page .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .cabin-checklist-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 28px;
+    }
+
+    .cabin-checklist-header h1 {
+        margin: 4px 0 10px;
+        color: #123422;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+    }
+
+    .cabin-checklist-header p {
+        max-width: 760px;
+        margin: 0;
+        color: #65706a;
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+
+    .cabin-checklist-page .eyebrow,
+    .cabin-step-label {
+        color: #d4a72c;
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .cabin-progress-panel {
+        padding: 20px;
+        margin-bottom: 24px;
+        border: 1px solid #e5dfd1;
+        border-radius: 18px;
+        background: #ffffff;
+        box-shadow: 0 12px 32px rgba(32, 48, 38, 0.08);
+    }
+
+    .cabin-progress-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 12px;
+        color: #123422;
+        font-weight: 700;
+    }
+
+    .cabin-progress-track {
+        width: 100%;
+        height: 12px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #e7e2d7;
+    }
+
+    .cabin-progress-fill {
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: #d4a72c;
+        transition: width 0.25s ease;
+    }
+
+    .cabin-step-card {
+        padding: 30px;
+        border: 1px solid #e5dfd1;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 12px 32px rgba(32, 48, 38, 0.08);
+    }
+
+    .cabin-step-card h2 {
+        margin: 8px 0 20px;
+        color: #123422;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .cabin-step-instructions {
+        color: #3f4d46;
+        font-size: 1.02rem;
+        line-height: 1.7;
+    }
+
+    .cabin-step-instructions p {
+        margin-top: 0;
+    }
+
+    .cabin-step-instructions ol,
+    .cabin-step-instructions ul {
+        padding-left: 24px;
+    }
+
+    .cabin-step-instructions li {
+        margin-bottom: 12px;
+    }
+
+    .cabin-step-notice {
+        padding: 16px;
+        margin-top: 20px;
+        border-left: 4px solid #d4a72c;
+        border-radius: 10px;
+        background: #f7f1df;
+        color: #4d4635;
+        line-height: 1.55;
+    }
+
+    .cabin-complete-control {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 17px;
+        margin-top: 24px;
+        border: 1px solid #e5dfd1;
+        border-radius: 12px;
+        background: #f7f4eb;
+        color: #123422;
+        cursor: pointer;
+        font-weight: 700;
+    }
+
+    .cabin-complete-control:hover {
+        background: #f1ecdf;
+    }
+
+    .cabin-complete-control input {
+        width: 21px;
+        height: 21px;
+        accent-color: #174a2d;
+    }
+
+    .cabin-navigation {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 22px;
+    }
+
+    .cabin-checklist-page .small-button {
+        min-width: 130px;
+        padding: 14px 22px;
+        border: 2px solid #123422;
+        border-radius: 14px;
+        background: #174a2d;
+        color: #ffffff;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+        transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            opacity 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .cabin-checklist-page .small-button:hover:not(:disabled) {
+        background: #123b25;
+        transform: translateY(-1px);
+    }
+
+    .cabin-checklist-page .secondary-button {
+        border-color: #174a2d;
+        background: #ffffff;
+        color: #174a2d;
+    }
+
+    .cabin-checklist-page .secondary-button:hover:not(:disabled) {
+        background: #edf3ee;
+        color: #123422;
+    }
+
+    .cabin-checklist-page .small-button:disabled {
+        border-color: #cbc6ba;
+        background: #e6e1d7;
+        color: #8c887f;
+        cursor: not-allowed;
+        opacity: 1;
+        transform: none;
+    }
+
+    .cabin-review-section,
+    .cabin-completion-section,
+    .cabin-closing-panel {
+        padding: 30px;
+        margin-top: 28px;
+        border: 1px solid #e5dfd1;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 12px 32px rgba(32, 48, 38, 0.08);
+    }
+
+    .cabin-review-section h2,
+    .cabin-completion-section h2,
+    .cabin-closing-panel h2 {
+        color: #123422;
+    }
+
+    .cabin-review-section p,
+    .cabin-completion-section p,
+    .cabin-closing-panel p,
+    .cabin-closing-panel li {
+        color: #4f5d56;
+        line-height: 1.6;
+    }
+
+    .cabin-review-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    .cabin-review-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid #e5dfd1;
+        border-radius: 10px;
+        background: #f8f5ed;
+        color: #123422;
+    }
+
+    .cabin-review-item.complete {
+        border-left: 5px solid #3f8a59;
+    }
+
+    .cabin-review-item.incomplete {
+        border-left: 5px solid #bb4c45;
+    }
+
+    .cabin-review-status {
+        min-width: 28px;
+        font-weight: 900;
+    }
+
+    .cabin-final-warning {
+        padding: 16px;
+        margin-top: 22px;
+        border-left: 4px solid #bb4c45;
+        border-radius: 10px;
+        background: #f8e9e7;
+        color: #5c2e2a;
+        line-height: 1.55;
+    }
+
+    .cabin-review-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .cabin-completion-section {
+        text-align: center;
+    }
+
+    .cabin-completion-icon {
+        display: grid;
+        place-items: center;
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        background: #3f8a59;
+        color: #ffffff;
+        font-size: 2rem;
+        font-weight: 900;
+    }
+
+    .cabin-completion-details {
+        margin: 18px 0;
+        color: #65706a;
+    }
+
+    .cabin-closing-panel ul {
+        padding-left: 22px;
+    }
+
+    .cabin-closing-panel li {
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 700px) {
+
+        .cabin-checklist-page {
+            padding-top: 20px;
+        }
+
+        .cabin-checklist-page .container {
+            padding: 0 16px;
+        }
+
+        .cabin-checklist-header,
+        .cabin-navigation,
+        .cabin-review-actions {
+            flex-direction: column;
+        }
+
+        .cabin-checklist-header button,
+        .cabin-navigation button,
+        .cabin-review-actions button {
+            width: 100%;
+        }
+
+        .cabin-progress-heading {
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cabin-step-card,
+        .cabin-review-section,
+        .cabin-completion-section,
+        .cabin-closing-panel {
+            padding: 21px;
+        }
+
+    }
+
+</style>
