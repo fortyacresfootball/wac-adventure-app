@@ -9098,3 +9098,83 @@ PUBLIC GALLERY THUMBNAIL GRID
     }
 
 }
+/* ====================================== */
+/* Persistent Bottom Navigation */
+/* ====================================== */
+
+.global-page-navigation {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.global-navigation-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 52px;
+    padding: 13px 20px;
+
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+
+    background: #174a2d;
+    color: #ffffff;
+
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1;
+
+    box-shadow:
+        0 8px 22px rgba(18, 52, 34, 0.24);
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.global-navigation-button:hover {
+    background: #103b23;
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 26px rgba(18, 52, 34, 0.3);
+}
+
+.global-navigation-button:focus-visible {
+    outline: 3px solid #d4a72c;
+    outline-offset: 3px;
+}
+
+.global-navigation-button[hidden] {
+    display: none;
+}
+
+.global-navigation-icon {
+    font-size: 1.15rem;
+    font-weight: 900;
+}
+
+/* Cabin button uses the primary WAC green */
+
+.global-cabin-button {
+    background: #174a2d;
+}
+
+/* Keep the Home button visually distinct */
+
+.global-home-button {
+    background: #123b25;
+}
+

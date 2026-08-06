@@ -219,3 +219,20 @@ const WACRouter = {
 }
 
 };
+
+//--------------------------------------------------
+// Persistent Cabin Checklist Button
+//--------------------------------------------------
+
+const cabinButton =
+    document.getElementById(
+        "globalCabinButton"
+    );
+
+if (cabinButton) {
+
+    cabinButton.hidden =
+        this.currentPage ===
+        "cabin-opening";
+
+}
