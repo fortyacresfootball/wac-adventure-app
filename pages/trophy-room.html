@@ -1,0 +1,461 @@
+<section class="trophy-room-page">
+
+    <style>
+        .trophy-room-page {
+            --wac-green: #173f2a;
+            --wac-green-light: #245b3e;
+            --wac-gold: #c99a3d;
+            --wac-cream: #f6f1e5;
+            --wac-paper: #fffdf7;
+            --wac-text: #2b2b2b;
+            --wac-muted: #6d6d66;
+
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+            color: var(--wac-text);
+        }
+
+        /* ========================================
+           HEADER
+        ======================================== */
+
+        .trophy-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            padding: 42px 30px;
+            margin-bottom: 26px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(18, 55, 36, 0.98),
+                    rgba(35, 85, 57, 0.94)
+                );
+
+            color: white;
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.17);
+        }
+
+        .trophy-hero::after {
+            content: "🏆";
+            position: absolute;
+            right: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 110px;
+            opacity: 0.11;
+        }
+
+        .trophy-eyebrow {
+            display: inline-block;
+            margin-bottom: 8px;
+            color: #f2cf82;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .trophy-hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .trophy-hero p {
+            max-width: 650px;
+            margin: 14px 0 0;
+            font-size: 1.03rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        /* ========================================
+           TOOLBAR
+        ======================================== */
+
+        .trophy-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+
+            background: white;
+            border: 1px solid #e2ddd0;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 24px;
+
+            box-shadow:
+                0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        .trophy-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .trophy-filter {
+            appearance: none;
+            border: 1px solid #d5d0c4;
+            background: #faf8f1;
+            color: var(--wac-green);
+
+            border-radius: 999px;
+            padding: 9px 15px;
+
+            font: inherit;
+            font-size: 0.86rem;
+            font-weight: 700;
+
+            cursor: pointer;
+            transition: 0.18s ease;
+        }
+
+        .trophy-filter:hover {
+            border-color: var(--wac-gold);
+        }
+
+        .trophy-filter.active {
+            color: white;
+            border-color: var(--wac-green);
+            background: var(--wac-green);
+        }
+
+        .trophy-count {
+            color: var(--wac-muted);
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           TROPHY LIST
+        ======================================== */
+
+        .trophy-list {
+            display: grid;
+            gap: 24px;
+        }
+
+        .trophy-card {
+            display: grid;
+            grid-template-columns: minmax(280px, 42%) 1fr;
+
+            overflow: hidden;
+
+            background: var(--wac-paper);
+            border: 1px solid #ded9cc;
+            border-radius: 18px;
+
+            box-shadow:
+                0 7px 22px rgba(0, 0, 0, 0.09);
+        }
+
+        .trophy-photo-wrap {
+            position: relative;
+            min-height: 330px;
+            overflow: hidden;
+            background: #d8d4ca;
+        }
+
+        .trophy-photo {
+            width: 100%;
+            height: 100%;
+            min-height: 330px;
+
+            display: block;
+            object-fit: cover;
+
+            transition: transform 0.35s ease;
+        }
+
+        .trophy-card:hover .trophy-photo {
+            transform: scale(1.025);
+        }
+
+        .trophy-category-badge {
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+
+            padding: 7px 12px;
+
+            background: rgba(20, 59, 39, 0.94);
+            color: white;
+
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* ========================================
+           STORY SIDE
+        ======================================== */
+
+        .trophy-story {
+            padding: 27px 30px 28px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trophy-date {
+            color: #926d28;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .trophy-title {
+            margin: 0 0 7px;
+            color: var(--wac-green);
+            font-size: clamp(1.45rem, 3vw, 2rem);
+            line-height: 1.15;
+        }
+
+        .trophy-species {
+            margin-bottom: 16px;
+            color: #54544e;
+            font-weight: 700;
+        }
+
+        .trophy-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+
+            padding: 13px 0;
+            margin-bottom: 16px;
+
+            border-top: 1px solid #e2ddd0;
+            border-bottom: 1px solid #e2ddd0;
+        }
+
+        .trophy-meta-item {
+            font-size: 0.86rem;
+            color: #565650;
+        }
+
+        .trophy-meta-item strong {
+            color: var(--wac-green);
+        }
+
+        .trophy-story-text {
+            margin: 0;
+            color: #393934;
+            font-size: 0.98rem;
+            line-height: 1.72;
+        }
+
+        /* ========================================
+           TROPHY DETAILS
+        ======================================== */
+
+        .trophy-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            margin-top: 20px;
+        }
+
+        .trophy-detail {
+            padding: 7px 10px;
+
+            border-radius: 7px;
+            background: #eee7d8;
+
+            color: #504423;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           ADVENTURE LINK
+        ======================================== */
+
+        .trophy-adventure {
+            margin-top: 18px;
+        }
+
+        .trophy-adventure button {
+            border: 0;
+            border-radius: 8px;
+
+            padding: 9px 13px;
+
+            background: var(--wac-green);
+            color: white;
+
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .trophy-adventure button:hover {
+            background: var(--wac-green-light);
+        }
+
+        /* ========================================
+           EMPTY / ERROR STATE
+        ======================================== */
+
+        .trophy-empty {
+            text-align: center;
+
+            padding: 55px 25px;
+
+            background: white;
+            border: 2px dashed #d6d0c2;
+            border-radius: 16px;
+        }
+
+        .trophy-empty-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .trophy-empty h2 {
+            margin: 0 0 8px;
+            color: var(--wac-green);
+        }
+
+        .trophy-empty p {
+            max-width: 540px;
+            margin: 0 auto;
+            color: var(--wac-muted);
+            line-height: 1.6;
+        }
+
+        /* ========================================
+           MOBILE
+        ======================================== */
+
+        @media (max-width: 750px) {
+
+            .trophy-room-page {
+                padding:
+                    20px 13px
+                    50px;
+            }
+
+            .trophy-hero {
+                padding: 31px 22px;
+            }
+
+            .trophy-hero::after {
+                font-size: 78px;
+                right: 10px;
+            }
+
+            .trophy-card {
+                grid-template-columns: 1fr;
+            }
+
+            .trophy-photo-wrap {
+                min-height: 260px;
+                aspect-ratio: 4 / 3;
+            }
+
+            .trophy-photo {
+                min-height: 260px;
+            }
+
+            .trophy-story {
+                padding: 23px 21px 25px;
+            }
+
+            .trophy-toolbar {
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+
+
+    <!-- ========================================
+         PAGE HEADER
+    ======================================== -->
+
+    <header class="trophy-hero">
+
+        <span class="trophy-eyebrow">
+            Forty Acres Club
+        </span>
+
+        <h1>
+            Trophy Room
+        </h1>
+
+        <p>
+            Hunting successes, memorable catches, and the stories
+            behind the adventures that became part of WAC history.
+        </p>
+
+    </header>
+
+
+    <!-- ========================================
+         FILTERS
+    ======================================== -->
+
+    <div class="trophy-toolbar">
+
+        <div
+            id="trophyFilters"
+            class="trophy-filters"
+        >
+        </div>
+
+        <div
+            id="trophyCount"
+            class="trophy-count"
+        >
+            Loading...
+        </div>
+
+    </div>
+
+
+    <!-- ========================================
+         TROPHY CARDS
+    ======================================== -->
+
+    <div
+        id="trophyList"
+        class="trophy-list"
+    >
+
+        <div class="trophy-empty">
+
+            <div class="trophy-empty-icon">
+                🏆
+            </div>
+
+            <h2>
+                Loading Trophy Room
+            </h2>
+
+            <p>
+                Gathering the hunting and fishing stories...
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
