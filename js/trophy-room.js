@@ -1,4 +1,4 @@
-const TrophyRoom = {
+window.TrophyRoom = {
 
     trophies: [],
     activeCategory: "All",
