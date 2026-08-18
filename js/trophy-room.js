@@ -50,37 +50,55 @@ window.TrophyRoom = {
             await Database.getTrophies();
 
         this.trophies =
-            Array.isArray(data)
-                ? data.filter(
-                    item => {
+    Array.isArray(data)
+        ? data
+            .filter(
+                item => {
 
-                        const activeValue =
-                            String(
-                                item["Active"] ?? ""
-                            )
-                                .trim()
-                                .toLowerCase();
+                    const activeValue =
+                        String(
+                            item["Active"] ?? ""
+                        )
+                            .trim()
+                            .toLowerCase();
 
-                        // Blank Active values remain visible.
-                        if (activeValue === "") {
+                    if (activeValue === "") {
 
-                            return true;
-                        }
+                        return true;
+                    }
 
-                        // These values hide the trophy.
-                        return ![
-                            "false",
-                            "no",
-                            "n",
-                            "0",
-                            "inactive"
-                        ].includes(
-                            activeValue
+                    return ![
+                        "false",
+                        "no",
+                        "n",
+                        "0",
+                        "inactive"
+                    ].includes(
+                        activeValue
+                    );
+
+                }
+            )
+            .sort(
+                (first, second) => {
+
+                    const firstDate =
+                        new Date(
+                            first["Date"] || 0
                         );
 
-                    }
-                )
-                : [];
+                    const secondDate =
+                        new Date(
+                            second["Date"] || 0
+                        );
+
+                    return (
+                        secondDate.getTime() -
+                        firstDate.getTime()
+                    );
+                }
+            )
+        : [];
 
         this.renderFilters();
         this.render();
