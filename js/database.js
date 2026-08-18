@@ -110,6 +110,15 @@ async getTrophies() {
 
 },
 
+async addTrophy(data) {
+
+  return await this.authenticatedPost(
+    "addTrophy",
+    data
+  );
+
+},
+
     //--------------------------------------------------
     // Members
     //--------------------------------------------------

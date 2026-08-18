@@ -2,6 +2,7 @@ window.TrophyRoom = {
 
     trophies: [],
     activeCategory: "All",
+    isAdmin: false,
 
     categoryOrder: [
         "All",
@@ -14,51 +15,18 @@ window.TrophyRoom = {
         "Other"
     ],
 
+
+    /* ==========================================
+       INITIALIZE
+    ========================================== */
+
     async init() {
+
+        await this.setupAdminControls();
 
         try {
 
-            //-------------------------------------------------
-            // Load Trophies from Google Spreadsheet
-            //-------------------------------------------------
-
-            const data =
-                await Database.getTrophies();
-
-            this.trophies =
-                Array.isArray(data)
-                    ? data.filter(
-                        item => {
-
-                            const activeValue =
-                                String(
-                                    item["Active"] ?? ""
-                                )
-                                    .trim()
-                                    .toLowerCase();
-
-                            // Blank Active values remain visible.
-                            if (activeValue === "") {
-                                return true;
-                            }
-
-                            // These values hide the trophy.
-                            return ![
-                                "false",
-                                "no",
-                                "n",
-                                "0",
-                                "inactive"
-                            ].includes(
-                                activeValue
-                            );
-
-                        }
-                    )
-                    : [];
-
-            this.renderFilters();
-            this.render();
+            await this.reloadTrophies();
 
         } catch (error) {
 
@@ -69,6 +37,990 @@ window.TrophyRoom = {
 
             this.showError();
         }
+    },
+
+
+    async reloadTrophies() {
+
+        //-------------------------------------------------
+        // Load Trophies from Google Spreadsheet
+        //-------------------------------------------------
+
+        const data =
+            await Database.getTrophies();
+
+        this.trophies =
+            Array.isArray(data)
+                ? data.filter(
+                    item => {
+
+                        const activeValue =
+                            String(
+                                item["Active"] ?? ""
+                            )
+                                .trim()
+                                .toLowerCase();
+
+                        // Blank Active values remain visible.
+                        if (activeValue === "") {
+
+                            return true;
+                        }
+
+                        // These values hide the trophy.
+                        return ![
+                            "false",
+                            "no",
+                            "n",
+                            "0",
+                            "inactive"
+                        ].includes(
+                            activeValue
+                        );
+
+                    }
+                )
+                : [];
+
+        this.renderFilters();
+        this.render();
+    },
+
+
+/* ==========================================
+   ADMIN TROPHY ENTRY
+========================================== */
+
+async setupAdminControls() {
+
+    const addButton =
+        document.getElementById(
+            "addTrophyButton"
+        );
+
+    if (!addButton) {
+
+        return;
+    }
+
+
+    //-------------------------------------------------
+    // Wait for Authentication to Finish Loading
+    //-------------------------------------------------
+
+    if (
+        window.WAC &&
+        window.WAC.authReady === false
+    ) {
+
+        await new Promise(
+            resolve => {
+
+                window.addEventListener(
+                    "wac-auth-ready",
+                    resolve,
+                    {
+                        once: true
+                    }
+                );
+
+            }
+        );
+    }
+
+
+    //-------------------------------------------------
+    // Use Existing WAC Administrator Check
+    //-------------------------------------------------
+
+    this.isAdmin =
+        Boolean(
+            typeof AuthService !==
+                "undefined" &&
+            typeof AuthService.isAdmin ===
+                "function" &&
+            AuthService.isAdmin()
+        );
+
+
+    //-------------------------------------------------
+    // Only Administrators See Add Trophy
+    //-------------------------------------------------
+
+    addButton.hidden =
+        !this.isAdmin;
+
+
+    if (!this.isAdmin) {
+
+        return;
+    }
+
+
+    //-------------------------------------------------
+    // Activate Administrator Controls
+    //-------------------------------------------------
+
+    this.bindAdminControls();
+},
+
+
+bindAdminControls() {
+
+    const addButton =
+        document.getElementById(
+            "addTrophyButton"
+        );
+
+    const closeButton =
+        document.getElementById(
+            "closeTrophyFormButton"
+        );
+
+    const cancelButton =
+        document.getElementById(
+            "cancelTrophyButton"
+        );
+
+    const form =
+        document.getElementById(
+            "trophyAdminForm"
+        );
+
+
+    if (addButton) {
+
+        addButton.addEventListener(
+            "click",
+            () => {
+
+                this.openAdminPanel();
+            }
+        );
+    }
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            () => {
+
+                this.closeAdminPanel();
+            }
+        );
+    }
+
+
+    if (cancelButton) {
+
+        cancelButton.addEventListener(
+            "click",
+            () => {
+
+                this.closeAdminPanel();
+            }
+        );
+    }
+
+
+    if (form) {
+
+        form.addEventListener(
+            "submit",
+            event => {
+
+                this.submitTrophy(
+                    event
+                );
+            }
+        );
+    }
+},
+
+
+openAdminPanel() {
+
+    if (!this.isAdmin) {
+
+        return;
+    }
+
+
+    const panel =
+        document.getElementById(
+            "trophyAdminPanel"
+        );
+
+
+    if (!panel) {
+
+        return;
+    }
+
+
+    this.setFormStatus(
+        "",
+        ""
+    );
+
+
+    panel.classList.add(
+        "open"
+    );
+
+
+    panel.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    panel.scrollIntoView({
+
+        behavior:
+            "smooth",
+
+        block:
+            "start"
+
+    });
+},
+
+
+closeAdminPanel() {
+
+    const panel =
+        document.getElementById(
+            "trophyAdminPanel"
+        );
+
+
+    if (!panel) {
+
+        return;
+    }
+
+
+    panel.classList.remove(
+        "open"
+    );
+
+
+    panel.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    this.setFormStatus(
+        "",
+        ""
+    );
+},
+
+
+async submitTrophy(
+    event
+) {
+
+    event.preventDefault();
+
+
+    //-------------------------------------------------
+    // Front-End Administrator Check
+    //
+    // Apps Script also independently verifies admin.
+    //-------------------------------------------------
+
+    if (!this.isAdmin) {
+
+        this.setFormStatus(
+            "Administrator access is required.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    //-------------------------------------------------
+    // Confirm Trophy Database Method Exists
+    //-------------------------------------------------
+
+    if (
+        typeof Database === "undefined" ||
+        typeof Database.addTrophy !==
+            "function"
+    ) {
+
+        this.setFormStatus(
+            "The Trophy Room database service is not available.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const form =
+        event.currentTarget;
+
+
+    const saveButton =
+        document.getElementById(
+            "saveTrophyButton"
+        );
+
+
+    const photoInput =
+        document.getElementById(
+            "trophyPhoto"
+        );
+
+
+    const photoFile =
+        photoInput &&
+        photoInput.files
+            ? photoInput.files[0]
+            : null;
+
+
+    //-------------------------------------------------
+    // Trophy Photograph Required
+    //-------------------------------------------------
+
+    if (!photoFile) {
+
+        this.setFormStatus(
+            "Please select a trophy photograph.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    //-------------------------------------------------
+    // Prevent Double Submission
+    //-------------------------------------------------
+
+    if (saveButton) {
+
+        saveButton.disabled =
+            true;
+    }
+
+
+    this.setFormStatus(
+        "Preparing photograph...",
+        ""
+    );
+
+
+    try {
+
+        //-------------------------------------------------
+        // Prepare / Compress Photograph
+        //-------------------------------------------------
+
+        const image =
+            await this.prepareTrophyImage(
+                photoFile
+            );
+
+
+        //-------------------------------------------------
+        // Read Trophy Form
+        //-------------------------------------------------
+
+        const formData =
+            new FormData(
+                form
+            );
+
+
+        const payload = {
+
+            title:
+                String(
+                    formData.get(
+                        "title"
+                    ) || ""
+                ).trim(),
+
+            category:
+                String(
+                    formData.get(
+                        "category"
+                    ) || ""
+                ).trim(),
+
+            species:
+                String(
+                    formData.get(
+                        "species"
+                    ) || ""
+                ).trim(),
+
+            date:
+                String(
+                    formData.get(
+                        "date"
+                    ) || ""
+                ).trim(),
+
+            location:
+                String(
+                    formData.get(
+                        "location"
+                    ) || ""
+                ).trim(),
+
+            hunter:
+                String(
+                    formData.get(
+                        "hunter"
+                    ) || ""
+                ).trim(),
+
+            story:
+                String(
+                    formData.get(
+                        "story"
+                    ) || ""
+                ).trim(),
+
+            details:
+                String(
+                    formData.get(
+                        "details"
+                    ) || ""
+                ).trim(),
+
+            adventureId:
+                String(
+                    formData.get(
+                        "adventureId"
+                    ) || ""
+                ).trim(),
+
+            fileName:
+                image.fileName,
+
+            mimeType:
+                image.mimeType,
+
+            base64Data:
+                image.base64Data
+
+        };
+
+
+        //-------------------------------------------------
+        // Send to Authenticated Apps Script API
+        //-------------------------------------------------
+
+        this.setFormStatus(
+            "Saving trophy...",
+            ""
+        );
+
+
+        await Database.addTrophy(
+            payload
+        );
+
+
+        //-------------------------------------------------
+        // Reset Trophy Form
+        //-------------------------------------------------
+
+        form.reset();
+
+
+        //-------------------------------------------------
+        // Return Trophy Room to All Category
+        //-------------------------------------------------
+
+        this.activeCategory =
+            "All";
+
+
+        //-------------------------------------------------
+        // Reload Spreadsheet Trophy Data
+        //-------------------------------------------------
+
+        await this.reloadTrophies();
+
+
+        //-------------------------------------------------
+        // Success Message
+        //-------------------------------------------------
+
+        this.setFormStatus(
+            "Trophy added successfully.",
+            "success"
+        );
+
+
+        //-------------------------------------------------
+        // Briefly Show Success Then Close Form
+        //-------------------------------------------------
+
+        setTimeout(
+            () => {
+
+                this.closeAdminPanel();
+
+            },
+            800
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Unable to add trophy:",
+            error
+        );
+
+
+        this.setFormStatus(
+            error &&
+            error.message
+                ? error.message
+                : "The trophy could not be saved.",
+            "error"
+        );
+
+
+    } finally {
+
+        //-------------------------------------------------
+        // Re-enable Save Button
+        //-------------------------------------------------
+
+        if (saveButton) {
+
+            saveButton.disabled =
+                false;
+        }
+    }
+},
+
+    /* ==========================================
+       IMAGE PREPARATION
+    ========================================== */
+
+    async prepareTrophyImage(
+        file
+    ) {
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+
+        //-------------------------------------------------
+        // Validate File Type
+        //-------------------------------------------------
+
+        if (
+            !allowedTypes.includes(
+                file.type
+            )
+        ) {
+
+            throw new Error(
+                "Only JPEG, PNG, and WebP images may be uploaded."
+            );
+        }
+
+
+        //-------------------------------------------------
+        // Apps Script maximum is 2 MB.
+        //
+        // We target 1.8 MB to leave a little safety room.
+        //-------------------------------------------------
+
+        const targetBytes =
+            1.8 * 1024 * 1024;
+
+
+        //-------------------------------------------------
+        // Small File — No Compression Needed
+        //-------------------------------------------------
+
+        if (
+            file.size <=
+            targetBytes
+        ) {
+
+            return {
+
+                fileName:
+                    file.name,
+
+                mimeType:
+                    file.type,
+
+                base64Data:
+                    await this.fileToBase64(
+                        file
+                    )
+
+            };
+        }
+
+
+        //-------------------------------------------------
+        // Load Large Photograph
+        //-------------------------------------------------
+
+        const image =
+            await this.loadImageFile(
+                file
+            );
+
+
+        //-------------------------------------------------
+        // Resize Large Dimensions
+        //-------------------------------------------------
+
+        const maxDimension =
+            1800;
+
+        let width =
+            image.naturalWidth;
+
+        let height =
+            image.naturalHeight;
+
+        const scale =
+            Math.min(
+                1,
+                maxDimension /
+                    Math.max(
+                        width,
+                        height
+                    )
+            );
+
+        width =
+            Math.max(
+                1,
+                Math.round(
+                    width * scale
+                )
+            );
+
+        height =
+            Math.max(
+                1,
+                Math.round(
+                    height * scale
+                )
+            );
+
+
+        //-------------------------------------------------
+        // Draw to Canvas
+        //-------------------------------------------------
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+        canvas.width =
+            width;
+
+        canvas.height =
+            height;
+
+        const context =
+            canvas.getContext(
+                "2d"
+            );
+
+        if (!context) {
+
+            throw new Error(
+                "The photograph could not be processed by this browser."
+            );
+        }
+
+        context.drawImage(
+            image,
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        //-------------------------------------------------
+        // Convert to JPEG and Reduce Quality as Needed
+        //-------------------------------------------------
+
+        let quality =
+            0.88;
+
+        let blob =
+            await this.canvasToBlob(
+                canvas,
+                "image/jpeg",
+                quality
+            );
+
+
+        while (
+            blob.size >
+                targetBytes &&
+            quality > 0.5
+        ) {
+
+            quality -=
+                0.08;
+
+            blob =
+                await this.canvasToBlob(
+                    canvas,
+                    "image/jpeg",
+                    quality
+                );
+        }
+
+
+        //-------------------------------------------------
+        // Final Size Check
+        //-------------------------------------------------
+
+        if (
+            blob.size >
+            2 * 1024 * 1024
+        ) {
+
+            throw new Error(
+                "This image is still too large after compression. Please select a smaller photograph."
+            );
+        }
+
+
+        //-------------------------------------------------
+        // Build New JPEG Filename
+        //-------------------------------------------------
+
+        const originalName =
+            String(
+                file.name ||
+                "trophy"
+            )
+                .replace(
+                    /\.[^.]+$/,
+                    ""
+                );
+
+
+        return {
+
+            fileName:
+                originalName +
+                ".jpg",
+
+            mimeType:
+                "image/jpeg",
+
+            base64Data:
+                await this.fileToBase64(
+                    blob
+                )
+
+        };
+    },
+
+
+    fileToBase64(
+        fileOrBlob
+    ) {
+
+        return new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    () => {
+
+                        const result =
+                            String(
+                                reader.result ||
+                                ""
+                            );
+
+                        const commaIndex =
+                            result.indexOf(
+                                ","
+                            );
+
+                        resolve(
+                            commaIndex >= 0
+                                ? result.slice(
+                                    commaIndex + 1
+                                )
+                                : result
+                        );
+                    };
+
+
+                reader.onerror =
+                    () => {
+
+                        reject(
+                            new Error(
+                                "The selected photograph could not be read."
+                            )
+                        );
+                    };
+
+
+                reader.readAsDataURL(
+                    fileOrBlob
+                );
+
+            }
+        );
+    },
+
+
+    loadImageFile(
+        file
+    ) {
+
+        return new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                const image =
+                    new Image();
+
+                const objectUrl =
+                    URL.createObjectURL(
+                        file
+                    );
+
+
+                image.onload =
+                    () => {
+
+                        URL.revokeObjectURL(
+                            objectUrl
+                        );
+
+                        resolve(
+                            image
+                        );
+                    };
+
+
+                image.onerror =
+                    () => {
+
+                        URL.revokeObjectURL(
+                            objectUrl
+                        );
+
+                        reject(
+                            new Error(
+                                "The selected photograph could not be opened."
+                            )
+                        );
+                    };
+
+
+                image.src =
+                    objectUrl;
+
+            }
+        );
+    },
+
+
+    canvasToBlob(
+        canvas,
+        mimeType,
+        quality
+    ) {
+
+        return new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                canvas.toBlob(
+                    blob => {
+
+                        if (!blob) {
+
+                            reject(
+                                new Error(
+                                    "The selected photograph could not be compressed."
+                                )
+                            );
+
+                            return;
+                        }
+
+                        resolve(
+                            blob
+                        );
+
+                    },
+                    mimeType,
+                    quality
+                );
+
+            }
+        );
+    },
+
+
+    setFormStatus(
+        message,
+        type
+    ) {
+
+        const status =
+            document.getElementById(
+                "trophyFormStatus"
+            );
+
+        if (!status) {
+
+            return;
+        }
+
+        status.textContent =
+            message || "";
+
+        status.className =
+            "trophy-form-status" +
+            (
+                type
+                    ? " " + type
+                    : ""
+            );
     },
 
 
@@ -84,8 +1036,10 @@ window.TrophyRoom = {
             );
 
         if (!container) {
+
             return;
         }
+
 
         const categories =
             new Set(
@@ -96,15 +1050,21 @@ window.TrophyRoom = {
                                 item["Category"] || ""
                             ).trim()
                     )
-                    .filter(Boolean)
+                    .filter(
+                        Boolean
+                    )
             );
+
 
         const availableCategories =
             this.categoryOrder.filter(
                 category =>
                     category === "All" ||
-                    categories.has(category)
+                    categories.has(
+                        category
+                    )
             );
+
 
         categories.forEach(
             category => {
@@ -123,6 +1083,7 @@ window.TrophyRoom = {
 
             }
         );
+
 
         container.innerHTML =
             availableCategories
@@ -149,6 +1110,7 @@ window.TrophyRoom = {
                 )
                 .join("");
 
+
         container
             .querySelectorAll(
                 "[data-trophy-category]"
@@ -166,6 +1128,7 @@ window.TrophyRoom = {
 
                             this.renderFilters();
                             this.render();
+
                         }
                     );
 
@@ -191,8 +1154,10 @@ window.TrophyRoom = {
             );
 
         if (!list) {
+
             return;
         }
+
 
         const filtered =
             this.activeCategory === "All"
@@ -205,6 +1170,7 @@ window.TrophyRoom = {
                         this.activeCategory
                 );
 
+
         if (count) {
 
             const word =
@@ -216,13 +1182,17 @@ window.TrophyRoom = {
                 `${filtered.length} ${word}`;
         }
 
-        if (filtered.length === 0) {
+
+        if (
+            filtered.length === 0
+        ) {
 
             list.innerHTML =
                 this.emptyState();
 
             return;
         }
+
 
         list.innerHTML =
             filtered
@@ -234,6 +1204,7 @@ window.TrophyRoom = {
                 )
                 .join("");
 
+
         this.bindAdventureButtons();
     },
 
@@ -242,7 +1213,9 @@ window.TrophyRoom = {
        TROPHY CARD
     ========================================== */
 
-    createTrophyCard(item) {
+    createTrophyCard(
+        item
+    ) {
 
         const title =
             this.escapeHTML(
@@ -303,7 +1276,9 @@ window.TrophyRoom = {
         // Metadata
         //-------------------------------------------------
 
-        let metadata = "";
+        let metadata =
+            "";
+
 
         if (location) {
 
@@ -314,6 +1289,7 @@ window.TrophyRoom = {
                 </span>
             `;
         }
+
 
         if (hunter) {
 
@@ -330,7 +1306,8 @@ window.TrophyRoom = {
         // Trophy Details
         //-------------------------------------------------
 
-        let details = "";
+        let details =
+            "";
 
         const rawDetails =
             String(
@@ -338,18 +1315,26 @@ window.TrophyRoom = {
                 ""
             ).trim();
 
+
         if (rawDetails) {
 
             const detailItems =
                 rawDetails
-                    .split("|")
+                    .split(
+                        "|"
+                    )
                     .map(
                         detail =>
                             detail.trim()
                     )
-                    .filter(Boolean);
+                    .filter(
+                        Boolean
+                    );
 
-            if (detailItems.length) {
+
+            if (
+                detailItems.length
+            ) {
 
                 details = `
                     <div class="trophy-details">
@@ -374,7 +1359,9 @@ window.TrophyRoom = {
         // Related Adventure Button
         //-------------------------------------------------
 
-        let adventureButton = "";
+        let adventureButton =
+            "";
+
 
         if (adventureId) {
 
@@ -495,9 +1482,12 @@ window.TrophyRoom = {
                                     ""
                                 ).trim();
 
+
                             if (!adventureId) {
+
                                 return;
                             }
+
 
                             if (
                                 typeof Database ===
@@ -506,14 +1496,17 @@ window.TrophyRoom = {
                                     .getAdventures !==
                                     "function"
                             ) {
+
                                 return;
                             }
+
 
                             try {
 
                                 const adventures =
                                     await Database
                                         .getAdventures();
+
 
                                 const adventure =
                                     adventures.find(
@@ -524,6 +1517,7 @@ window.TrophyRoom = {
                                             ).trim() ===
                                             adventureId
                                     );
+
 
                                 if (
                                     adventure &&
@@ -537,6 +1531,7 @@ window.TrophyRoom = {
                                         adventure
                                     );
                                 }
+
 
                             } catch (error) {
 
@@ -599,15 +1594,19 @@ window.TrophyRoom = {
                 "trophyCount"
             );
 
+
         if (count) {
 
             count.textContent =
                 "Unable to load";
         }
 
+
         if (!list) {
+
             return;
         }
+
 
         list.innerHTML = `
             <div class="trophy-empty">
@@ -634,7 +1633,9 @@ window.TrophyRoom = {
        SECURITY / DISPLAY HELPERS
     ========================================== */
 
-    escapeHTML(value) {
+    escapeHTML(
+        value
+    ) {
 
         return String(
             value ?? ""
@@ -662,7 +1663,9 @@ window.TrophyRoom = {
     },
 
 
-    escapeAttribute(value) {
+    escapeAttribute(
+        value
+    ) {
 
         return this.escapeHTML(
             value

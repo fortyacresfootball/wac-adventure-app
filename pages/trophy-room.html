@@ -129,10 +129,212 @@
             background: var(--wac-green);
         }
 
+        .trophy-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+        }
+
         .trophy-count {
             color: var(--wac-muted);
             font-size: 0.88rem;
             font-weight: 700;
+        }
+
+        /* ========================================
+           ADMIN BUTTON
+        ======================================== */
+
+        .trophy-admin-button {
+            appearance: none;
+            border: 0;
+            border-radius: 9px;
+            padding: 10px 15px;
+
+            background: var(--wac-gold);
+            color: #262116;
+
+            font: inherit;
+            font-size: 0.86rem;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        .trophy-admin-button:hover {
+            filter: brightness(0.96);
+        }
+
+        .trophy-admin-button[hidden] {
+            display: none !important;
+        }
+
+        /* ========================================
+           ADMIN TROPHY FORM
+        ======================================== */
+
+        .trophy-admin-panel {
+            display: none;
+
+            margin: -8px 0 24px;
+            padding: 22px;
+
+            background: var(--wac-paper);
+            border: 1px solid #ded9cc;
+            border-radius: 16px;
+
+            box-shadow:
+                0 7px 22px rgba(0, 0, 0, 0.08);
+        }
+
+        .trophy-admin-panel.open {
+            display: block;
+        }
+
+        .trophy-admin-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .trophy-admin-heading h2 {
+            margin: 0;
+            color: var(--wac-green);
+            font-size: 1.35rem;
+        }
+
+        .trophy-admin-heading p {
+            margin: 5px 0 0;
+            color: var(--wac-muted);
+            font-size: 0.9rem;
+        }
+
+        .trophy-admin-close {
+            appearance: none;
+
+            border: 1px solid #d5d0c4;
+            border-radius: 8px;
+
+            background: white;
+            color: var(--wac-green);
+
+            padding: 7px 10px;
+
+            font: inherit;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .trophy-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .trophy-form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .trophy-form-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .trophy-form-field label {
+            color: var(--wac-green);
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+        .trophy-form-field input,
+        .trophy-form-field select,
+        .trophy-form-field textarea {
+            width: 100%;
+            box-sizing: border-box;
+
+            border: 1px solid #d5d0c4;
+            border-radius: 9px;
+
+            background: white;
+            color: var(--wac-text);
+
+            padding: 10px 11px;
+
+            font: inherit;
+        }
+
+        .trophy-form-field textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .trophy-form-help {
+            color: var(--wac-muted);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+
+        .trophy-form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .trophy-save-button,
+        .trophy-cancel-button {
+            appearance: none;
+
+            border-radius: 9px;
+            padding: 10px 16px;
+
+            font: inherit;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        .trophy-save-button {
+            border: 0;
+            background: var(--wac-green);
+            color: white;
+        }
+
+        .trophy-save-button:hover {
+            background: var(--wac-green-light);
+        }
+
+        .trophy-save-button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .trophy-cancel-button {
+            border: 1px solid #d5d0c4;
+            background: white;
+            color: var(--wac-green);
+        }
+
+        .trophy-form-status {
+            flex: 1 1 240px;
+
+            color: var(--wac-muted);
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .trophy-form-status.error {
+            color: #9b2c2c;
+        }
+
+        .trophy-form-status.success {
+            color: var(--wac-green);
         }
 
         /* ========================================
@@ -160,8 +362,11 @@
 
         .trophy-photo-wrap {
             position: relative;
+
             min-height: 330px;
+
             overflow: hidden;
+
             background: #d8d4ca;
         }
 
@@ -205,29 +410,36 @@
 
         .trophy-story {
             padding: 27px 30px 28px;
+
             display: flex;
             flex-direction: column;
         }
 
         .trophy-date {
+            margin-bottom: 6px;
+
             color: #926d28;
+
             font-size: 0.78rem;
             font-weight: 800;
             letter-spacing: 0.09em;
             text-transform: uppercase;
-            margin-bottom: 6px;
         }
 
         .trophy-title {
             margin: 0 0 7px;
+
             color: var(--wac-green);
+
             font-size: clamp(1.45rem, 3vw, 2rem);
             line-height: 1.15;
         }
 
         .trophy-species {
             margin-bottom: 16px;
+
             color: #54544e;
+
             font-weight: 700;
         }
 
@@ -254,7 +466,9 @@
 
         .trophy-story-text {
             margin: 0;
+
             color: #393934;
+
             font-size: 0.98rem;
             line-height: 1.72;
         }
@@ -275,9 +489,10 @@
             padding: 7px 10px;
 
             border-radius: 7px;
-            background: #eee7d8;
 
+            background: #eee7d8;
             color: #504423;
+
             font-size: 0.8rem;
             font-weight: 700;
         }
@@ -320,13 +535,14 @@
             padding: 55px 25px;
 
             background: white;
+
             border: 2px dashed #d6d0c2;
             border-radius: 16px;
         }
 
         .trophy-empty-icon {
-            font-size: 3rem;
             margin-bottom: 10px;
+            font-size: 3rem;
         }
 
         .trophy-empty h2 {
@@ -337,6 +553,7 @@
         .trophy-empty p {
             max-width: 540px;
             margin: 0 auto;
+
             color: var(--wac-muted);
             line-height: 1.6;
         }
@@ -348,9 +565,7 @@
         @media (max-width: 750px) {
 
             .trophy-room-page {
-                padding:
-                    20px 13px
-                    50px;
+                padding: 20px 13px 50px;
             }
 
             .trophy-hero {
@@ -382,6 +597,21 @@
             .trophy-toolbar {
                 align-items: flex-start;
             }
+
+            .trophy-toolbar-actions {
+                width: 100%;
+                justify-content: space-between;
+                margin-left: 0;
+            }
+
+            .trophy-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trophy-form-field.full {
+                grid-column: auto;
+            }
+
         }
 
     </style>
@@ -421,14 +651,309 @@
         >
         </div>
 
-        <div
-            id="trophyCount"
-            class="trophy-count"
-        >
-            Loading...
+        <div class="trophy-toolbar-actions">
+
+            <div
+                id="trophyCount"
+                class="trophy-count"
+            >
+                Loading...
+            </div>
+
+            <button
+                id="addTrophyButton"
+                class="trophy-admin-button"
+                type="button"
+                hidden
+            >
+                + Add Trophy
+            </button>
+
         </div>
 
     </div>
+
+
+    <!-- ========================================
+         ADMIN TROPHY ENTRY
+    ======================================== -->
+
+    <section
+        id="trophyAdminPanel"
+        class="trophy-admin-panel"
+        aria-hidden="true"
+    >
+
+        <div class="trophy-admin-heading">
+
+            <div>
+
+                <h2>
+                    Add Trophy
+                </h2>
+
+                <p>
+                    Add a hunting or fishing success directly
+                    to the public Trophy Room.
+                </p>
+
+            </div>
+
+            <button
+                id="closeTrophyFormButton"
+                class="trophy-admin-close"
+                type="button"
+            >
+                Close
+            </button>
+
+        </div>
+
+
+        <form id="trophyAdminForm">
+
+            <div class="trophy-form-grid">
+
+                <div class="trophy-form-field">
+
+                    <label for="trophyTitle">
+                        Title
+                    </label>
+
+                    <input
+                        id="trophyTitle"
+                        name="title"
+                        type="text"
+                        maxlength="150"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="trophy-form-field">
+
+                    <label for="trophyCategory">
+                        Category
+                    </label>
+
+                    <select
+                        id="trophyCategory"
+                        name="category"
+                        required
+                    >
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="Big Game">
+                            Big Game
+                        </option>
+
+                        <option value="Small Game">
+                            Small Game
+                        </option>
+
+                        <option value="Waterfowl">
+                            Waterfowl
+                        </option>
+
+                        <option value="Fishing">
+                            Fishing
+                        </option>
+
+                        <option value="Turkey">
+                            Turkey
+                        </option>
+
+                        <option value="Upland">
+                            Upland
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="trophy-form-field">
+
+                    <label for="trophySpecies">
+                        Species
+                    </label>
+
+                    <input
+                        id="trophySpecies"
+                        name="species"
+                        type="text"
+                        maxlength="120"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="trophy-form-field">
+
+                    <label for="trophyDate">
+                        Date
+                    </label>
+
+                    <input
+                        id="trophyDate"
+                        name="date"
+                        type="date"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="trophy-form-field">
+
+                    <label for="trophyLocation">
+                        Location
+                    </label>
+
+                    <input
+                        id="trophyLocation"
+                        name="location"
+                        type="text"
+                        maxlength="180"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="trophy-form-field">
+
+                    <label for="trophyHunter">
+                        Hunter / Angler
+                    </label>
+
+                    <input
+                        id="trophyHunter"
+                        name="hunter"
+                        type="text"
+                        maxlength="150"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="trophy-form-field full">
+
+                    <label for="trophyStory">
+                        Story
+                    </label>
+
+                    <textarea
+                        id="trophyStory"
+                        name="story"
+                        maxlength="5000"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="trophy-form-field full">
+
+                    <label for="trophyPhoto">
+                        Photo
+                    </label>
+
+                    <input
+                        id="trophyPhoto"
+                        name="photo"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        required
+                    >
+
+                    <div class="trophy-form-help">
+                        JPEG, PNG, or WebP. Large images will
+                        be compressed before upload.
+                    </div>
+
+                </div>
+
+
+                <div class="trophy-form-field">
+
+                    <label for="trophyDetails">
+                        Trophy Details
+                    </label>
+
+                    <input
+                        id="trophyDetails"
+                        name="details"
+                        type="text"
+                        maxlength="500"
+                        placeholder='10 Point | 185 lbs | 18" Inside Spread'
+                    >
+
+                    <div class="trophy-form-help">
+                        Separate badges with a vertical bar: |
+                    </div>
+
+                </div>
+
+
+                <div class="trophy-form-field">
+
+                    <label for="trophyAdventureId">
+                        Related Adventure ID
+                    </label>
+
+                    <input
+                        id="trophyAdventureId"
+                        name="adventureId"
+                        type="text"
+                        maxlength="80"
+                        placeholder="Optional"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="trophy-form-actions">
+
+                <button
+                    id="saveTrophyButton"
+                    class="trophy-save-button"
+                    type="submit"
+                >
+                    Save Trophy
+                </button>
+
+                <button
+                    id="cancelTrophyButton"
+                    class="trophy-cancel-button"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+                <div
+                    id="trophyFormStatus"
+                    class="trophy-form-status"
+                    role="status"
+                ></div>
+
+            </div>
+
+        </form>
+
+    </section>
 
 
     <!-- ========================================
