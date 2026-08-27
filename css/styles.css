@@ -3947,17 +3947,13 @@ Member Directory
 }
 
 .family-member-photo img{
-
     position:absolute;
-
     inset:0;
-
     width:100%;
-
     height:100%;
-
-    object-fit:cover;
-
+    object-fit:contain;
+    object-position:center;
+    padding:6px;
 }
 
 .family-member-initials{
