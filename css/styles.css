@@ -3953,6 +3953,7 @@ Member Directory
     height:100%;
     object-fit:contain;
     object-position:center;
+    padding:6px;
 }
 
 .family-member-initials{
