@@ -7,12 +7,33 @@
 
     try {
 
+        //--------------------------------------------------
+        // Load Cabin Weather First
+        //
+        // Today's Adventure uses today's weather when
+        // selecting an appropriate recommendation.
+        //--------------------------------------------------
+
+        const todayWeather =
+            await loadCabinWeather();
+
+
+        //--------------------------------------------------
+        // Load Remaining Dashboard Information
+        //--------------------------------------------------
+
         await Promise.all([
 
+            loadTodaysAdventure(
+                todayWeather
+            ),
+
             loadAdventureCount(),
+
             loadNextEvent(),
+
             loadCompoundBadgeCount(),
-            loadCabinWeather(),
+
             loadLatestNews()
 
         ]);
@@ -29,6 +50,866 @@
     }
 
 })();
+
+//--------------------------------------------------
+// Today's Adventure
+//--------------------------------------------------
+
+async function loadTodaysAdventure(
+    todayWeather
+) {
+
+    const idElement =
+        document.getElementById(
+            "homeAdventureId"
+        );
+
+    const titleElement =
+        document.getElementById(
+            "homeAdventureTitle"
+        );
+
+    const descriptionElement =
+        document.getElementById(
+            "homeAdventureDescription"
+        );
+
+    const button =
+        document.getElementById(
+            "homeAdventureButton"
+        );
+
+
+    if (
+        !idElement ||
+        !titleElement ||
+        !descriptionElement
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        //--------------------------------------------------
+        // Load Real Adventures
+        //--------------------------------------------------
+
+        const allAdventures =
+            await Database.getAdventures();
+
+
+        if (
+            !Array.isArray(
+                allAdventures
+            ) ||
+            allAdventures.length === 0
+        ) {
+
+            throw new Error(
+                "No adventures were available."
+            );
+        }
+
+
+        //--------------------------------------------------
+        // Active Adventures Only
+        //--------------------------------------------------
+
+        const activeAdventures =
+            allAdventures.filter(
+                adventure => {
+
+                    const activeValue =
+                        String(
+                            adventure[
+                                "Active"
+                            ] ?? ""
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    if (
+                        activeValue === ""
+                    ) {
+
+                        return true;
+                    }
+
+
+                    return ![
+                        "false",
+                        "no",
+                        "n",
+                        "0",
+                        "inactive"
+                    ].includes(
+                        activeValue
+                    );
+
+                }
+            );
+
+
+        //--------------------------------------------------
+        // Determine Current Michigan Season
+        //--------------------------------------------------
+
+        const currentSeason =
+            getCurrentWacSeason();
+
+
+        //--------------------------------------------------
+        // Season Filter
+        //--------------------------------------------------
+
+        let eligibleAdventures =
+            activeAdventures.filter(
+                adventure => {
+
+                    return adventureMatchesSeason(
+                        adventure,
+                        currentSeason
+                    );
+
+                }
+            );
+
+
+        //--------------------------------------------------
+        // Weather Suitability Filter
+        //--------------------------------------------------
+
+        if (todayWeather) {
+
+            const weatherSuitable =
+                eligibleAdventures.filter(
+                    adventure => {
+
+                        return adventureMatchesWeather(
+                            adventure,
+                            todayWeather
+                        );
+
+                    }
+                );
+
+
+            //--------------------------------------------------
+            // Don't allow weather rules to eliminate
+            // absolutely everything.
+            //--------------------------------------------------
+
+            if (
+                weatherSuitable.length > 0
+            ) {
+
+                eligibleAdventures =
+                    weatherSuitable;
+            }
+        }
+
+
+        //--------------------------------------------------
+        // Fallback
+        //
+        // If season data somehow eliminates everything,
+        // use all active adventures rather than displaying
+        // fake content.
+        //--------------------------------------------------
+
+        if (
+            eligibleAdventures.length === 0
+        ) {
+
+            eligibleAdventures =
+                activeAdventures;
+        }
+
+
+        if (
+            eligibleAdventures.length === 0
+        ) {
+
+            throw new Error(
+                "No active adventures were available."
+            );
+        }
+
+
+        //--------------------------------------------------
+        // Choose One Adventure for This Calendar Day
+        //--------------------------------------------------
+
+        const adventure =
+            chooseDailyAdventure(
+                eligibleAdventures
+            );
+
+
+        //--------------------------------------------------
+        // Render Actual Spreadsheet Information
+        //--------------------------------------------------
+
+        const adventureId =
+            String(
+                adventure["ID"] ||
+                ""
+            ).trim();
+
+
+        const adventureTitle =
+            String(
+                adventure["Title"] ||
+                "Today's WAC Adventure"
+            ).trim();
+
+
+        const description =
+            buildHomeAdventureDescription(
+                adventure
+            );
+
+
+        idElement.textContent =
+            adventureId ||
+            "WAC";
+
+
+        titleElement.textContent =
+            adventureTitle;
+
+
+        descriptionElement.textContent =
+            description;
+
+
+//--------------------------------------------------
+// View Selected Adventure
+//--------------------------------------------------
+
+if (button) {
+
+    button.hidden =
+        false;
+
+    button.dataset.adventureId =
+        adventureId;
+
+
+    button.onclick =
+        (event) => {
+
+            event.preventDefault();
+
+
+            //--------------------------------------------------
+            // Open the Exact Recommended Adventure
+            //--------------------------------------------------
+
+            if (
+                typeof Drawer !==
+                    "undefined" &&
+                typeof Drawer.open ===
+                    "function"
+            ) {
+
+                Drawer.open(
+                    adventure
+                );
+
+                return;
+            }
+
+
+            //--------------------------------------------------
+            // Safety Fallback
+            //--------------------------------------------------
+
+            console.warn(
+                "Adventure Drawer is unavailable."
+            );
+        };
+}
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to select today's adventure.",
+            error
+        );
+
+
+        idElement.textContent =
+            "WAC";
+
+
+        titleElement.textContent =
+            "Explore the Adventure List";
+
+
+        descriptionElement.textContent =
+            "Browse the active WAC adventures and choose your next challenge.";
+
+
+        if (button) {
+
+            button.hidden =
+                false;
+        }
+    }
+}
+
+
+//--------------------------------------------------
+// Current WAC Season
+//--------------------------------------------------
+
+function getCurrentWacSeason() {
+
+    const month =
+        new Date().getMonth() + 1;
+
+
+    if (
+        month === 12 ||
+        month === 1 ||
+        month === 2
+    ) {
+
+        return "winter";
+    }
+
+
+    if (
+        month >= 3 &&
+        month <= 5
+    ) {
+
+        return "spring";
+    }
+
+
+    if (
+        month >= 6 &&
+        month <= 8
+    ) {
+
+        return "summer";
+    }
+
+
+    return "fall";
+}
+
+
+//--------------------------------------------------
+// Adventure Season Eligibility
+//--------------------------------------------------
+
+function adventureMatchesSeason(
+    adventure,
+    currentSeason
+) {
+
+    const seasonValue =
+        String(
+            adventure["Season"] ||
+            ""
+        )
+            .trim()
+            .toLowerCase();
+
+
+    //--------------------------------------------------
+    // Blank or Any = Year-Round
+    //--------------------------------------------------
+
+    if (
+        !seasonValue ||
+        seasonValue === "any" ||
+        seasonValue === "all" ||
+        seasonValue === "year round" ||
+        seasonValue === "year-round"
+    ) {
+
+        return true;
+    }
+
+
+    //--------------------------------------------------
+    // Allows spreadsheet values such as:
+    //
+    // Summer
+    // Spring | Summer
+    // Fall, Winter
+    //--------------------------------------------------
+
+    const seasons =
+        seasonValue
+            .split(
+                /[,;|/]+/
+            )
+            .map(
+                value =>
+                    value.trim()
+            )
+            .filter(
+                Boolean
+            );
+
+
+    return seasons.includes(
+        currentSeason
+    );
+}
+
+
+//--------------------------------------------------
+// Weather Suitability
+//--------------------------------------------------
+
+function adventureMatchesWeather(
+    adventure,
+    weather
+) {
+
+    const searchText =
+        [
+
+            adventure["Title"],
+            adventure["Category"],
+            adventure["Vibe"],
+            adventure["Mission"],
+            adventure["Equipment"],
+            adventure["Location"]
+
+        ]
+            .map(
+                value =>
+                    String(
+                        value || ""
+                    ).toLowerCase()
+            )
+            .join(" ");
+
+
+    const weatherCode =
+        Number(
+            weather.weatherCode
+        );
+
+
+    const high =
+        Number(
+            weather.high
+        );
+
+
+    const precipitationChance =
+        Number(
+            weather.precipitationChance
+        );
+
+
+    //--------------------------------------------------
+    // Thunderstorms
+    //
+    // Avoid obvious outdoor/water/fire activities.
+    //--------------------------------------------------
+
+    if (
+        [
+            95,
+            96,
+            99
+        ].includes(
+            weatherCode
+        )
+    ) {
+
+        if (
+            containsAnyAdventureKeyword(
+                searchText,
+                [
+                    "swim",
+                    "swimming",
+                    "boat",
+                    "boating",
+                    "canoe",
+                    "kayak",
+                    "paddle",
+                    "fish",
+                    "fishing",
+                    "hike",
+                    "hiking",
+                    "trail",
+                    "campfire",
+                    "bonfire",
+                    "shoot",
+                    "shooting",
+                    "archery"
+                ]
+            )
+        ) {
+
+            return false;
+        }
+    }
+
+
+    //--------------------------------------------------
+    // Heavy Rain / High Rain Probability
+    //--------------------------------------------------
+
+    const rainyWeather =
+        (
+            weatherCode >= 61 &&
+            weatherCode <= 67
+        ) ||
+        (
+            weatherCode >= 80 &&
+            weatherCode <= 82
+        ) ||
+        precipitationChance >= 70;
+
+
+    if (rainyWeather) {
+
+        if (
+            containsAnyAdventureKeyword(
+                searchText,
+                [
+                    "sunrise",
+                    "sunset",
+                    "stargaz",
+                    "stars",
+                    "astronomy",
+                    "bonfire",
+                    "campfire",
+                    "picnic",
+                    "photograph wildlife",
+                    "wildlife observation"
+                ]
+            )
+        ) {
+
+            return false;
+        }
+    }
+
+
+    //--------------------------------------------------
+    // Snow / Winter Conditions
+    //
+    // Remove obviously warm-water activities.
+    //--------------------------------------------------
+
+    const snowyWeather =
+        (
+            weatherCode >= 71 &&
+            weatherCode <= 77
+        ) ||
+        weatherCode === 85 ||
+        weatherCode === 86;
+
+
+    if (snowyWeather) {
+
+        if (
+            containsAnyAdventureKeyword(
+                searchText,
+                [
+                    "swim",
+                    "swimming",
+                    "snorkel",
+                    "scuba",
+                    "waterski",
+                    "wakeboard",
+                    "wake surf",
+                    "tubing"
+                ]
+            )
+        ) {
+
+            return false;
+        }
+    }
+
+
+    //--------------------------------------------------
+    // Very Cold Day
+    //--------------------------------------------------
+
+    if (
+        Number.isFinite(high) &&
+        high < 40
+    ) {
+
+        if (
+            containsAnyAdventureKeyword(
+                searchText,
+                [
+                    "swim",
+                    "swimming",
+                    "snorkel",
+                    "scuba",
+                    "waterski",
+                    "wakeboard",
+                    "wake surf",
+                    "tubing"
+                ]
+            )
+        ) {
+
+            return false;
+        }
+    }
+
+
+    //--------------------------------------------------
+    // Very Hot Day
+    //
+    // Avoid adventures whose primary mission appears
+    // to involve extended strenuous outdoor activity.
+    //--------------------------------------------------
+
+    if (
+        Number.isFinite(high) &&
+        high >= 95
+    ) {
+
+        if (
+            containsAnyAdventureKeyword(
+                searchText,
+                [
+                    "long hike",
+                    "distance hike",
+                    "ruck",
+                    "backpack",
+                    "trail run"
+                ]
+            )
+        ) {
+
+            return false;
+        }
+    }
+
+
+    return true;
+}
+
+
+//--------------------------------------------------
+// Keyword Helper
+//--------------------------------------------------
+
+function containsAnyAdventureKeyword(
+    text,
+    keywords
+) {
+
+    return keywords.some(
+        keyword =>
+            text.includes(
+                keyword
+            )
+    );
+}
+
+
+//--------------------------------------------------
+// Stable Daily Adventure Selection
+//--------------------------------------------------
+
+function chooseDailyAdventure(
+    adventures
+) {
+
+    //--------------------------------------------------
+    // Sort first so Google Sheet row order does not
+    // unexpectedly alter today's recommendation.
+    //--------------------------------------------------
+
+    const sorted =
+        [...adventures]
+            .sort(
+                (
+                    firstAdventure,
+                    secondAdventure
+                ) => {
+
+                    return String(
+                        firstAdventure[
+                            "ID"
+                        ] || ""
+                    )
+                        .localeCompare(
+                            String(
+                                secondAdventure[
+                                    "ID"
+                                ] || ""
+                            )
+                        );
+
+                }
+            );
+
+
+    //--------------------------------------------------
+    // Michigan Calendar Date
+    //--------------------------------------------------
+
+    const now =
+        new Date();
+
+
+    const dateKey =
+        [
+            now.getFullYear(),
+            String(
+                now.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            ),
+            String(
+                now.getDate()
+            ).padStart(
+                2,
+                "0"
+            )
+        ].join("-");
+
+
+    //--------------------------------------------------
+    // Create Deterministic Daily Hash
+    //--------------------------------------------------
+
+    let hash =
+        0;
+
+
+    for (
+        let index = 0;
+        index < dateKey.length;
+        index += 1
+    ) {
+
+        hash =
+            (
+                (
+                    hash << 5
+                ) -
+                hash
+            ) +
+            dateKey.charCodeAt(
+                index
+            );
+
+        hash |=
+            0;
+    }
+
+
+    const selectedIndex =
+        Math.abs(
+            hash
+        ) %
+        sorted.length;
+
+
+    return sorted[
+        selectedIndex
+    ];
+}
+
+
+//--------------------------------------------------
+// Dashboard Adventure Description
+//--------------------------------------------------
+
+function buildHomeAdventureDescription(
+    adventure
+) {
+
+    const mission =
+        String(
+            adventure["Mission"] ||
+            ""
+        ).trim();
+
+
+    const vibe =
+        String(
+            adventure["Vibe"] ||
+            ""
+        ).trim();
+
+
+    const whyItMatters =
+        String(
+            adventure[
+                "Why It Matters"
+            ] ||
+            ""
+        ).trim();
+
+
+    const sourceText =
+        mission ||
+        vibe ||
+        whyItMatters ||
+        "Take on today's WAC adventure.";
+
+
+    //--------------------------------------------------
+    // Keep Dashboard Card Compact
+    //--------------------------------------------------
+
+    const maximumLength =
+        220;
+
+
+    if (
+        sourceText.length <=
+        maximumLength
+    ) {
+
+        return sourceText;
+    }
+
+
+    const shortened =
+        sourceText
+            .slice(
+                0,
+                maximumLength
+            );
+
+
+    const lastSpace =
+        shortened.lastIndexOf(
+            " "
+        );
+
+
+    return (
+        shortened.slice(
+            0,
+            lastSpace > 0
+                ? lastSpace
+                : maximumLength
+        ) +
+        "..."
+    );
+}
 
 //--------------------------------------------------
 // Adventure Count
@@ -670,17 +1551,50 @@ async function loadCabinWeather() {
 
         }
 
-        renderCabinWeather(
-            weatherData.daily,
-            forecastContainer
-        );
+renderCabinWeather(
+    weatherData.daily,
+    forecastContainer
+);
 
-        if (updatedText) {
+if (updatedText) {
 
-            updatedText.textContent =
-                "Today and the next two days";
+    updatedText.textContent =
+        "Today and the next two days";
 
-        }
+}
+
+
+//--------------------------------------------------
+// Return Today's Weather for Adventure Selection
+//--------------------------------------------------
+
+return {
+
+    weatherCode:
+        Number(
+            weatherData.daily
+                .weather_code?.[0]
+        ),
+
+    high:
+        Number(
+            weatherData.daily
+                .temperature_2m_max?.[0]
+        ),
+
+    low:
+        Number(
+            weatherData.daily
+                .temperature_2m_min?.[0]
+        ),
+
+    precipitationChance:
+        Number(
+            weatherData.daily
+                .precipitation_probability_max?.[0]
+        )
+
+};
 
     }
 
@@ -713,7 +1627,9 @@ async function loadCabinWeather() {
 
         }
 
-    }
+    return null;
+
+}
 
 }
 
