@@ -753,30 +753,25 @@ this.renderMap();
                 // Must specifically be marked as a hunting season.
                 //--------------------------------------------------
 
-                const huntingSeason =
-                    String(
-                        event[
-                            "Hunting Season"
-                        ] || ""
-                    )
-                        .trim()
-                        .toLowerCase();
+                const category =
+    String(
+        event[
+            "Category"
+        ] || ""
+    )
+        .trim()
+        .toLowerCase();
 
 
-                const isHuntingSeason =
-                    [
-                        "true",
-                        "yes",
-                        "1"
-                    ].includes(
-                        huntingSeason
-                    );
+const isHuntingSeason =
+    category.includes(
+        "hunting season"
+    );
 
 
-                if (!isHuntingSeason) {
-                    return false;
-                }
-
+if (!isHuntingSeason) {
+    return false;
+}
 
                 //--------------------------------------------------
                 // Ignore inactive/cancelled events.
