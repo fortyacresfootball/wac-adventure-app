@@ -299,7 +299,6 @@ this.prefillFromHuntBoard();
         return;
     }
 
-
     const locationSelect =
         document.getElementById(
             "huntJournalLocation"
@@ -676,6 +675,23 @@ this.prefillFromHuntBoard();
             document.getElementById(
                 "huntJournalClearButton"
             );
+
+            const speciesSelect =
+    document.getElementById(
+        "huntJournalSpecies"
+    );
+
+
+if (speciesSelect) {
+
+    speciesSelect.addEventListener(
+        "change",
+        () => {
+
+            this.updateSpeciesFields();
+        }
+    );
+}
 
             const locationSelect =
     document.getElementById(
@@ -1060,6 +1076,430 @@ await this.loadCurrentWeather();
 this.prefillFromHuntBoard();
 
     },
+
+    updateSpeciesFields() {
+
+    const speciesSelect =
+        document.getElementById(
+            "huntJournalSpecies"
+        );
+
+    if (!speciesSelect) {
+        return;
+    }
+
+
+    const species =
+        speciesSelect.value;
+
+
+    const animalsLabel =
+        document.getElementById(
+            "huntJournalAnimalsSeenLabel"
+        );
+
+    const animalsInput =
+        document.getElementById(
+            "huntJournalAnimalsSeen"
+        );
+
+    const sexLabel =
+        document.getElementById(
+            "huntJournalSexLabel"
+        );
+
+    const sexSelect =
+        document.getElementById(
+            "huntJournalSex"
+        );
+
+    const ageField =
+        document.getElementById(
+            "huntJournalEstimatedAgeField"
+        );
+
+    const ageLabel =
+        document.getElementById(
+            "huntJournalEstimatedAgeLabel"
+        );
+
+    const movementLabel =
+        document.getElementById(
+            "huntJournalMovementDirectionLabel"
+        );
+
+    const behaviorLabel =
+        document.getElementById(
+            "huntJournalBehaviorLabel"
+        );
+
+    const behaviorInput =
+        document.getElementById(
+            "huntJournalBehavior"
+        );
+
+    const distanceLabel =
+        document.getElementById(
+            "huntJournalDistanceLabel"
+        );
+
+
+    const setSexOptions =
+        function (
+            label,
+            options
+        ) {
+
+            if (sexLabel) {
+                sexLabel.textContent =
+                    label;
+            }
+
+
+            if (!sexSelect) {
+                return;
+            }
+
+
+            const previousValue =
+                sexSelect.value;
+
+
+            sexSelect.innerHTML =
+                '<option value="">Select</option>';
+
+
+            options.forEach(
+                function (option) {
+
+                    const element =
+                        document.createElement(
+                            "option"
+                        );
+
+                    element.value =
+                        option;
+
+                    element.textContent =
+                        option;
+
+                    sexSelect.appendChild(
+                        element
+                    );
+                }
+            );
+
+
+            if (
+                options.includes(
+                    previousValue
+                )
+            ) {
+
+                sexSelect.value =
+                    previousValue;
+            }
+        };
+
+
+    /*
+     * DEFAULT / GENERIC
+     */
+
+    if (animalsLabel) {
+        animalsLabel.textContent =
+            "Animals Seen";
+    }
+
+    if (animalsInput) {
+        animalsInput.placeholder =
+            "Species / description";
+    }
+
+    if (ageField) {
+        ageField.style.display =
+            "";
+    }
+
+    if (ageLabel) {
+        ageLabel.textContent =
+            "Estimated Age";
+    }
+
+    if (movementLabel) {
+        movementLabel.textContent =
+            "Movement Direction";
+    }
+
+    if (behaviorLabel) {
+        behaviorLabel.textContent =
+            "Behavior";
+    }
+
+    if (behaviorInput) {
+        behaviorInput.placeholder =
+            "Feeding, traveling, chasing...";
+    }
+
+    if (distanceLabel) {
+        distanceLabel.textContent =
+            "Distance";
+    }
+
+
+    setSexOptions(
+        "Sex",
+        [
+            "Male",
+            "Female",
+            "Mixed",
+            "Unknown"
+        ]
+    );
+
+
+    /*
+     * WHITETAIL DEER
+     */
+
+    if (
+        species ===
+        "Whitetail Deer"
+    ) {
+
+        if (animalsLabel) {
+            animalsLabel.textContent =
+                "Deer Seen";
+        }
+
+        if (animalsInput) {
+            animalsInput.placeholder =
+                "Buck, doe, fawn, description...";
+        }
+
+        setSexOptions(
+            "Buck / Doe",
+            [
+                "Buck",
+                "Doe",
+                "Mixed",
+                "Unknown"
+            ]
+        );
+
+        if (ageLabel) {
+            ageLabel.textContent =
+                "Estimated Age";
+        }
+
+        if (behaviorInput) {
+            behaviorInput.placeholder =
+                "Feeding, traveling, chasing, bedding...";
+        }
+
+        return;
+    }
+
+
+    /*
+     * TURKEY
+     */
+
+    if (
+        species ===
+        "Turkey"
+    ) {
+
+        if (animalsLabel) {
+            animalsLabel.textContent =
+                "Turkeys Seen";
+        }
+
+        if (animalsInput) {
+            animalsInput.placeholder =
+                "Tom, jake, hen, flock...";
+        }
+
+        setSexOptions(
+            "Tom / Hen",
+            [
+                "Tom",
+                "Jake",
+                "Hen",
+                "Mixed",
+                "Unknown"
+            ]
+        );
+
+        if (ageLabel) {
+            ageLabel.textContent =
+                "Estimated Age";
+        }
+
+        if (movementLabel) {
+            movementLabel.textContent =
+                "Travel Direction";
+        }
+
+        if (behaviorInput) {
+            behaviorInput.placeholder =
+                "Gobbling, feeding, strutting, traveling...";
+        }
+
+        return;
+    }
+
+
+    /*
+     * BLACK BEAR
+     */
+
+    if (
+        species ===
+        "Black Bear"
+    ) {
+
+        if (animalsLabel) {
+            animalsLabel.textContent =
+                "Bears Seen";
+        }
+
+        if (animalsInput) {
+            animalsInput.placeholder =
+                "Bear description";
+        }
+
+        setSexOptions(
+            "Boar / Sow",
+            [
+                "Boar",
+                "Sow",
+                "Unknown"
+            ]
+        );
+
+        if (behaviorInput) {
+            behaviorInput.placeholder =
+                "Feeding, traveling, cautious, aggressive...";
+        }
+
+        return;
+    }
+
+
+    /*
+     * WATERFOWL
+     */
+
+    if (
+        species ===
+        "Waterfowl"
+    ) {
+
+        if (animalsLabel) {
+            animalsLabel.textContent =
+                "Birds / Flocks Seen";
+        }
+
+        if (animalsInput) {
+            animalsInput.placeholder =
+                "Species, flock size, description...";
+        }
+
+        setSexOptions(
+            "Drake / Hen",
+            [
+                "Drake",
+                "Hen",
+                "Mixed",
+                "Unknown"
+            ]
+        );
+
+        if (ageField) {
+            ageField.style.display =
+                "none";
+        }
+
+        if (movementLabel) {
+            movementLabel.textContent =
+                "Flight Direction";
+        }
+
+        if (behaviorInput) {
+            behaviorInput.placeholder =
+                "Passing, circling, committing, landing...";
+        }
+
+        return;
+    }
+
+
+    /*
+     * SMALL GAME
+     */
+
+    if (
+        species ===
+        "Small Game"
+    ) {
+
+        if (animalsLabel) {
+            animalsLabel.textContent =
+                "Small Game Seen";
+        }
+
+        if (animalsInput) {
+            animalsInput.placeholder =
+                "Rabbit, squirrel, grouse...";
+        }
+
+        if (ageField) {
+            ageField.style.display =
+                "none";
+        }
+
+        if (behaviorInput) {
+            behaviorInput.placeholder =
+                "Feeding, moving, flushing, stationary...";
+        }
+
+        return;
+    }
+
+
+    /*
+     * COYOTE / OTHER PREDATOR
+     */
+
+    if (
+        species === "Coyote" ||
+        species === "Predator"
+    ) {
+
+        if (animalsLabel) {
+            animalsLabel.textContent =
+                "Predators Seen";
+        }
+
+        if (animalsInput) {
+            animalsInput.placeholder =
+                "Species / description";
+        }
+
+        if (ageField) {
+            ageField.style.display =
+                "none";
+        }
+
+        if (behaviorInput) {
+            behaviorInput.placeholder =
+                "Traveling, calling, circling, responding...";
+        }
+
+        return;
+    }
+},
 
 weatherCodeName(
     code
