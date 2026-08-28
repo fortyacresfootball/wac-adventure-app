@@ -13,6 +13,8 @@ window.HuntJournal = {
 
            await this.populateLocations();
 
+await this.loadCurrentWeather();
+
 this.prefillFromHuntBoard();
 
             this.bindEvents();
@@ -269,112 +271,398 @@ this.prefillFromHuntBoard();
         }
     },
 
+    async loadCurrentWeather() {
 
-    prefillFromHuntBoard() {
-
-        const huntBoard =
-            this.data &&
-            this.data.huntBoard
-                ? this.data.huntBoard
-                : null;
-
-
-        if (!huntBoard) {
-            return;
-        }
+    const huntBoard =
+        this.data &&
+        this.data.huntBoard
+            ? this.data.huntBoard
+            : null;
 
 
-        const weather =
-            huntBoard.weather || null;
+    if (!huntBoard) {
+        return;
+    }
 
 
-        if (weather) {
-
-            const temperature =
-                document.getElementById(
-                    "huntJournalTemperature"
-                );
-
-            const windDirection =
-                document.getElementById(
-                    "huntJournalWindDirection"
-                );
-
-            const windSpeed =
-                document.getElementById(
-                    "huntJournalWindSpeed"
-                );
+    const locations =
+        Array.isArray(
+            huntBoard.locations
+        )
+            ? huntBoard.locations
+            : [];
 
 
-            if (
-                temperature &&
-                Number.isFinite(
-                    Number(
-                        weather.temperature_2m
-                    )
-                )
-            ) {
-
-                temperature.value =
-                    Math.round(
-                        Number(
-                            weather.temperature_2m
-                        )
-                    ) +
-                    "°F";
-            }
+    if (
+        locations.length === 0
+    ) {
+        return;
+    }
 
 
-            if (
-                windDirection &&
-                Number.isFinite(
-                    Number(
-                        weather.wind_direction_10m
-                    )
-                )
-            ) {
+    const locationSelect =
+        document.getElementById(
+            "huntJournalLocation"
+        );
 
-                windDirection.value =
-                    this.windDirectionName(
-                        Number(
-                            weather.wind_direction_10m
+
+    let selectedLocation =
+        null;
+
+
+    if (
+        locationSelect &&
+        locationSelect.value
+    ) {
+
+        selectedLocation =
+            locations.find(
+                location => {
+
+                    return (
+                        String(
+                            location[
+                                "Location ID"
+                            ] || ""
+                        ).trim() ===
+                        locationSelect.value
+                    );
+                }
+            );
+    }
+
+
+    if (!selectedLocation) {
+
+        selectedLocation =
+            locations.find(
+                function (location) {
+
+                    const latitude =
+                        parseFloat(
+                            location[
+                                "Latitude"
+                            ]
+                        );
+
+                    const longitude =
+                        parseFloat(
+                            location[
+                                "Longitude"
+                            ]
+                        );
+
+
+                    return (
+                        Number.isFinite(
+                            latitude
+                        ) &&
+                        Number.isFinite(
+                            longitude
                         )
                     );
-            }
+                }
+            );
+    }
 
 
-            if (
-                windSpeed &&
-                Number.isFinite(
-                    Number(
-                        weather.wind_speed_10m
-                    )
-                )
-            ) {
-
-                windSpeed.value =
-                    Math.round(
-                        Number(
-                            weather.wind_speed_10m
-                        )
-                    ) +
-                    " mph";
-            }
-        }
+    if (!selectedLocation) {
+        return;
+    }
 
 
-        const moonPhase =
-            document.getElementById(
-                "huntJournalMoonPhase"
+    const latitude =
+        parseFloat(
+            selectedLocation[
+                "Latitude"
+            ]
+        );
+
+    const longitude =
+        parseFloat(
+            selectedLocation[
+                "Longitude"
+            ]
+        );
+
+
+    if (
+        !Number.isFinite(
+            latitude
+        ) ||
+        !Number.isFinite(
+            longitude
+        )
+    ) {
+        return;
+    }
+
+
+    const url =
+        "https://api.open-meteo.com/v1/forecast" +
+        "?latitude=" +
+        encodeURIComponent(
+            latitude
+        ) +
+        "&longitude=" +
+        encodeURIComponent(
+            longitude
+        ) +
+        "&current=" +
+        [
+            "temperature_2m",
+            "precipitation",
+            "weather_code",
+            "surface_pressure",
+            "wind_speed_10m",
+            "wind_direction_10m"
+        ].join(",") +
+        "&temperature_unit=fahrenheit" +
+        "&wind_speed_unit=mph" +
+        "&precipitation_unit=inch" +
+        "&timezone=auto";
+
+
+    try {
+
+        const response =
+            await fetch(
+                url
             );
 
 
-        if (moonPhase) {
+        if (!response.ok) {
 
-            moonPhase.value =
-                this.getMoonPhaseName();
+            throw new Error(
+                "Current weather could not be loaded."
+            );
         }
-    },
+
+
+        const weatherData =
+            await response.json();
+
+
+        this.data.huntBoard.weather =
+            weatherData.current ||
+            null;
+
+
+    } catch (error) {
+
+        console.warn(
+            "Journal weather could not be loaded:",
+            error
+        );
+    }
+},
+
+    prefillFromHuntBoard() {
+
+    const huntBoard =
+        this.data &&
+        this.data.huntBoard
+            ? this.data.huntBoard
+            : null;
+
+
+    if (!huntBoard) {
+        return;
+    }
+
+
+    const weather =
+        huntBoard.weather || null;
+
+
+    if (weather) {
+
+        const weatherElement =
+            document.getElementById(
+                "huntJournalWeather"
+            );
+
+        const temperature =
+            document.getElementById(
+                "huntJournalTemperature"
+            );
+
+        const windDirection =
+            document.getElementById(
+                "huntJournalWindDirection"
+            );
+
+        const windSpeed =
+            document.getElementById(
+                "huntJournalWindSpeed"
+            );
+
+        const pressure =
+            document.getElementById(
+                "huntJournalPressure"
+            );
+
+        const precipitation =
+            document.getElementById(
+                "huntJournalPrecipitation"
+            );
+
+
+        if (
+            weatherElement &&
+            Number.isFinite(
+                Number(
+                    weather.weather_code
+                )
+            )
+        ) {
+
+            weatherElement.value =
+                this.weatherCodeName(
+                    Number(
+                        weather.weather_code
+                    )
+                );
+        }
+
+
+        if (
+            temperature &&
+            Number.isFinite(
+                Number(
+                    weather.temperature_2m
+                )
+            )
+        ) {
+
+            temperature.value =
+                Math.round(
+                    Number(
+                        weather.temperature_2m
+                    )
+                ) +
+                "°F";
+        }
+
+
+        if (
+            windDirection &&
+            Number.isFinite(
+                Number(
+                    weather.wind_direction_10m
+                )
+            )
+        ) {
+
+            windDirection.value =
+                this.windDirectionName(
+                    Number(
+                        weather.wind_direction_10m
+                    )
+                );
+        }
+
+
+        if (
+            windSpeed &&
+            Number.isFinite(
+                Number(
+                    weather.wind_speed_10m
+                )
+            )
+        ) {
+
+            windSpeed.value =
+                Math.round(
+                    Number(
+                        weather.wind_speed_10m
+                    )
+                ) +
+                " mph";
+        }
+
+
+        if (
+            pressure &&
+            Number.isFinite(
+                Number(
+                    weather.surface_pressure
+                )
+            )
+        ) {
+
+            const inchesHg =
+                Number(
+                    weather.surface_pressure
+                ) *
+                0.02953;
+
+
+            pressure.value =
+                inchesHg.toFixed(
+                    2
+                ) +
+                " inHg";
+        }
+
+
+        if (
+            precipitation &&
+            Number.isFinite(
+                Number(
+                    weather.precipitation
+                )
+            )
+        ) {
+
+            const amount =
+                Number(
+                    weather.precipitation
+                );
+
+
+            if (
+                amount <= 0
+            ) {
+
+                precipitation.value =
+                    "";
+
+            } else if (
+                amount < 0.05
+            ) {
+
+                precipitation.value =
+                    "Light";
+
+            } else if (
+                amount < 0.20
+            ) {
+
+                precipitation.value =
+                    "Moderate";
+
+            } else {
+
+                precipitation.value =
+                    "Heavy";
+            }
+        }
+    }
+
+
+    const moonPhase =
+        document.getElementById(
+            "huntJournalMoonPhase"
+        );
+
+
+    if (moonPhase) {
+
+        moonPhase.value =
+            this.getMoonPhaseName();
+    }
+},
 
 
     bindEvents() {
@@ -389,6 +677,24 @@ this.prefillFromHuntBoard();
                 "huntJournalClearButton"
             );
 
+            const locationSelect =
+    document.getElementById(
+        "huntJournalLocation"
+    );
+
+
+if (locationSelect) {
+
+    locationSelect.addEventListener(
+        "change",
+        async () => {
+
+            await this.loadCurrentWeather();
+
+            this.prefillFromHuntBoard();
+        }
+    );
+}
 
         if (saveButton) {
 
@@ -749,9 +1055,115 @@ this.prefillFromHuntBoard();
 
         await this.populateLocations();
 
+await this.loadCurrentWeather();
+
 this.prefillFromHuntBoard();
+
     },
 
+weatherCodeName(
+    code
+) {
+
+    if (
+        code === 0
+    ) {
+
+        return "Clear";
+    }
+
+
+    if (
+        [
+            1,
+            2
+        ].includes(
+            code
+        )
+    ) {
+
+        return "Partly Cloudy";
+    }
+
+
+    if (
+        code === 3
+    ) {
+
+        return "Cloudy";
+    }
+
+
+    if (
+        [
+            45,
+            48
+        ].includes(
+            code
+        )
+    ) {
+
+        return "Fog";
+    }
+
+
+    if (
+        [
+            51,
+            53,
+            55,
+            56,
+            57,
+            61,
+            63,
+            65,
+            66,
+            67,
+            80,
+            81,
+            82
+        ].includes(
+            code
+        )
+    ) {
+
+        return "Rain";
+    }
+
+
+    if (
+        [
+            71,
+            73,
+            75,
+            77,
+            85,
+            86
+        ].includes(
+            code
+        )
+    ) {
+
+        return "Snow";
+    }
+
+
+    if (
+        [
+            95,
+            96,
+            99
+        ].includes(
+            code
+        )
+    ) {
+
+        return "Storm";
+    }
+
+
+    return "Other";
+},
 
     windDirectionName(
         degrees
