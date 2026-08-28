@@ -1,0 +1,1330 @@
+<section class="hunt-journal-page">
+
+    <style>
+
+        .hunt-journal-page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 22px 18px 48px;
+            color: #2f3428;
+        }
+
+        .hunt-journal-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 22px;
+            padding: 30px;
+            margin-bottom: 20px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(45, 57, 35, 0.98),
+                    rgba(76, 91, 58, 0.96)
+                );
+            color: white;
+            box-shadow:
+                0 12px 30px
+                rgba(0, 0, 0, 0.18);
+        }
+
+        .hunt-journal-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            opacity: 0.72;
+            margin-bottom: 7px;
+        }
+
+        .hunt-journal-title {
+            margin: 0;
+            font-size: clamp(
+                2.1rem,
+                5vw,
+                3.5rem
+            );
+            line-height: 1;
+            font-weight: 900;
+        }
+
+        .hunt-journal-subtitle {
+            margin: 10px 0 0;
+            max-width: 760px;
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.82
+                );
+            font-size: 1rem;
+        }
+
+        .hunt-journal-shell {
+            background:
+                linear-gradient(
+                    180deg,
+                    #d9c8a0,
+                    #cbb68b
+                );
+            border:
+                1px solid #aa946d;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow:
+                0 12px 30px
+                rgba(0, 0, 0, 0.13);
+        }
+
+        .hunt-journal-topbar {
+            padding: 18px 22px;
+            background: #394a2f;
+            color: #f6f1e4;
+            border-bottom:
+                4px solid #6c5536;
+        }
+
+        .hunt-journal-topbar-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+        }
+
+        .hunt-journal-topbar-subtitle {
+            margin-top: 3px;
+            color: rgba(
+                255,
+                255,
+                255,
+                0.72
+            );
+            font-size: 0.84rem;
+        }
+
+        .hunt-journal-body {
+            padding: 22px;
+        }
+
+        .hunt-journal-section {
+            margin-bottom: 22px;
+            border:
+                1px solid
+                rgba(
+                    73,
+                    59,
+                    36,
+                    0.32
+                );
+            border-radius: 16px;
+            overflow: hidden;
+            background:
+                rgba(
+                    255,
+                    252,
+                    241,
+                    0.58
+                );
+        }
+
+        .hunt-journal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .hunt-journal-section-heading {
+            padding: 13px 16px;
+            background: #4a5c3b;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .hunt-journal-section-body {
+            padding: 18px;
+        }
+
+        .hunt-journal-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(0, 1fr)
+                );
+            gap: 14px;
+        }
+
+        .hunt-journal-grid.two-column {
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+        }
+
+        .hunt-journal-field {
+            min-width: 0;
+        }
+
+        .hunt-journal-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .hunt-journal-field label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.76rem;
+            font-weight: 900;
+            color: #4b4a3a;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .hunt-journal-field input,
+        .hunt-journal-field select,
+        .hunt-journal-field textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border:
+                1px solid #a89572;
+            border-radius: 9px;
+            padding: 11px 12px;
+            background:
+                rgba(
+                    255,
+                    253,
+                    244,
+                    0.94
+                );
+            color: #2d3028;
+            font: inherit;
+            outline: none;
+        }
+
+        .hunt-journal-field input:focus,
+        .hunt-journal-field select:focus,
+        .hunt-journal-field textarea:focus {
+            border-color: #536644;
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    83,
+                    102,
+                    68,
+                    0.14
+                );
+        }
+
+        .hunt-journal-field textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .hunt-journal-field textarea.large {
+            min-height: 170px;
+        }
+
+        .hunt-journal-hint {
+            margin-top: 5px;
+            font-size: 0.74rem;
+            color: #756a54;
+        }
+
+        .hunt-journal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 22px;
+        }
+
+        .hunt-journal-button {
+            border: 0;
+            border-radius: 11px;
+            padding: 13px 20px;
+            font: inherit;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .hunt-journal-button.primary {
+            background: #394f32;
+            color: white;
+        }
+
+        .hunt-journal-button.secondary {
+            background: #806a48;
+            color: white;
+        }
+
+        .hunt-journal-message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 14px 16px;
+            border-radius: 11px;
+            font-weight: 700;
+        }
+
+        .hunt-journal-message.error {
+            background: #f6dfd8;
+            color: #7b352c;
+            border:
+                1px solid #d7a99e;
+        }
+
+        .hunt-journal-message.success {
+            background: #e3ebda;
+            color: #36502e;
+            border:
+                1px solid #adc19f;
+        }
+
+        .hunt-journal-divider {
+            height: 1px;
+            background:
+                rgba(
+                    73,
+                    59,
+                    36,
+                    0.22
+                );
+            margin: 16px 0;
+        }
+
+        @media (
+            max-width: 900px
+        ) {
+
+            .hunt-journal-grid {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(0, 1fr)
+                    );
+            }
+
+            .hunt-journal-grid.two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (
+            max-width: 520px
+        ) {
+
+            .hunt-journal-page {
+                padding:
+                    14px 12px 36px;
+            }
+
+            .hunt-journal-hero {
+                padding: 22px 18px;
+                border-radius: 17px;
+            }
+
+            .hunt-journal-body {
+                padding: 14px;
+            }
+
+            .hunt-journal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hunt-journal-actions {
+                flex-direction: column;
+            }
+
+            .hunt-journal-button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+
+    <div class="hunt-journal-hero">
+
+        <div class="hunt-journal-eyebrow">
+            WAC Hunting Club
+        </div>
+
+        <h1 class="hunt-journal-title">
+            Hunting Journal
+        </h1>
+
+        <p class="hunt-journal-subtitle">
+            Record the conditions, activity, decisions and results
+            from each hunt.
+        </p>
+
+    </div>
+
+
+    <div
+        class="hunt-journal-message error"
+        id="huntJournalError"
+    ></div>
+
+    <div
+        class="hunt-journal-message success"
+        id="huntJournalSuccess"
+    ></div>
+
+
+    <div class="hunt-journal-shell">
+
+        <div class="hunt-journal-topbar">
+
+            <div class="hunt-journal-topbar-title">
+                New Journal Entry
+            </div>
+
+            <div class="hunt-journal-topbar-subtitle">
+                Build a complete record of the hunt
+            </div>
+
+        </div>
+
+
+        <div class="hunt-journal-body">
+
+
+            <!-- HUNT DETAILS -->
+
+            <div class="hunt-journal-section">
+
+                <div class="hunt-journal-section-heading">
+                    Hunt Details
+                </div>
+
+                <div class="hunt-journal-section-body">
+
+                    <div class="hunt-journal-grid">
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalDate">
+                                Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="huntJournalDate"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalStartTime">
+                                Start Time
+                            </label>
+
+                            <input
+                                type="time"
+                                id="huntJournalStartTime"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalEndTime">
+                                End Time
+                            </label>
+
+                            <input
+                                type="time"
+                                id="huntJournalEndTime"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalHuntType">
+                                Hunt Type
+                            </label>
+
+                            <select id="huntJournalHuntType">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Morning Sit">
+                                    Morning Sit
+                                </option>
+
+                                <option value="Evening Sit">
+                                    Evening Sit
+                                </option>
+
+                                <option value="All Day">
+                                    All Day
+                                </option>
+
+                                <option value="Still Hunt">
+                                    Still Hunt
+                                </option>
+
+                                <option value="Spot and Stalk">
+                                    Spot and Stalk
+                                </option>
+
+                                <option value="Scouting">
+                                    Scouting
+                                </option>
+
+                                <option value="Tracking">
+                                    Tracking
+                                </option>
+
+                                <option value="Property Work">
+                                    Property Work
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalSpecies">
+                                Game Species
+                            </label>
+
+                            <select id="huntJournalSpecies">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Whitetail Deer">
+                                    Whitetail Deer
+                                </option>
+
+                                <option value="Turkey">
+                                    Turkey
+                                </option>
+
+                                <option value="Black Bear">
+                                    Black Bear
+                                </option>
+
+                                <option value="Waterfowl">
+                                    Waterfowl
+                                </option>
+
+                                <option value="Small Game">
+                                    Small Game
+                                </option>
+
+                                <option value="Coyote">
+                                    Coyote
+                                </option>
+
+                                <option value="Predator">
+                                    Other Predator
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalLocation">
+                                Location
+                            </label>
+
+                            <select id="huntJournalLocation">
+
+                                <option value="">
+                                    Select Location
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalCoHunters">
+                                Hunting Partners
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalCoHunters"
+                                placeholder="Optional"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalWeapon">
+                                Weapon
+                            </label>
+
+                            <select id="huntJournalWeapon">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Compound Bow">
+                                    Compound Bow
+                                </option>
+
+                                <option value="Crossbow">
+                                    Crossbow
+                                </option>
+
+                                <option value="Rifle">
+                                    Rifle
+                                </option>
+
+                                <option value="Shotgun">
+                                    Shotgun
+                                </option>
+
+                                <option value="Muzzleloader">
+                                    Muzzleloader
+                                </option>
+
+                                <option value="Handgun">
+                                    Handgun
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONDITIONS -->
+
+            <div class="hunt-journal-section">
+
+                <div class="hunt-journal-section-heading">
+                    Conditions
+                </div>
+
+                <div class="hunt-journal-section-body">
+
+                    <div class="hunt-journal-grid">
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalWeather">
+                                Weather
+                            </label>
+
+                            <select id="huntJournalWeather">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Clear">
+                                    Clear
+                                </option>
+
+                                <option value="Partly Cloudy">
+                                    Partly Cloudy
+                                </option>
+
+                                <option value="Cloudy">
+                                    Cloudy
+                                </option>
+
+                                <option value="Rain">
+                                    Rain
+                                </option>
+
+                                <option value="Snow">
+                                    Snow
+                                </option>
+
+                                <option value="Fog">
+                                    Fog
+                                </option>
+
+                                <option value="Storm">
+                                    Storm
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalTemperature">
+                                Temperature
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalTemperature"
+                                placeholder="Example: 42°F"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalWindDirection">
+                                Wind Direction
+                            </label>
+
+                            <select id="huntJournalWindDirection">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option>N</option>
+                                <option>NE</option>
+                                <option>E</option>
+                                <option>SE</option>
+                                <option>S</option>
+                                <option>SW</option>
+                                <option>W</option>
+                                <option>NW</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalWindSpeed">
+                                Wind Speed
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalWindSpeed"
+                                placeholder="Example: 8 mph"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalMoonPhase">
+                                Moon Phase
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalMoonPhase"
+                                placeholder="Auto-fill later"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalPressure">
+                                Pressure
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalPressure"
+                                placeholder="Example: 30.12"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalPrecipitation">
+                                Precipitation
+                            </label>
+
+                            <select id="huntJournalPrecipitation">
+
+                                <option value="">
+                                    None
+                                </option>
+
+                                <option value="Light">
+                                    Light
+                                </option>
+
+                                <option value="Moderate">
+                                    Moderate
+                                </option>
+
+                                <option value="Heavy">
+                                    Heavy
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalTerrain">
+                                Terrain
+                            </label>
+
+                            <select id="huntJournalTerrain">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Hardwoods">
+                                    Hardwoods
+                                </option>
+
+                                <option value="Marsh">
+                                    Marsh
+                                </option>
+
+                                <option value="Field Edge">
+                                    Field Edge
+                                </option>
+
+                                <option value="Food Plot">
+                                    Food Plot
+                                </option>
+
+                                <option value="Thick Cover">
+                                    Thick Cover
+                                </option>
+
+                                <option value="Open Field">
+                                    Open Field
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HUNT SETUP -->
+
+            <div class="hunt-journal-section">
+
+                <div class="hunt-journal-section-heading">
+                    Hunt Setup
+                </div>
+
+                <div class="hunt-journal-section-body">
+
+                    <div class="hunt-journal-grid two-column">
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalAmmunition">
+                                Ammunition / Load
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalAmmunition"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalAccessRoute">
+                                Access Route
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalAccessRoute"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field full">
+
+                            <label for="huntJournalTargetArea">
+                                Expected Target Area
+                            </label>
+
+                            <textarea
+                                id="huntJournalTargetArea"
+                                placeholder="Where did you expect game to appear and why?"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- GAME ACTIVITY -->
+
+            <div class="hunt-journal-section">
+
+                <div class="hunt-journal-section-heading">
+                    Game Activity
+                </div>
+
+                <div class="hunt-journal-section-body">
+
+                    <div class="hunt-journal-grid">
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalAnimalsSeen">
+                                Animals Seen
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalAnimalsSeen"
+                                placeholder="Species / description"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalQuantity">
+                                Quantity
+                            </label>
+
+                            <input
+                                type="number"
+                                min="0"
+                                id="huntJournalQuantity"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalSex">
+                                Sex
+                            </label>
+
+                            <select id="huntJournalSex">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Mixed">
+                                    Mixed
+                                </option>
+
+                                <option value="Unknown">
+                                    Unknown
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalEstimatedAge">
+                                Estimated Age
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalEstimatedAge"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalMovementDirection">
+                                Movement Direction
+                            </label>
+
+                            <select id="huntJournalMovementDirection">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option>N</option>
+                                <option>NE</option>
+                                <option>E</option>
+                                <option>SE</option>
+                                <option>S</option>
+                                <option>SW</option>
+                                <option>W</option>
+                                <option>NW</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalDistance">
+                                Distance
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalDistance"
+                                placeholder="Example: 55 yards"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalShotOpportunity">
+                                Shot Opportunity
+                            </label>
+
+                            <select id="huntJournalShotOpportunity">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="No">
+                                    No
+                                </option>
+
+                                <option value="Yes - Took Shot">
+                                    Yes - Took Shot
+                                </option>
+
+                                <option value="Yes - Passed">
+                                    Yes - Passed
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalBehavior">
+                                Behavior
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalBehavior"
+                                placeholder="Feeding, traveling, chasing..."
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESULT -->
+
+            <div class="hunt-journal-section">
+
+                <div class="hunt-journal-section-heading">
+                    Result
+                </div>
+
+                <div class="hunt-journal-section-body">
+
+                    <div class="hunt-journal-grid">
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalResult">
+                                Hunt Result
+                            </label>
+
+                            <select id="huntJournalResult">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="No Harvest">
+                                    No Harvest
+                                </option>
+
+                                <option value="Harvest">
+                                    Harvest
+                                </option>
+
+                                <option value="Miss">
+                                    Miss
+                                </option>
+
+                                <option value="Passed Shot">
+                                    Passed Shot
+                                </option>
+
+                                <option value="No Shot">
+                                    No Shot
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalAnimalHarvested">
+                                Animal Harvested
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalAnimalHarvested"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalShotDistance">
+                                Shot Distance
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalShotDistance"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalRecoveryDistance">
+                                Recovery Distance
+                            </label>
+
+                            <input
+                                type="text"
+                                id="huntJournalRecoveryDistance"
+                            >
+
+                        </div>
+
+
+                        <div class="hunt-journal-field full">
+
+                            <label for="huntJournalTrackingNotes">
+                                Tracking / Recovery Notes
+                            </label>
+
+                            <textarea
+                                id="huntJournalTrackingNotes"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STRATEGY -->
+
+            <div class="hunt-journal-section">
+
+                <div class="hunt-journal-section-heading">
+                    Strategy & Lessons
+                </div>
+
+                <div class="hunt-journal-section-body">
+
+                    <div class="hunt-journal-grid two-column">
+
+                        <div class="hunt-journal-field full">
+
+                            <label for="huntJournalStrategy">
+                                What Was The Plan?
+                            </label>
+
+                            <textarea
+                                id="huntJournalStrategy"
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalWhatWorked">
+                                What Worked?
+                            </label>
+
+                            <textarea
+                                id="huntJournalWhatWorked"
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field">
+
+                            <label for="huntJournalWhatDidNotWork">
+                                What Did Not Work?
+                            </label>
+
+                            <textarea
+                                id="huntJournalWhatDidNotWork"
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="hunt-journal-field full">
+
+                            <label for="huntJournalNextTime">
+                                What Would You Change Next Time?
+                            </label>
+
+                            <textarea
+                                id="huntJournalNextTime"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTES -->
+
+            <div class="hunt-journal-section">
+
+                <div class="hunt-journal-section-heading">
+                    Field Notes
+                </div>
+
+                <div class="hunt-journal-section-body">
+
+                    <div class="hunt-journal-field">
+
+                        <label for="huntJournalNotes">
+                            Journal Notes
+                        </label>
+
+                        <textarea
+                            class="large"
+                            id="huntJournalNotes"
+                            placeholder="Anything else worth remembering from this hunt..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="hunt-journal-actions">
+
+                <button
+                    type="button"
+                    class="hunt-journal-button secondary"
+                    id="huntJournalClearButton"
+                >
+                    Clear Entry
+                </button>
+
+                <button
+                    type="button"
+                    class="hunt-journal-button primary"
+                    id="huntJournalSaveButton"
+                >
+                    Save Journal Entry
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

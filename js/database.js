@@ -153,6 +153,29 @@ async huntCheckOut() {
     );
 },
 
+//--------------------------------------------------
+// Hunt Journal
+//--------------------------------------------------
+
+async getHuntJournal() {
+
+    return await this.authenticatedPost(
+        "getHuntJournal"
+    );
+},
+
+async saveHuntJournalEntry(
+    entry
+) {
+
+    return await this.authenticatedPost(
+        "saveHuntJournalEntry",
+        {
+            entry
+        }
+    );
+},
+
     //--------------------------------------------------
     // Members
     //--------------------------------------------------
