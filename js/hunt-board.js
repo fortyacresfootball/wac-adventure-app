@@ -70,6 +70,7 @@ this.renderCheckInStatus();
 this.renderHunters();
 this.updateHunterCount();
 this.renderSeason();
+this.renderMoonPhase();
 
 await this.loadGoogleMaps();
 
@@ -892,6 +893,508 @@ if (!isHuntingSeason) {
                 }
             )
             .join(" / ");
+},
+
+renderMoonPhase() {
+
+    const visual =
+        document.getElementById(
+            "huntMoonVisual"
+        );
+
+    const phaseElement =
+        document.getElementById(
+            "huntMoonPhase"
+        );
+
+    const illuminationElement =
+        document.getElementById(
+            "huntMoonIllumination"
+        );
+
+
+    if (
+        !visual ||
+        !phaseElement ||
+        !illuminationElement
+    ) {
+        return;
+    }
+
+
+    //--------------------------------------------------
+    // Lunar Cycle
+    //--------------------------------------------------
+
+    const lunarCycleDays =
+        29.53058867;
+
+    const knownNewMoon =
+        new Date(
+            Date.UTC(
+                2000,
+                0,
+                6,
+                18,
+                14,
+                0
+            )
+        );
+
+    const now =
+        new Date();
+
+    const daysSinceKnownNewMoon =
+        (
+            now.getTime() -
+            knownNewMoon.getTime()
+        ) /
+        86400000;
+
+    const moonAge =
+        (
+            (
+                daysSinceKnownNewMoon %
+                lunarCycleDays
+            ) +
+            lunarCycleDays
+        ) %
+        lunarCycleDays;
+
+    const phaseFraction =
+        moonAge /
+        lunarCycleDays;
+
+
+    //--------------------------------------------------
+    // Illumination
+    //--------------------------------------------------
+
+    const illumination =
+        (
+            1 -
+            Math.cos(
+                2 *
+                Math.PI *
+                phaseFraction
+            )
+        ) /
+        2;
+
+    const illuminationPercent =
+        Math.round(
+            illumination * 100
+        );
+
+
+    //--------------------------------------------------
+    // Phase Name
+    //--------------------------------------------------
+
+    let phaseName =
+        "New Moon";
+
+    if (
+        phaseFraction < 0.0625 ||
+        phaseFraction >= 0.9375
+    ) {
+
+        phaseName =
+            "New Moon";
+
+    } else if (
+        phaseFraction < 0.1875
+    ) {
+
+        phaseName =
+            "Waxing Crescent";
+
+    } else if (
+        phaseFraction < 0.3125
+    ) {
+
+        phaseName =
+            "First Quarter";
+
+    } else if (
+        phaseFraction < 0.4375
+    ) {
+
+        phaseName =
+            "Waxing Gibbous";
+
+    } else if (
+        phaseFraction < 0.5625
+    ) {
+
+        phaseName =
+            "Full Moon";
+
+    } else if (
+        phaseFraction < 0.6875
+    ) {
+
+        phaseName =
+            "Waning Gibbous";
+
+    } else if (
+        phaseFraction < 0.8125
+    ) {
+
+        phaseName =
+            "Last Quarter";
+
+    } else {
+
+        phaseName =
+            "Waning Crescent";
+    }
+
+
+    //--------------------------------------------------
+    // Draw Realistic Moon Phase
+    //--------------------------------------------------
+
+    visual.innerHTML =
+        "";
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+    canvas.width =
+        184;
+
+    canvas.height =
+        184;
+
+    canvas.style.width =
+        "92px";
+
+    canvas.style.height =
+        "92px";
+
+    canvas.style.display =
+        "block";
+
+    canvas.style.position =
+        "relative";
+
+    canvas.style.zIndex =
+        "2";
+
+
+    const context =
+        canvas.getContext(
+            "2d"
+        );
+
+    if (!context) {
+        return;
+    }
+
+
+    const width =
+        canvas.width;
+
+    const height =
+        canvas.height;
+
+    const radius =
+        width / 2;
+
+    const centerX =
+        radius;
+
+    const centerY =
+        radius;
+
+    const image =
+        context.createImageData(
+            width,
+            height
+        );
+
+
+    //--------------------------------------------------
+    // Sun Direction
+    //
+    // New Moon = light behind Moon
+    // Full Moon = light facing observer
+    //--------------------------------------------------
+
+    const phaseAngle =
+        phaseFraction *
+        Math.PI *
+        2;
+
+    const sunX =
+        Math.sin(
+            phaseAngle
+        );
+
+    const sunZ =
+        -Math.cos(
+            phaseAngle
+        );
+
+
+    for (
+        let y = 0;
+        y < height;
+        y += 1
+    ) {
+
+        for (
+            let x = 0;
+            x < width;
+            x += 1
+        ) {
+
+            const normalizedX =
+                (
+                    x -
+                    centerX
+                ) /
+                radius;
+
+            const normalizedY =
+                (
+                    y -
+                    centerY
+                ) /
+                radius;
+
+            const distanceSquared =
+                normalizedX *
+                normalizedX +
+                normalizedY *
+                normalizedY;
+
+            const index =
+                (
+                    y *
+                    width +
+                    x
+                ) *
+                4;
+
+
+            if (
+                distanceSquared >
+                1
+            ) {
+
+                image.data[
+                    index + 3
+                ] =
+                    0;
+
+                continue;
+            }
+
+
+            const normalizedZ =
+                Math.sqrt(
+                    Math.max(
+                        0,
+                        1 -
+                        distanceSquared
+                    )
+                );
+
+
+            const light =
+                Math.max(
+                    0,
+                    normalizedX *
+                    sunX +
+                    normalizedZ *
+                    sunZ
+                );
+
+
+            //--------------------------------------------------
+            // Dark side remains slightly visible.
+            //--------------------------------------------------
+
+            const ambient =
+                0.055;
+
+            const brightness =
+                Math.min(
+                    1,
+                    ambient +
+                    light *
+                    0.95
+                );
+
+
+            //--------------------------------------------------
+            // Gentle lunar surface variation
+            //--------------------------------------------------
+
+            const texture =
+                0.92 +
+                0.08 *
+                Math.sin(
+                    x * 0.17 +
+                    y * 0.11
+                );
+
+
+            const value =
+                Math.round(
+                    230 *
+                    brightness *
+                    texture
+                );
+
+
+            image.data[
+                index
+            ] =
+                value;
+
+            image.data[
+                index + 1
+            ] =
+                Math.round(
+                    value * 0.98
+                );
+
+            image.data[
+                index + 2
+            ] =
+                Math.round(
+                    value * 0.88
+                );
+
+            image.data[
+                index + 3
+            ] =
+                255;
+        }
+    }
+
+
+    context.putImageData(
+        image,
+        0,
+        0
+    );
+
+
+    //--------------------------------------------------
+    // Subtle Moon Surface Features
+    //--------------------------------------------------
+
+    context.save();
+
+    context.beginPath();
+
+    context.arc(
+        centerX,
+        centerY,
+        radius - 2,
+        0,
+        Math.PI * 2
+    );
+
+    context.clip();
+
+
+    const craters =
+        [
+            [0.32, 0.30, 0.10],
+            [0.61, 0.39, 0.07],
+            [0.48, 0.64, 0.13],
+            [0.70, 0.67, 0.06],
+            [0.26, 0.58, 0.05]
+        ];
+
+
+    craters.forEach(
+        crater => {
+
+            const craterX =
+                crater[0] *
+                width;
+
+            const craterY =
+                crater[1] *
+                height;
+
+            const craterRadius =
+                crater[2] *
+                width;
+
+            const gradient =
+                context.createRadialGradient(
+                    craterX,
+                    craterY,
+                    0,
+                    craterX,
+                    craterY,
+                    craterRadius
+                );
+
+            gradient.addColorStop(
+                0,
+                "rgba(70,70,65,0.16)"
+            );
+
+            gradient.addColorStop(
+                1,
+                "rgba(70,70,65,0)"
+            );
+
+            context.fillStyle =
+                gradient;
+
+            context.beginPath();
+
+            context.arc(
+                craterX,
+                craterY,
+                craterRadius,
+                0,
+                Math.PI * 2
+            );
+
+            context.fill();
+        }
+    );
+
+
+    context.restore();
+
+
+    visual.appendChild(
+        canvas
+    );
+
+
+    //--------------------------------------------------
+    // Display Information
+    //--------------------------------------------------
+
+    phaseElement.textContent =
+        phaseName;
+
+    illuminationElement.textContent =
+        illuminationPercent +
+        "% illuminated";
+
+    visual.setAttribute(
+        "aria-label",
+        phaseName +
+        ", " +
+        illuminationPercent +
+        "% illuminated"
+    );
+
 },
 
 parseHuntEventDate(
