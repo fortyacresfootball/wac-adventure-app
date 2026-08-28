@@ -1063,6 +1063,10 @@ renderMap() {
             }
         );
 
+        this.renderWindCone(
+    map,
+    firstLocation
+);
 
     mappedLocations.forEach(
         location => {
@@ -1195,6 +1199,247 @@ renderMap() {
             );
         }
     );
+},
+
+renderWindCone(
+    map,
+    location
+) {
+
+    const weather =
+        this.data.weather;
+
+
+    if (
+        !weather ||
+        !location
+    ) {
+        return;
+    }
+
+
+    const latitude =
+        parseFloat(
+            location[
+                "Latitude"
+            ]
+        );
+
+    const longitude =
+        parseFloat(
+            location[
+                "Longitude"
+            ]
+        );
+
+    const windDirection =
+        Number(
+            weather.wind_direction_10m
+        );
+
+
+    if (
+        !Number.isFinite(
+            latitude
+        ) ||
+        !Number.isFinite(
+            longitude
+        ) ||
+        !Number.isFinite(
+            windDirection
+        )
+    ) {
+        return;
+    }
+
+
+    //--------------------------------------------------
+    // Weather direction is where wind comes FROM.
+    // Scent travels approximately 180 degrees opposite.
+    //--------------------------------------------------
+
+    const scentDirection =
+        (
+            windDirection +
+            180
+        ) % 360;
+
+
+    const coneLengthMeters =
+        170;
+
+    const coneWidthDegrees =
+        28;
+
+
+    const leftDirection =
+        scentDirection -
+        coneWidthDegrees;
+
+    const rightDirection =
+        scentDirection +
+        coneWidthDegrees;
+
+
+    const origin =
+        {
+            lat:
+                latitude,
+
+            lng:
+                longitude
+        };
+
+
+    const leftPoint =
+        this.destinationPoint(
+            latitude,
+            longitude,
+            coneLengthMeters,
+            leftDirection
+        );
+
+    const centerPoint =
+        this.destinationPoint(
+            latitude,
+            longitude,
+            coneLengthMeters * 1.15,
+            scentDirection
+        );
+
+    const rightPoint =
+        this.destinationPoint(
+            latitude,
+            longitude,
+            coneLengthMeters,
+            rightDirection
+        );
+
+
+    new google.maps.Polygon(
+        {
+            paths:
+                [
+                    origin,
+                    leftPoint,
+                    centerPoint,
+                    rightPoint
+                ],
+
+            strokeColor:
+                "#f2c94c",
+
+            strokeOpacity:
+                0.95,
+
+            strokeWeight:
+                2,
+
+            fillColor:
+                "#f2c94c",
+
+            fillOpacity:
+                0.28,
+
+            map:
+                map,
+
+            clickable:
+                false
+        }
+    );
+},
+
+
+destinationPoint(
+    latitude,
+    longitude,
+    distanceMeters,
+    bearingDegrees
+) {
+
+    const earthRadius =
+        6378137;
+
+
+    const angularDistance =
+        distanceMeters /
+        earthRadius;
+
+
+    const bearing =
+        bearingDegrees *
+        Math.PI /
+        180;
+
+
+    const lat1 =
+        latitude *
+        Math.PI /
+        180;
+
+    const lon1 =
+        longitude *
+        Math.PI /
+        180;
+
+
+    const lat2 =
+        Math.asin(
+            Math.sin(
+                lat1
+            ) *
+            Math.cos(
+                angularDistance
+            ) +
+            Math.cos(
+                lat1
+            ) *
+            Math.sin(
+                angularDistance
+            ) *
+            Math.cos(
+                bearing
+            )
+        );
+
+
+    const lon2 =
+        lon1 +
+        Math.atan2(
+            Math.sin(
+                bearing
+            ) *
+            Math.sin(
+                angularDistance
+            ) *
+            Math.cos(
+                lat1
+            ),
+
+            Math.cos(
+                angularDistance
+            ) -
+            Math.sin(
+                lat1
+            ) *
+            Math.sin(
+                lat2
+            )
+        );
+
+
+    return {
+        lat:
+            lat2 *
+            180 /
+            Math.PI,
+
+        lng:
+            lon2 *
+            180 /
+            Math.PI
+    };
 },
 
     showError(
