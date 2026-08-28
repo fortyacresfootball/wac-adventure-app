@@ -1068,6 +1068,11 @@ renderMap() {
     firstLocation
 );
 
+this.renderWindLabel(
+    map,
+    firstLocation
+);
+
     mappedLocations.forEach(
         location => {
 
@@ -1266,10 +1271,10 @@ renderWindCone(
 
 
     const coneLengthMeters =
-        170;
+    125;
 
-    const coneWidthDegrees =
-        28;
+const coneWidthDegrees =
+    16;
 
 
     const leftDirection =
@@ -1339,7 +1344,7 @@ renderWindCone(
                 "#f2c94c",
 
             fillOpacity:
-                0.28,
+                0.18,
 
             map:
                 map,
@@ -1440,6 +1445,143 @@ destinationPoint(
             180 /
             Math.PI
     };
+},
+
+renderWindLabel(
+    map,
+    location
+) {
+
+    const weather =
+        this.data.weather;
+
+    if (
+        !weather ||
+        !location
+    ) {
+        return;
+    }
+
+
+    const latitude =
+        parseFloat(
+            location[
+                "Latitude"
+            ]
+        );
+
+    const longitude =
+        parseFloat(
+            location[
+                "Longitude"
+            ]
+        );
+
+    const windDirection =
+        Number(
+            weather.wind_direction_10m
+        );
+
+    const windSpeed =
+        Number(
+            weather.wind_speed_10m
+        );
+
+
+    if (
+        !Number.isFinite(
+            latitude
+        ) ||
+        !Number.isFinite(
+            longitude
+        ) ||
+        !Number.isFinite(
+            windDirection
+        ) ||
+        !Number.isFinite(
+            windSpeed
+        )
+    ) {
+        return;
+    }
+
+
+    const scentDirection =
+        (
+            windDirection +
+            180
+        ) % 360;
+
+
+    const labelPosition =
+        this.destinationPoint(
+            latitude,
+            longitude,
+            32,
+            scentDirection
+        );
+
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.style.cssText =
+        [
+            "background:#143f2b",
+            "color:#ffffff",
+            "padding:7px 10px",
+            "border-radius:8px",
+            "font-size:12px",
+            "font-weight:700",
+            "line-height:1.35",
+            "box-shadow:0 2px 8px rgba(0,0,0,0.28)",
+            "white-space:nowrap"
+        ].join(";");
+
+
+    content.innerHTML =
+        `
+            Wind:
+            ${this.windDirectionName(
+                windDirection
+            )}
+            ${Math.round(
+                windSpeed
+            )} mph
+            <br>
+            Scent →
+            ${this.windDirectionName(
+                scentDirection
+            )}
+        `;
+
+
+    const infoWindow =
+        new google.maps.InfoWindow(
+            {
+                content:
+                    content,
+
+                position:
+                    labelPosition,
+
+                disableAutoPan:
+                    true,
+
+                pixelOffset:
+                    new google.maps.Size(
+                        0,
+                        -10
+                    )
+            }
+        );
+
+
+    infoWindow.open(
+        map
+    );
 },
 
     showError(
