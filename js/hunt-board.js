@@ -54,6 +54,7 @@ window.HuntBoard = {
 this.renderCheckInStatus();
 this.renderHunters();
 this.updateHunterCount();
+this.renderSeason();
 
 await this.loadGoogleMaps();
 
@@ -709,6 +710,161 @@ this.renderMap();
         );
     },
 
+    renderSeason() {
+
+    const seasonElement =
+        document.getElementById(
+            "huntSeason"
+        );
+
+
+    if (!seasonElement) {
+        return;
+    }
+
+
+    const now =
+        new Date();
+
+    const year =
+        now.getFullYear();
+
+
+    const dateOnly =
+        new Date(
+            year,
+            now.getMonth(),
+            now.getDate()
+        );
+
+
+    const makeDate =
+        (
+            month,
+            day,
+            dateYear = year
+        ) => {
+
+            return new Date(
+                dateYear,
+                month - 1,
+                day
+            );
+        };
+
+
+    let season =
+        "Closed";
+
+
+    //--------------------------------------------------
+    // 2026 Michigan Deer Seasons
+    //--------------------------------------------------
+
+    if (
+        dateOnly >=
+            makeDate(
+                9,
+                12
+            ) &&
+        dateOnly <=
+            makeDate(
+                9,
+                13
+            )
+    ) {
+
+        season =
+            "Early Antlerless";
+
+    } else if (
+        dateOnly >=
+            makeDate(
+                10,
+                1
+            ) &&
+        dateOnly <=
+            makeDate(
+                11,
+                14
+            )
+    ) {
+
+        season =
+            "Archery";
+
+    } else if (
+        dateOnly >=
+            makeDate(
+                11,
+                15
+            ) &&
+        dateOnly <=
+            makeDate(
+                11,
+                30
+            )
+    ) {
+
+        season =
+            "Firearm";
+
+    } else if (
+        dateOnly >=
+            makeDate(
+                12,
+                1
+            ) &&
+        dateOnly <=
+            makeDate(
+                12,
+                3
+            )
+    ) {
+
+        season =
+            "Archery";
+
+    } else if (
+        dateOnly >=
+            makeDate(
+                12,
+                4
+            ) &&
+        dateOnly <=
+            makeDate(
+                12,
+                6
+            )
+    ) {
+
+        season =
+            "December Firearm";
+
+    } else if (
+        dateOnly >=
+            makeDate(
+                12,
+                7
+            ) &&
+        dateOnly <=
+            makeDate(
+                1,
+                1,
+                year + 1
+            )
+    ) {
+
+        season =
+            "Late Antlerless";
+
+    }
+
+
+    seasonElement.textContent =
+        season;
+},
+
     async loadCurrentWeather() {
 
     const locations =
@@ -873,16 +1029,16 @@ renderSunTimes() {
     const daily =
         this.data.dailyWeather;
 
-    if (
-        !daily ||
-        !Array.isArray(
-            daily.sunset
-        ) ||
-        daily.sunset.length === 0
-    ) {
+
+    if (!daily) {
         return;
     }
 
+
+    const sunriseElement =
+        document.getElementById(
+            "huntSunrise"
+        );
 
     const sunsetElement =
         document.getElementById(
@@ -890,37 +1046,74 @@ renderSunTimes() {
         );
 
 
-    if (!sunsetElement) {
-        return;
+    if (
+        sunriseElement &&
+        Array.isArray(
+            daily.sunrise
+        ) &&
+        daily.sunrise.length > 0
+    ) {
+
+        const sunrise =
+            new Date(
+                daily.sunrise[0]
+            );
+
+
+        if (
+            !Number.isNaN(
+                sunrise.getTime()
+            )
+        ) {
+
+            sunriseElement.textContent =
+                sunrise.toLocaleTimeString(
+                    [],
+                    {
+                        hour:
+                            "numeric",
+
+                        minute:
+                            "2-digit"
+                    }
+                );
+        }
     }
-
-
-    const sunset =
-        new Date(
-            daily.sunset[0]
-        );
 
 
     if (
-        Number.isNaN(
-            sunset.getTime()
-        )
+        sunsetElement &&
+        Array.isArray(
+            daily.sunset
+        ) &&
+        daily.sunset.length > 0
     ) {
-        return;
+
+        const sunset =
+            new Date(
+                daily.sunset[0]
+            );
+
+
+        if (
+            !Number.isNaN(
+                sunset.getTime()
+            )
+        ) {
+
+            sunsetElement.textContent =
+                sunset.toLocaleTimeString(
+                    [],
+                    {
+                        hour:
+                            "numeric",
+
+                        minute:
+                            "2-digit"
+                    }
+                );
+        }
     }
-
-
-    sunsetElement.textContent =
-        sunset.toLocaleTimeString(
-            [],
-            {
-                hour:
-                    "numeric",
-
-                minute:
-                    "2-digit"
-            }
-        );
 },
 
 windDirectionName(
