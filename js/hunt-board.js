@@ -780,13 +780,18 @@ this.renderMap();
             longitude
         ) +
         "&current=" +
-        [
-            "temperature_2m",
-            "wind_speed_10m",
-            "wind_direction_10m",
-            "wind_gusts_10m"
-        ].join(",") +
-        "&wind_speed_unit=mph" +
+[
+    "temperature_2m",
+    "wind_speed_10m",
+    "wind_direction_10m",
+    "wind_gusts_10m"
+].join(",") +
+"&daily=" +
+[
+    "sunrise",
+    "sunset"
+].join(",") +
+"&wind_speed_unit=mph" +
         "&temperature_unit=fahrenheit" +
         "&timezone=auto";
 
@@ -810,10 +815,15 @@ this.renderMap();
 
 
     this.data.weather =
-        weather.current || null;
+    weather.current || null;
+
+this.data.dailyWeather =
+    weather.daily || null;
 
 
-    this.renderCurrentWeather();
+this.renderCurrentWeather();
+this.renderSunTimes();
+
 },
 
 
@@ -858,6 +868,60 @@ renderCurrentWeather() {
     }
 },
 
+renderSunTimes() {
+
+    const daily =
+        this.data.dailyWeather;
+
+    if (
+        !daily ||
+        !Array.isArray(
+            daily.sunset
+        ) ||
+        daily.sunset.length === 0
+    ) {
+        return;
+    }
+
+
+    const sunsetElement =
+        document.getElementById(
+            "huntSunset"
+        );
+
+
+    if (!sunsetElement) {
+        return;
+    }
+
+
+    const sunset =
+        new Date(
+            daily.sunset[0]
+        );
+
+
+    if (
+        Number.isNaN(
+            sunset.getTime()
+        )
+    ) {
+        return;
+    }
+
+
+    sunsetElement.textContent =
+        sunset.toLocaleTimeString(
+            [],
+            {
+                hour:
+                    "numeric",
+
+                minute:
+                    "2-digit"
+            }
+        );
+},
 
 windDirectionName(
     degrees
