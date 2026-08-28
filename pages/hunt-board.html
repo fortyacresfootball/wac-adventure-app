@@ -1,0 +1,626 @@
+<section class="hunt-board-page">
+
+    <style>
+
+        .hunt-board-page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 22px 18px 48px;
+        }
+
+        .hunt-board-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 22px;
+            padding: 30px;
+            margin-bottom: 20px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(19, 43, 24, 0.98),
+                    rgba(45, 70, 38, 0.96)
+                );
+            color: white;
+            box-shadow:
+                0 12px 30px
+                rgba(0, 0, 0, 0.18);
+        }
+
+        .hunt-board-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            opacity: 0.72;
+            margin-bottom: 7px;
+        }
+
+        .hunt-board-title {
+            margin: 0;
+            font-size: clamp(
+                2rem,
+                5vw,
+                3.5rem
+            );
+            line-height: 1;
+            font-weight: 900;
+        }
+
+        .hunt-board-subtitle {
+            margin:
+                10px 0 0;
+            max-width: 760px;
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.82
+                );
+            font-size: 1rem;
+        }
+
+        .hunt-status-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(0, 1fr)
+                );
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .hunt-status-card {
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.10
+                );
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.14
+                );
+            border-radius: 14px;
+            padding: 14px;
+        }
+
+        .hunt-status-label {
+            display: block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.68;
+            margin-bottom: 4px;
+        }
+
+        .hunt-status-value {
+            font-size: 1.12rem;
+            font-weight: 800;
+        }
+
+        .hunt-board-layout {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 2fr)
+                minmax(300px, 0.8fr);
+            gap: 18px;
+        }
+
+        .hunt-panel {
+            background: white;
+            border-radius: 18px;
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .hunt-panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content:
+                space-between;
+            gap: 12px;
+            padding: 18px 20px;
+            border-bottom:
+                1px solid #e7e7e7;
+        }
+
+        .hunt-panel-title {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #263525;
+        }
+
+        .hunt-panel-subtitle {
+            margin-top: 3px;
+            font-size: 0.82rem;
+            color: #717171;
+        }
+
+        .hunt-map {
+            height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #d9dfcf,
+                    #b9c5ae
+                );
+            color: #41503e;
+        }
+
+        .hunt-map-placeholder strong {
+            display: block;
+            font-size: 1.35rem;
+            margin-bottom: 8px;
+        }
+
+        .hunt-map-placeholder span {
+            font-size: 0.9rem;
+        }
+
+        .hunt-side-column {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .hunt-panel-body {
+            padding: 18px 20px;
+        }
+
+        .hunt-checkin-status {
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 14px;
+            background: #f1f4ef;
+            color: #3b4939;
+            font-weight: 700;
+        }
+
+        .hunt-form-group {
+            margin-bottom: 12px;
+        }
+
+        .hunt-form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #596357;
+            margin-bottom: 5px;
+        }
+
+        .hunt-form-group select,
+        .hunt-form-group input {
+            width: 100%;
+            box-sizing: border-box;
+            border:
+                1px solid #d6d9d4;
+            border-radius: 10px;
+            padding: 11px 12px;
+            background: white;
+            font: inherit;
+        }
+
+        .hunt-primary-button,
+        .hunt-secondary-button {
+            width: 100%;
+            border: 0;
+            border-radius: 11px;
+            padding: 12px 14px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .hunt-primary-button {
+            background: #35583a;
+            color: white;
+        }
+
+        .hunt-secondary-button {
+            background: #792f28;
+            color: white;
+        }
+
+        .hunt-primary-button:disabled,
+        .hunt-secondary-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hunt-hunter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .hunt-hunter {
+            border:
+                1px solid #e3e5e1;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .hunt-hunter-name {
+            font-weight: 900;
+            color: #2e3d2c;
+        }
+
+        .hunt-hunter-meta {
+            margin-top: 3px;
+            font-size: 0.82rem;
+            color: #777;
+        }
+
+        .hunt-empty {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .hunt-loading {
+            padding: 30px;
+            text-align: center;
+            color: #6c7569;
+        }
+
+        .hunt-error {
+            padding: 16px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            background: #fff1f0;
+            border:
+                1px solid #e7b5b1;
+            color: #8a312b;
+            display: none;
+        }
+
+        @media (
+            max-width: 900px
+        ) {
+
+            .hunt-status-grid {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(0, 1fr)
+                    );
+            }
+
+            .hunt-board-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .hunt-map {
+                height: 430px;
+            }
+        }
+
+        @media (
+            max-width: 520px
+        ) {
+
+            .hunt-board-page {
+                padding:
+                    14px 12px 36px;
+            }
+
+            .hunt-board-hero {
+                border-radius: 17px;
+                padding: 22px 18px;
+            }
+
+            .hunt-status-grid {
+                grid-template-columns:
+                    1fr 1fr;
+                gap: 8px;
+            }
+
+            .hunt-map {
+                height: 350px;
+            }
+        }
+
+    </style>
+
+
+    <div class="hunt-board-hero">
+
+        <div class="hunt-board-eyebrow">
+            Forty Acres Club
+        </div>
+
+        <h1 class="hunt-board-title">
+            WAC Hunt Board
+        </h1>
+
+        <p class="hunt-board-subtitle">
+            Live hunting conditions, property activity,
+            stand status and field information.
+        </p>
+
+
+        <div class="hunt-status-grid">
+
+            <div class="hunt-status-card">
+                <span class="hunt-status-label">
+                    Season
+                </span>
+                <span
+                    class="hunt-status-value"
+                    id="huntSeason"
+                >
+                    --
+                </span>
+            </div>
+
+            <div class="hunt-status-card">
+                <span class="hunt-status-label">
+                    Wind
+                </span>
+                <span
+                    class="hunt-status-value"
+                    id="huntWind"
+                >
+                    --
+                </span>
+            </div>
+
+            <div class="hunt-status-card">
+                <span class="hunt-status-label">
+                    Sunset
+                </span>
+                <span
+                    class="hunt-status-value"
+                    id="huntSunset"
+                >
+                    --
+                </span>
+            </div>
+
+            <div class="hunt-status-card">
+                <span class="hunt-status-label">
+                    Hunters Out
+                </span>
+                <span
+                    class="hunt-status-value"
+                    id="huntHunterCount"
+                >
+                    0
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="hunt-error"
+        id="huntBoardError"
+    ></div>
+
+
+    <div class="hunt-board-layout">
+
+
+        <!-- PROPERTY MAP -->
+
+        <div class="hunt-panel">
+
+            <div class="hunt-panel-heading">
+
+                <div>
+
+                    <h2 class="hunt-panel-title">
+                        WAC Property
+                    </h2>
+
+                    <div class="hunt-panel-subtitle">
+                        Blinds, stands, wind and live conditions
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="hunt-map"
+                id="huntMap"
+            >
+
+                <div class="hunt-map-placeholder">
+
+                    <strong>
+                        Satellite Map Coming Next
+                    </strong>
+
+                    <span>
+                        WAC hunting locations will appear here.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="hunt-side-column">
+
+
+            <!-- CHECK IN -->
+
+            <div class="hunt-panel">
+
+                <div class="hunt-panel-heading">
+
+                    <div>
+
+                        <h2 class="hunt-panel-title">
+                            Hunt Check-In
+                        </h2>
+
+                        <div class="hunt-panel-subtitle">
+                            Let everyone know where you are hunting
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hunt-panel-body">
+
+                    <div
+                        class="hunt-checkin-status"
+                        id="huntMyStatus"
+                    >
+                        Loading status...
+                    </div>
+
+
+                    <div
+                        id="huntCheckInForm"
+                    >
+
+                        <div class="hunt-form-group">
+
+                            <label
+                                for="huntLocationSelect"
+                            >
+                                Location
+                            </label>
+
+                            <select
+                                id="huntLocationSelect"
+                            >
+                                <option value="">
+                                    Select a location
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="hunt-form-group">
+
+                            <label
+                                for="huntActivitySelect"
+                            >
+                                Activity
+                            </label>
+
+                            <select
+                                id="huntActivitySelect"
+                            >
+                                <option value="Hunting">
+                                    Hunting
+                                </option>
+
+                                <option value="Scouting">
+                                    Scouting
+                                </option>
+
+                                <option value="Tracking">
+                                    Tracking
+                                </option>
+
+                                <option value="Property Work">
+                                    Property Work
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="hunt-primary-button"
+                            id="huntCheckInButton"
+                        >
+                            Check In
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="huntCheckOutArea"
+                        style="display:none;"
+                    >
+
+                        <button
+                            type="button"
+                            class="hunt-secondary-button"
+                            id="huntCheckOutButton"
+                        >
+                            Check Out
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CURRENT HUNTERS -->
+
+            <div class="hunt-panel">
+
+                <div class="hunt-panel-heading">
+
+                    <div>
+
+                        <h2 class="hunt-panel-title">
+                            Hunters Currently Out
+                        </h2>
+
+                        <div class="hunt-panel-subtitle">
+                            Current WAC property activity
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hunt-panel-body">
+
+                    <div
+                        class="hunt-hunter-list"
+                        id="huntActiveHunters"
+                    >
+
+                        <div class="hunt-empty">
+                            Loading...
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>

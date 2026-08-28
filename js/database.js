@@ -119,6 +119,40 @@ async addTrophy(data) {
 
 },
 
+//--------------------------------------------------
+// Hunt Board
+//--------------------------------------------------
+
+async getHuntBoard() {
+
+    return await this.authenticatedPost(
+        "getHuntBoard"
+    );
+},
+
+async huntCheckIn(
+    locationId,
+    activity = "Hunting",
+    notes = ""
+) {
+
+    return await this.authenticatedPost(
+        "huntCheckIn",
+        {
+            locationId,
+            activity,
+            notes
+        }
+    );
+},
+
+async huntCheckOut() {
+
+    return await this.authenticatedPost(
+        "huntCheckOut"
+    );
+},
+
     //--------------------------------------------------
     // Members
     //--------------------------------------------------
