@@ -50,7 +50,10 @@ window.HuntBoard = {
 
         this.data = response;
 
-        this.renderLocations();
+this.data.events =
+    await Database.getEvents();
+
+this.renderLocations();
 this.renderCheckInStatus();
 this.renderHunters();
 this.updateHunterCount();
@@ -723,146 +726,237 @@ this.renderMap();
     }
 
 
-    const now =
+    const events =
+        Array.isArray(
+            this.data.events
+        )
+            ? this.data.events
+            : [];
+
+
+    const today =
         new Date();
 
-    const year =
-        now.getFullYear();
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
 
-    const dateOnly =
-        new Date(
-            year,
-            now.getMonth(),
-            now.getDate()
+    const currentSeasons =
+        events.filter(
+            event => {
+
+                //--------------------------------------------------
+                // Must specifically be marked as a hunting season.
+                //--------------------------------------------------
+
+                const huntingSeason =
+                    String(
+                        event[
+                            "Hunting Season"
+                        ] || ""
+                    )
+                        .trim()
+                        .toLowerCase();
+
+
+                const isHuntingSeason =
+                    [
+                        "true",
+                        "yes",
+                        "1"
+                    ].includes(
+                        huntingSeason
+                    );
+
+
+                if (!isHuntingSeason) {
+                    return false;
+                }
+
+
+                //--------------------------------------------------
+                // Ignore inactive/cancelled events.
+                //--------------------------------------------------
+
+                const status =
+                    String(
+                        event[
+                            "Status"
+                        ] || ""
+                    )
+                        .trim()
+                        .toLowerCase();
+
+
+                if (
+                    [
+                        "inactive",
+                        "cancelled",
+                        "canceled",
+                        "completed",
+                        "deleted"
+                    ].includes(
+                        status
+                    )
+                ) {
+
+                    return false;
+                }
+
+
+                //--------------------------------------------------
+                // Check the event dates.
+                //--------------------------------------------------
+
+                const startDate =
+                    this.parseHuntEventDate(
+                        event[
+                            "Start Date"
+                        ]
+                    );
+
+                const endDate =
+                    this.parseHuntEventDate(
+                        event[
+                            "End Date"
+                        ]
+                    ) ||
+                    startDate;
+
+
+                if (
+                    !startDate ||
+                    !endDate
+                ) {
+
+                    return false;
+                }
+
+
+                startDate.setHours(
+                    0,
+                    0,
+                    0,
+                    0
+                );
+
+                endDate.setHours(
+                    23,
+                    59,
+                    59,
+                    999
+                );
+
+
+                return (
+                    today >= startDate &&
+                    today <= endDate
+                );
+            }
         );
 
 
-    const makeDate =
-        (
-            month,
-            day,
-            dateYear = year
-        ) => {
-
-            return new Date(
-                dateYear,
-                month - 1,
-                day
-            );
-        };
-
-
-    let season =
-        "Closed";
-
-
-    //--------------------------------------------------
-    // 2026 Michigan Deer Seasons
-    //--------------------------------------------------
-
     if (
-        dateOnly >=
-            makeDate(
-                9,
-                12
-            ) &&
-        dateOnly <=
-            makeDate(
-                9,
-                13
-            )
+        currentSeasons.length === 0
     ) {
 
-        season =
-            "Early Antlerless";
+        seasonElement.textContent =
+            "Closed";
 
-    } else if (
-        dateOnly >=
-            makeDate(
-                10,
-                1
-            ) &&
-        dateOnly <=
-            makeDate(
-                11,
-                14
-            )
-    ) {
-
-        season =
-            "Archery";
-
-    } else if (
-        dateOnly >=
-            makeDate(
-                11,
-                15
-            ) &&
-        dateOnly <=
-            makeDate(
-                11,
-                30
-            )
-    ) {
-
-        season =
-            "Firearm";
-
-    } else if (
-        dateOnly >=
-            makeDate(
-                12,
-                1
-            ) &&
-        dateOnly <=
-            makeDate(
-                12,
-                3
-            )
-    ) {
-
-        season =
-            "Archery";
-
-    } else if (
-        dateOnly >=
-            makeDate(
-                12,
-                4
-            ) &&
-        dateOnly <=
-            makeDate(
-                12,
-                6
-            )
-    ) {
-
-        season =
-            "December Firearm";
-
-    } else if (
-        dateOnly >=
-            makeDate(
-                12,
-                7
-            ) &&
-        dateOnly <=
-            makeDate(
-                1,
-                1,
-                year + 1
-            )
-    ) {
-
-        season =
-            "Late Antlerless";
-
+        return;
     }
 
 
     seasonElement.textContent =
-        season;
+        currentSeasons
+            .map(
+                event => {
+
+                    return String(
+                        event[
+                            "Event Name"
+                        ] ||
+                        "Hunting Season"
+                    ).trim();
+                }
+            )
+            .join(" / ");
+},
+
+parseHuntEventDate(
+    value
+) {
+
+    const dateText =
+        String(
+            value || ""
+        ).trim();
+
+
+    if (!dateText) {
+        return null;
+    }
+
+
+    const slashDate =
+        dateText.match(
+            /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+        );
+
+
+    if (slashDate) {
+
+        return new Date(
+            Number(
+                slashDate[3]
+            ),
+            Number(
+                slashDate[1]
+            ) - 1,
+            Number(
+                slashDate[2]
+            )
+        );
+    }
+
+
+    const dashDate =
+        dateText.match(
+            /^(\d{4})-(\d{1,2})-(\d{1,2})$/
+        );
+
+
+    if (dashDate) {
+
+        return new Date(
+            Number(
+                dashDate[1]
+            ),
+            Number(
+                dashDate[2]
+            ) - 1,
+            Number(
+                dashDate[3]
+            )
+        );
+    }
+
+
+    const parsedDate =
+        new Date(
+            dateText
+        );
+
+
+    return Number.isNaN(
+        parsedDate.getTime()
+    )
+        ? null
+        : parsedDate;
 },
 
     async loadCurrentWeather() {
