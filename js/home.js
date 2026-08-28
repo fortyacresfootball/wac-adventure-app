@@ -54,6 +54,28 @@
 })();
 
 //--------------------------------------------------
+// Refresh Hunt Board Access After Sign-In
+//--------------------------------------------------
+
+if (
+    window.WAC &&
+    !window.WAC.huntBoardAccessListenerBound
+) {
+
+    window.WAC.huntBoardAccessListenerBound =
+        true;
+
+    window.addEventListener(
+        "wac-auth-changed",
+        function () {
+
+            updateHuntBoardAccess();
+
+        }
+    );
+}
+
+//--------------------------------------------------
 // Hunt Board Access
 //--------------------------------------------------
 
