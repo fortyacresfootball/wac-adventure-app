@@ -1,5 +1,5 @@
 window.HuntBoard = {
-        mapsApiKey: "AIzaSyD4NWa35v528iTsA-CMKfUmSoOC5ucGSkQ",
+    mapsApiKey: "",
 
     data: null,
 
@@ -49,6 +49,18 @@ window.HuntBoard = {
         }
 
         this.data = response;
+
+        this.mapsApiKey =
+    String(
+        response.mapsApiKey || ""
+    ).trim();
+
+if (!this.mapsApiKey) {
+
+    throw new Error(
+        "Google Maps API key was not provided."
+    );
+}
 
 this.data.events =
     await Database.getEvents();
