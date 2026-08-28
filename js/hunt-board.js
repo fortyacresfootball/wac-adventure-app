@@ -3,6 +3,8 @@ window.HuntBoard = {
 
     data: null,
 
+    selectedLocationId: "",
+
     async init() {
 
         try {
@@ -69,6 +71,11 @@ this.renderMap();
                 "huntCheckInButton"
             );
 
+            const locationSelect =
+    document.getElementById(
+        "huntLocationSelect"
+    );
+
         const checkOutButton =
             document.getElementById(
                 "huntCheckOutButton"
@@ -95,6 +102,21 @@ this.renderMap();
                 }
             );
         }
+
+        if (locationSelect) {
+
+    locationSelect.addEventListener(
+        "change",
+        () => {
+
+            this.selectedLocationId =
+                locationSelect.value;
+
+            this.renderMap();
+        }
+    );
+}
+
     },
 
 
@@ -1018,8 +1040,34 @@ renderMap() {
     }
 
 
-    const firstLocation =
-        mappedLocations[0];
+    let firstLocation =
+    mappedLocations[0];
+
+
+if (this.selectedLocationId) {
+
+    const selectedLocation =
+        mappedLocations.find(
+            location => {
+
+                return (
+                    String(
+                        location[
+                            "Location ID"
+                        ] || ""
+                    ).trim() ===
+                    this.selectedLocationId
+                );
+            }
+        );
+
+
+    if (selectedLocation) {
+
+        firstLocation =
+            selectedLocation;
+    }
+}
 
     const center =
         {
