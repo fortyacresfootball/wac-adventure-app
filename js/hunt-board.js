@@ -1,4 +1,5 @@
 window.HuntBoard = {
+        mapsApiKey: "AIzaSyD4NWa35v528iTsA-CMKfUmSoOC5ucGSkQ",
 
     data: null,
 
@@ -48,9 +49,12 @@ window.HuntBoard = {
         this.data = response;
 
         this.renderLocations();
-        this.renderCheckInStatus();
-        this.renderHunters();
-        this.updateHunterCount();
+this.renderCheckInStatus();
+this.renderHunters();
+this.updateHunterCount();
+
+await this.loadGoogleMaps();
+this.renderMap();
     },
 
 
@@ -679,6 +683,327 @@ window.HuntBoard = {
         );
     },
 
+    async loadGoogleMaps() {
+
+    if (
+        window.google &&
+        window.google.maps
+    ) {
+        return;
+    }
+
+    await new Promise(
+        (resolve, reject) => {
+
+            const existingScript =
+                document.getElementById(
+                    "wacGoogleMapsScript"
+                );
+
+            if (existingScript) {
+
+                existingScript.addEventListener(
+                    "load",
+                    resolve
+                );
+
+                existingScript.addEventListener(
+                    "error",
+                    reject
+                );
+
+                return;
+            }
+
+            const script =
+                document.createElement(
+                    "script"
+                );
+
+            script.id =
+                "wacGoogleMapsScript";
+
+            script.src =
+                "https://maps.googleapis.com/maps/api/js?key=" +
+                encodeURIComponent(
+                    this.mapsApiKey
+                );
+
+            script.async =
+                true;
+
+            script.defer =
+                true;
+
+            script.onload =
+                resolve;
+
+            script.onerror =
+                function () {
+
+                    reject(
+                        new Error(
+                            "Google Maps could not be loaded."
+                        )
+                    );
+                };
+
+            document.head.appendChild(
+                script
+            );
+        }
+    );
+},
+
+
+renderMap() {
+
+    const mapElement =
+        document.getElementById(
+            "huntMap"
+        );
+
+    if (!mapElement) {
+        return;
+    }
+
+    const locations =
+        Array.isArray(
+            this.data.locations
+        )
+            ? this.data.locations
+            : [];
+
+    const mappedLocations =
+        locations.filter(
+            function (location) {
+
+                const latitude =
+                    parseFloat(
+                        location[
+                            "Latitude"
+                        ]
+                    );
+
+                const longitude =
+                    parseFloat(
+                        location[
+                            "Longitude"
+                        ]
+                    );
+
+                return (
+                    Number.isFinite(
+                        latitude
+                    ) &&
+                    Number.isFinite(
+                        longitude
+                    )
+                );
+            }
+        );
+
+
+    if (
+        mappedLocations.length === 0
+    ) {
+
+        mapElement.innerHTML =
+            `
+                <div class="hunt-map-placeholder">
+                    <strong>
+                        No Map Locations Yet
+                    </strong>
+
+                    <span>
+                        Add latitude and longitude values
+                        to Hunt Locations.
+                    </span>
+                </div>
+            `;
+
+        return;
+    }
+
+
+    const firstLocation =
+        mappedLocations[0];
+
+    const center =
+        {
+            lat:
+                parseFloat(
+                    firstLocation[
+                        "Latitude"
+                    ]
+                ),
+
+            lng:
+                parseFloat(
+                    firstLocation[
+                        "Longitude"
+                    ]
+                )
+        };
+
+
+    const map =
+        new google.maps.Map(
+            mapElement,
+            {
+                center:
+                    center,
+
+                zoom:
+                    18,
+
+                mapTypeId:
+                    "satellite",
+
+                streetViewControl:
+                    false,
+
+                mapTypeControl:
+                    true,
+
+                fullscreenControl:
+                    true
+            }
+        );
+
+
+    mappedLocations.forEach(
+        location => {
+
+            const position =
+                {
+                    lat:
+                        parseFloat(
+                            location[
+                                "Latitude"
+                            ]
+                        ),
+
+                    lng:
+                        parseFloat(
+                            location[
+                                "Longitude"
+                            ]
+                        )
+                };
+
+
+            const marker =
+                new google.maps.Marker(
+                    {
+                        position:
+                            position,
+
+                        map:
+                            map,
+
+                        title:
+                            String(
+                                location[
+                                    "Name"
+                                ] || ""
+                            )
+                    }
+                );
+
+
+            const name =
+                String(
+                    location[
+                        "Name"
+                    ] || "Hunting Location"
+                ).trim();
+
+            const type =
+                String(
+                    location[
+                        "Type"
+                    ] || ""
+                ).trim();
+
+            const notes =
+                String(
+                    location[
+                        "Notes"
+                    ] || ""
+                ).trim();
+
+
+            const infoWindow =
+                new google.maps.InfoWindow(
+                    {
+                        content:
+                            `
+                                <div
+                                    style="
+                                        min-width:180px;
+                                        font-family:Arial,sans-serif;
+                                    "
+                                >
+                                    <strong>
+                                        ${this.escapeHtml(
+                                            name
+                                        )}
+                                    </strong>
+
+                                    ${
+                                        type
+                                            ? `
+                                                <div
+                                                    style="
+                                                        margin-top:4px;
+                                                        font-size:12px;
+                                                        color:#666;
+                                                    "
+                                                >
+                                                    ${this.escapeHtml(
+                                                        type
+                                                    )}
+                                                </div>
+                                            `
+                                            : ""
+                                    }
+
+                                    ${
+                                        notes
+                                            ? `
+                                                <div
+                                                    style="
+                                                        margin-top:8px;
+                                                        font-size:12px;
+                                                    "
+                                                >
+                                                    ${this.escapeHtml(
+                                                        notes
+                                                    )}
+                                                </div>
+                                            `
+                                            : ""
+                                    }
+                                </div>
+                            `
+                    }
+                );
+
+
+            marker.addListener(
+                "click",
+                function () {
+
+                    infoWindow.open(
+                        map,
+                        marker
+                    );
+                }
+            );
+        }
+    );
+},
 
     showError(
         message
