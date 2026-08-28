@@ -7,6 +7,8 @@
 
     try {
 
+                await updateHuntBoardAccess();
+
         //--------------------------------------------------
         // Load Cabin Weather First
         //
@@ -50,6 +52,68 @@
     }
 
 })();
+
+//--------------------------------------------------
+// Hunt Board Access
+//--------------------------------------------------
+
+async function updateHuntBoardAccess() {
+
+    const huntBoardLink =
+        document.querySelector(
+            '[data-page="hunt-board"]'
+        );
+
+    if (!huntBoardLink) {
+        return;
+    }
+
+
+    //--------------------------------------------------
+    // Hide by default until permission is confirmed.
+    //--------------------------------------------------
+
+    huntBoardLink.style.display =
+        "none";
+
+
+    try {
+
+        const response =
+            await Database.authenticatedPost(
+                "getCurrentMember"
+            );
+
+
+        const member =
+            response &&
+            response.member
+                ? response.member
+                : null;
+
+
+        if (
+            member &&
+            member["Hunter"] === true
+        ) {
+
+            huntBoardLink.style.display =
+                "";
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "Unable to verify Hunt Board access.",
+            error
+        );
+
+    }
+
+}
 
 //--------------------------------------------------
 // Today's Adventure
