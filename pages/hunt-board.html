@@ -146,6 +146,19 @@
             color: #717171;
         }
 
+        .hunt-radar {
+    width: 100%;
+    height: 520px;
+    background: #d9dfcf;
+}
+
+.hunt-radar iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
         .hunt-map {
             height: 520px;
             display: flex;
@@ -177,6 +190,66 @@
             flex-direction: column;
             gap: 18px;
         }
+
+        .hunt-moon-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.hunt-moon-visual {
+    position: relative;
+    flex: 0 0 92px;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #11161c;
+    box-shadow:
+        inset 0 0 12px
+        rgba(255, 255, 255, 0.08),
+        0 6px 16px
+        rgba(0, 0, 0, 0.14);
+}
+
+.hunt-moon-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #f7f3dc 0%,
+            #ded8bd 58%,
+            #b8b29d 100%
+        );
+}
+
+.hunt-moon-shadow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #11161c;
+    border-radius: 50%;
+}
+
+.hunt-moon-details {
+    min-width: 0;
+}
+
+.hunt-moon-phase {
+    color: #263525;
+    font-size: 1.08rem;
+    font-weight: 900;
+}
+
+.hunt-moon-illumination {
+    margin-top: 5px;
+    color: #717171;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
 
         .hunt-panel-body {
             padding: 18px 20px;
@@ -306,11 +379,20 @@
             .hunt-map {
                 height: 430px;
             }
+
+            .hunt-radar {
+    height: 430px;
+}
+
         }
 
         @media (
             max-width: 520px
         ) {
+
+            .hunt-radar {
+    height: 350px;
+}
 
             .hunt-board-page {
                 padding:
@@ -692,5 +774,50 @@
         </div>
 
     </div>
+
+    <!-- LIVE WEATHER RADAR -->
+
+<div
+    class="hunt-panel"
+    style="margin-top:18px;"
+>
+
+    <div class="hunt-panel-heading">
+
+        <div>
+
+            <h2 class="hunt-panel-title">
+                Live Weather Radar
+            </h2>
+
+            <div class="hunt-panel-subtitle">
+                Current precipitation around the WAC
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="hunt-radar"
+        id="huntRadar"
+    >
+
+        <div class="hunt-map-placeholder">
+
+            <strong>
+                Loading Radar...
+            </strong>
+
+            <span>
+                Current weather radar will appear here.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
 
 </section>

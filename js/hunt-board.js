@@ -77,6 +77,7 @@ await this.loadGoogleMaps();
 await this.loadCurrentWeather();
 
 this.renderMap();
+this.renderRadar();
 
     },
 
@@ -1830,6 +1831,158 @@ windDirectionName(
     );
 },
 
+renderRadar() {
+
+    const radarElement =
+        document.getElementById(
+            "huntRadar"
+        );
+
+
+    if (!radarElement) {
+        return;
+    }
+
+
+    const locations =
+        Array.isArray(
+            this.data.locations
+        )
+            ? this.data.locations
+            : [];
+
+
+    const mappedLocation =
+        locations.find(
+            function (location) {
+
+                const latitude =
+                    parseFloat(
+                        location[
+                            "Latitude"
+                        ]
+                    );
+
+                const longitude =
+                    parseFloat(
+                        location[
+                            "Longitude"
+                        ]
+                    );
+
+
+                return (
+                    Number.isFinite(
+                        latitude
+                    ) &&
+                    Number.isFinite(
+                        longitude
+                    )
+                );
+            }
+        );
+
+
+    if (!mappedLocation) {
+
+        radarElement.innerHTML =
+            `
+                <div class="hunt-map-placeholder">
+
+                    <strong>
+                        Radar Unavailable
+                    </strong>
+
+                    <span>
+                        No mapped Hunt Location was found.
+                    </span>
+
+                </div>
+            `;
+
+        return;
+    }
+
+
+    const latitude =
+        parseFloat(
+            mappedLocation[
+                "Latitude"
+            ]
+        );
+
+    const longitude =
+        parseFloat(
+            mappedLocation[
+                "Longitude"
+            ]
+        );
+
+
+    const radarUrl =
+        "https://embed.windy.com/embed2.html" +
+        "?lat=" +
+        encodeURIComponent(
+            latitude
+        ) +
+        "&lon=" +
+        encodeURIComponent(
+            longitude
+        ) +
+        "&detailLat=" +
+        encodeURIComponent(
+            latitude
+        ) +
+        "&detailLon=" +
+        encodeURIComponent(
+            longitude
+        ) +
+        "&zoom=8" +
+        "&level=surface" +
+        "&overlay=radar" +
+        "&product=radar" +
+        "&menu=" +
+        "&message=true" +
+        "&marker=true" +
+        "&calendar=now" +
+        "&pressure=" +
+        "&type=map" +
+        "&location=coordinates" +
+        "&detail=" +
+        "&metricWind=mph" +
+        "&metricTemp=%C2%B0F" +
+        "&radarRange=-1";
+
+
+    const iframe =
+        document.createElement(
+            "iframe"
+        );
+
+
+    iframe.src =
+        radarUrl;
+
+    iframe.title =
+        "WAC live weather radar";
+
+    iframe.loading =
+        "lazy";
+
+    iframe.setAttribute(
+        "allowfullscreen",
+        ""
+    );
+
+
+    radarElement.innerHTML =
+        "";
+
+    radarElement.appendChild(
+        iframe
+    );
+
+},
 
 renderMap() {
 
