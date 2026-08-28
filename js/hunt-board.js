@@ -54,7 +54,11 @@ this.renderHunters();
 this.updateHunterCount();
 
 await this.loadGoogleMaps();
+
+await this.loadCurrentWeather();
+
 this.renderMap();
+
     },
 
 
@@ -682,6 +686,194 @@ this.renderMap();
             }
         );
     },
+
+    async loadCurrentWeather() {
+
+    const locations =
+        Array.isArray(
+            this.data.locations
+        )
+            ? this.data.locations
+            : [];
+
+
+    const mappedLocation =
+        locations.find(
+            function (location) {
+
+                const latitude =
+                    parseFloat(
+                        location[
+                            "Latitude"
+                        ]
+                    );
+
+                const longitude =
+                    parseFloat(
+                        location[
+                            "Longitude"
+                        ]
+                    );
+
+                return (
+                    Number.isFinite(
+                        latitude
+                    ) &&
+                    Number.isFinite(
+                        longitude
+                    )
+                );
+            }
+        );
+
+
+    if (!mappedLocation) {
+        return;
+    }
+
+
+    const latitude =
+        parseFloat(
+            mappedLocation[
+                "Latitude"
+            ]
+        );
+
+    const longitude =
+        parseFloat(
+            mappedLocation[
+                "Longitude"
+            ]
+        );
+
+
+    const url =
+        "https://api.open-meteo.com/v1/forecast" +
+        "?latitude=" +
+        encodeURIComponent(
+            latitude
+        ) +
+        "&longitude=" +
+        encodeURIComponent(
+            longitude
+        ) +
+        "&current=" +
+        [
+            "temperature_2m",
+            "wind_speed_10m",
+            "wind_direction_10m",
+            "wind_gusts_10m"
+        ].join(",") +
+        "&wind_speed_unit=mph" +
+        "&temperature_unit=fahrenheit" +
+        "&timezone=auto";
+
+
+    const response =
+        await fetch(
+            url
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Current hunting weather could not be loaded."
+        );
+    }
+
+
+    const weather =
+        await response.json();
+
+
+    this.data.weather =
+        weather.current || null;
+
+
+    this.renderCurrentWeather();
+},
+
+
+renderCurrentWeather() {
+
+    const weather =
+        this.data.weather;
+
+    if (!weather) {
+        return;
+    }
+
+
+    const windElement =
+        document.getElementById(
+            "huntWind"
+        );
+
+
+    if (windElement) {
+
+        const speed =
+            Number(
+                weather.wind_speed_10m
+            );
+
+        const direction =
+            Number(
+                weather.wind_direction_10m
+            );
+
+
+        windElement.textContent =
+            this.windDirectionName(
+                direction
+            ) +
+            " " +
+            Math.round(
+                speed
+            ) +
+            " mph";
+    }
+},
+
+
+windDirectionName(
+    degrees
+) {
+
+    if (
+        !Number.isFinite(
+            degrees
+        )
+    ) {
+
+        return "--";
+    }
+
+
+    const directions =
+        [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+        ];
+
+
+    const index =
+        Math.round(
+            degrees / 45
+        ) % 8;
+
+
+    return directions[
+        index
+    ];
+},
 
     async loadGoogleMaps() {
 
