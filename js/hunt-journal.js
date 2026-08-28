@@ -9,6 +9,8 @@ window.HuntJournal = {
 
             await this.loadJournal();
 
+            this.renderHistory();
+
             this.setDefaultDateTime();
 
            await this.populateLocations();
@@ -807,6 +809,9 @@ if (locationSelect) {
                 "Hunt journal entry saved."
             );
 
+            await this.loadJournal();
+
+this.renderHistory();
 
         } catch (error) {
 
@@ -1076,6 +1081,584 @@ await this.loadCurrentWeather();
 this.prefillFromHuntBoard();
 
     },
+
+    renderHistory() {
+
+    const historyContainer =
+        document.getElementById(
+            "huntJournalHistory"
+        );
+
+
+    if (!historyContainer) {
+        return;
+    }
+
+
+    const entries =
+        this.data &&
+        Array.isArray(
+            this.data.entries
+        )
+            ? this.data.entries
+            : [];
+
+
+    historyContainer.innerHTML =
+        "";
+
+
+    if (
+        entries.length === 0
+    ) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+
+        empty.style.padding =
+            "18px";
+
+        empty.style.border =
+            "1px dashed #9d8a67";
+
+        empty.style.borderRadius =
+            "10px";
+
+        empty.style.background =
+            "rgba(255,253,244,0.55)";
+
+        empty.style.color =
+            "#6f644f";
+
+        empty.style.textAlign =
+            "center";
+
+        empty.style.fontWeight =
+            "700";
+
+        empty.textContent =
+            "No journal entries yet.";
+
+
+        historyContainer.appendChild(
+            empty
+        );
+
+        return;
+    }
+
+
+    entries
+        .slice(
+            0,
+            20
+        )
+        .forEach(
+            entry => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.style.border =
+                    "1px solid #a89572";
+
+                card.style.borderRadius =
+                    "12px";
+
+                card.style.background =
+                    "rgba(255,253,244,0.88)";
+
+                card.style.padding =
+                    "16px";
+
+                card.style.boxShadow =
+                    "0 3px 10px rgba(73,59,36,0.08)";
+
+
+                /*
+                 * HEADER
+                 */
+
+                const header =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                header.style.display =
+                    "flex";
+
+                header.style.justifyContent =
+                    "space-between";
+
+                header.style.alignItems =
+                    "flex-start";
+
+                header.style.gap =
+                    "12px";
+
+                header.style.flexWrap =
+                    "wrap";
+
+
+                const headingArea =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                const species =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                species.style.fontSize =
+                    "1.08rem";
+
+                species.style.fontWeight =
+                    "900";
+
+                species.style.color =
+                    "#394a2f";
+
+                species.textContent =
+                    entry[
+                        "Game Species"
+                    ] ||
+                    "Hunt";
+
+
+                const location =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                location.style.marginTop =
+                    "3px";
+
+                location.style.fontSize =
+                    "0.85rem";
+
+                location.style.color =
+                    "#756a54";
+
+
+                const locationName =
+                    entry[
+                        "Location Name"
+                    ] || "";
+
+
+                const huntType =
+                    entry[
+                        "Hunt Type"
+                    ] || "";
+
+
+                location.textContent =
+                    [
+                        locationName,
+                        huntType
+                    ]
+                    .filter(
+                        Boolean
+                    )
+                    .join(
+                        " • "
+                    );
+
+
+                headingArea.appendChild(
+                    species
+                );
+
+                headingArea.appendChild(
+                    location
+                );
+
+
+                const date =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                date.style.fontWeight =
+                    "900";
+
+                date.style.color =
+                    "#5e533f";
+
+                date.style.fontSize =
+                    "0.9rem";
+
+                date.textContent =
+                    this.formatJournalDate(
+                        entry["Date"]
+                    );
+
+
+                header.appendChild(
+                    headingArea
+                );
+
+                header.appendChild(
+                    date
+                );
+
+
+                card.appendChild(
+                    header
+                );
+
+
+                /*
+                 * QUICK DETAILS
+                 */
+
+                const details =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                details.style.display =
+                    "flex";
+
+                details.style.flexWrap =
+                    "wrap";
+
+                details.style.gap =
+                    "8px";
+
+                details.style.marginTop =
+                    "12px";
+
+
+                const detailItems =
+                    [];
+
+
+                if (
+                    entry["Result"]
+                ) {
+
+                    detailItems.push(
+                        "Result: " +
+                        entry["Result"]
+                    );
+                }
+
+
+                if (
+                    entry["Weather"]
+                ) {
+
+                    detailItems.push(
+                        entry["Weather"]
+                    );
+                }
+
+
+                if (
+                    entry["Temperature"]
+                ) {
+
+                    detailItems.push(
+                        entry[
+                            "Temperature"
+                        ]
+                    );
+                }
+
+
+                if (
+                    entry["Wind Direction"]
+                ) {
+
+                    let wind =
+                        "Wind " +
+                        entry[
+                            "Wind Direction"
+                        ];
+
+
+                    if (
+                        entry[
+                            "Wind Speed"
+                        ]
+                    ) {
+
+                        wind +=
+                            " " +
+                            entry[
+                                "Wind Speed"
+                            ];
+                    }
+
+
+                    detailItems.push(
+                        wind
+                    );
+                }
+
+
+                detailItems.forEach(
+                    text => {
+
+                        const chip =
+                            document.createElement(
+                                "span"
+                            );
+
+
+                        chip.style.padding =
+                            "6px 9px";
+
+                        chip.style.borderRadius =
+                            "999px";
+
+                        chip.style.background =
+                            "#e4dcc8";
+
+                        chip.style.color =
+                            "#554c3b";
+
+                        chip.style.fontSize =
+                            "0.76rem";
+
+                        chip.style.fontWeight =
+                            "800";
+
+                        chip.textContent =
+                            text;
+
+
+                        details.appendChild(
+                            chip
+                        );
+                    }
+                );
+
+
+                card.appendChild(
+                    details
+                );
+
+
+                /*
+                 * ACTIVITY SUMMARY
+                 */
+
+                if (
+                    entry[
+                        "Animals Seen"
+                    ]
+                ) {
+
+                    const activity =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    activity.style.marginTop =
+                        "12px";
+
+                    activity.style.fontSize =
+                        "0.88rem";
+
+                    activity.style.color =
+                        "#4d493d";
+
+
+                    let activityText =
+                        "Seen: " +
+                        entry[
+                            "Animals Seen"
+                        ];
+
+
+                    if (
+                        entry[
+                            "Quantity"
+                        ]
+                    ) {
+
+                        activityText +=
+                            " (" +
+                            entry[
+                                "Quantity"
+                            ] +
+                            ")";
+                    }
+
+
+                    activity.textContent =
+                        activityText;
+
+
+                    card.appendChild(
+                        activity
+                    );
+                }
+
+
+                /*
+                 * NOTES PREVIEW
+                 */
+
+                if (
+                    entry["Notes"]
+                ) {
+
+                    const notes =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    notes.style.marginTop =
+                        "10px";
+
+                    notes.style.paddingTop =
+                        "10px";
+
+                    notes.style.borderTop =
+                        "1px solid rgba(73,59,36,0.16)";
+
+                    notes.style.fontSize =
+                        "0.84rem";
+
+                    notes.style.lineHeight =
+                        "1.45";
+
+                    notes.style.color =
+                        "#665d4c";
+
+
+                    const noteText =
+                        String(
+                            entry["Notes"]
+                        );
+
+
+                    notes.textContent =
+                        noteText.length >
+                        180
+                            ? noteText.slice(
+                                0,
+                                180
+                            ) +
+                            "..."
+                            : noteText;
+
+
+                    card.appendChild(
+                        notes
+                    );
+                }
+
+
+                historyContainer.appendChild(
+                    card
+                );
+            }
+        );
+},
+
+
+formatJournalDate(
+    value
+) {
+
+    if (!value) {
+        return "";
+    }
+
+
+    const text =
+        String(
+            value
+        ).trim();
+
+
+    const simpleDate =
+        text.match(
+            /^(\d{4})-(\d{2})-(\d{2})$/
+        );
+
+
+    if (simpleDate) {
+
+        const date =
+            new Date(
+                Number(
+                    simpleDate[1]
+                ),
+                Number(
+                    simpleDate[2]
+                ) - 1,
+                Number(
+                    simpleDate[3]
+                )
+            );
+
+
+        return date.toLocaleDateString(
+            undefined,
+            {
+                year:
+                    "numeric",
+
+                month:
+                    "short",
+
+                day:
+                    "numeric"
+            }
+        );
+    }
+
+
+    const date =
+        new Date(
+            text
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return text;
+    }
+
+
+    return date.toLocaleDateString(
+        undefined,
+        {
+            year:
+                "numeric",
+
+            month:
+                "short",
+
+            day:
+                "numeric"
+        }
+    );
+},
 
     updateSpeciesFields() {
 
