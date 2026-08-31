@@ -393,6 +393,366 @@ showMap() {
 
   }
 
+
+  if (
+    window.google &&
+    window.google.maps
+  ) {
+
+    this.renderMap();
+
+    return;
+
+  }
+
+
+  const existingScript =
+    document.getElementById(
+      "wac-tracking-google-maps"
+    );
+
+
+  if (existingScript) {
+
+    existingScript.addEventListener(
+      "load",
+      () => {
+
+        this.renderMap();
+
+      },
+      {
+        once: true
+      }
+    );
+
+    return;
+
+  }
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.id =
+    "wac-tracking-google-maps";
+
+
+  script.src =
+    "https://maps.googleapis.com/maps/api/js?key=" +
+    encodeURIComponent(
+      this.mapsApiKey
+    );
+
+
+  script.async =
+    true;
+
+
+  script.defer =
+    true;
+
+
+  script.onload =
+    () => {
+
+      this.renderMap();
+
+    };
+
+
+  script.onerror =
+    () => {
+
+      if (showMapButton) {
+
+        showMapButton.disabled =
+          false;
+
+        showMapButton.textContent =
+          "Show Map";
+
+      }
+
+
+      alert(
+        "Google Maps could not be loaded."
+      );
+
+    };
+
+
+  document.head.appendChild(
+    script
+  );
+
+},
+renderMap() {
+
+  const mapContainer =
+    document.getElementById(
+      "tracking-detail-map"
+    );
+
+  const showMapButton =
+    document.getElementById(
+      "tracking-show-map-button"
+    );
+
+
+  if (
+    !mapContainer ||
+    !this.selectedSession
+  ) {
+
+    return;
+
+  }
+
+
+  const session =
+    this.selectedSession;
+
+
+  const points =
+    Array.isArray(
+      session["Points"]
+    )
+      ? session["Points"]
+      : [];
+
+
+  const mapPoints =
+    [];
+
+
+  const startLatitude =
+    Number(
+      session[
+        "Start Latitude"
+      ]
+    );
+
+  const startLongitude =
+    Number(
+      session[
+        "Start Longitude"
+      ]
+    );
+
+
+  if (
+    Number.isFinite(
+      startLatitude
+    ) &&
+    Number.isFinite(
+      startLongitude
+    )
+  ) {
+
+    mapPoints.push({
+
+      position: {
+        lat: startLatitude,
+        lng: startLongitude
+      },
+
+      title:
+        "Track Start"
+
+    });
+
+  }
+
+
+  points.forEach(
+    (
+      point,
+      index
+    ) => {
+
+      const latitude =
+        Number(
+          point[
+            "Latitude"
+          ]
+        );
+
+      const longitude =
+        Number(
+          point[
+            "Longitude"
+          ]
+        );
+
+
+      if (
+        !Number.isFinite(
+          latitude
+        ) ||
+        !Number.isFinite(
+          longitude
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      mapPoints.push({
+
+        position: {
+          lat: latitude,
+          lng: longitude
+        },
+
+        title:
+          (
+            point[
+              "Point Type"
+            ] ||
+            "Waypoint"
+          ) +
+          " " +
+          (
+            index + 1
+          )
+
+      });
+
+    }
+  );
+
+
+  const endLatitude =
+    Number(
+      session[
+        "End Latitude"
+      ]
+    );
+
+  const endLongitude =
+    Number(
+      session[
+        "End Longitude"
+      ]
+    );
+
+
+  if (
+    Number.isFinite(
+      endLatitude
+    ) &&
+    Number.isFinite(
+      endLongitude
+    )
+  ) {
+
+    mapPoints.push({
+
+      position: {
+        lat: endLatitude,
+        lng: endLongitude
+      },
+
+      title:
+        "Track End"
+
+    });
+
+  }
+
+
+  if (!mapPoints.length) {
+
+    mapContainer.innerHTML =
+      "No saved GPS locations are available for this track.";
+
+    if (showMapButton) {
+
+      showMapButton.disabled =
+        false;
+
+      showMapButton.textContent =
+        "Show Map";
+
+    }
+
+    return;
+
+  }
+
+
+  const map =
+    new google.maps.Map(
+      mapContainer,
+      {
+
+        zoom:
+          17,
+
+        center:
+          mapPoints[0]
+            .position,
+
+        mapTypeId:
+          "satellite"
+
+      }
+    );
+
+
+  const bounds =
+    new google.maps.LatLngBounds();
+
+
+  mapPoints.forEach(
+    mapPoint => {
+
+      new google.maps.Marker({
+
+        map:
+          map,
+
+        position:
+          mapPoint.position,
+
+        title:
+          mapPoint.title
+
+      });
+
+
+      bounds.extend(
+        mapPoint.position
+      );
+
+    }
+  );
+
+
+  if (
+    mapPoints.length > 1
+  ) {
+
+    map.fitBounds(
+      bounds
+    );
+
+  }
+
+
+  if (showMapButton) {
+
+    showMapButton.textContent =
+      "Map Shown";
+
+  }
+
 },
 
 formatDuration(
