@@ -115,7 +115,16 @@ window.WACTrackingHistory = {
     : [];
 
               return `
-                <div class="tracking-history-item">
+                <div
+  class="tracking-history-item"
+  data-track-id="${session["Track ID"] || ""}"
+  style="cursor: pointer;"
+  onclick="
+    window.WACTrackingHistory.openTrack(
+      '${session["Track ID"] || ""}'
+    )
+  "
+>
 
                   <h3>
                     ${trackType}
@@ -188,7 +197,7 @@ window.WACTrackingHistory = {
                       `
                       : ""
                   }
-                  
+
                 </div>
               `;
 
@@ -217,6 +226,42 @@ window.WACTrackingHistory = {
 
   },
 
+openTrack(
+  trackId
+) {
+
+  if (!trackId) {
+
+    return;
+
+  }
+
+
+  sessionStorage.setItem(
+    "wacSelectedTrackId",
+    trackId
+  );
+
+
+  const link =
+    document.querySelector(
+      '[data-page="tracking-detail"]'
+    );
+
+
+  if (link) {
+
+    link.click();
+
+    return;
+
+  }
+
+
+  window.location.hash =
+    "tracking-detail";
+
+},
 
   formatDuration(
     totalSeconds

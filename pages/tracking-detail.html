@@ -1,0 +1,85 @@
+<style>
+
+.tracking-detail-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 38px 24px 70px;
+}
+
+.tracking-detail-header {
+    margin-bottom: 28px;
+}
+
+.tracking-detail-header h1 {
+    margin: 0 0 8px;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #123b25;
+}
+
+.tracking-detail-header p {
+    margin: 0;
+    color: #59645d;
+    line-height: 1.6;
+}
+
+.tracking-detail-card {
+    background: #ffffff;
+    border: 1px solid rgba(18, 59, 37, 0.16);
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.tracking-detail-status {
+    padding: 14px 16px;
+    background: #edf2ed;
+    border-left: 5px solid #123b25;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #35423a;
+}
+
+.tracking-detail-content {
+    margin-top: 20px;
+}
+
+@media (max-width: 720px) {
+
+    .tracking-detail-page {
+        padding: 24px 16px 60px;
+    }
+
+    .tracking-detail-card {
+        padding: 18px;
+    }
+
+}
+
+</style>
+
+<section class="tracking-detail-page">
+
+  <div class="tracking-detail-header">
+    <h1>Track Details</h1>
+    <p>
+      Review the saved route and waypoint information.
+    </p>
+  </div>
+
+  <div class="tracking-detail-card">
+
+    <div
+      id="tracking-detail-status"
+      class="tracking-detail-status"
+    >
+      Loading track details...
+    </div>
+
+    <div
+      id="tracking-detail-content"
+      class="tracking-detail-content"
+    ></div>
+
+  </div>
+
+</section>
