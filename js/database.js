@@ -28,19 +28,22 @@ const Database = {
 
     async authenticatedPost(action, data = {}) {
 
-        if (
-            typeof AuthService === "undefined" ||
-            typeof AuthService.getIdToken !== "function"
-        ) {
+        const authService =
+    window.AuthService;
 
-            throw new Error(
-                "Authentication service is unavailable."
-            );
+if (
+    !authService ||
+    typeof authService.getIdToken !== "function"
+) {
 
-        }
+    throw new Error(
+        "Authentication service is unavailable."
+    );
 
-        const idToken =
-            await AuthService.getIdToken();
+}
+
+const idToken =
+    await authService.getIdToken();
 
         if (!idToken) {
 
