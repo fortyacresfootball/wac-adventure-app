@@ -132,6 +132,12 @@ async getTrackingHistory() {
     );
 },
 
+async getMovies() {
+    return await this.authenticatedPost(
+        "getMovies"
+    );
+},
+
 //--------------------------------------------------
 // Hunt Board
 //--------------------------------------------------
