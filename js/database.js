@@ -119,6 +119,13 @@ async addTrophy(data) {
 
 },
 
+async saveTrackingSession(data) {
+    return await this.authenticatedPost(
+        "saveTrackingSession",
+        data
+    );
+},
+
 //--------------------------------------------------
 // Hunt Board
 //--------------------------------------------------

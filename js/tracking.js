@@ -291,51 +291,180 @@ window.WACTracking = {
   },
 
 
-  async endTracking() {
+async endTracking() {
 
-    if (
-      this.watchId !== null
-    ) {
+  if (
+    this.watchId !== null
+  ) {
 
-      navigator.geolocation
-        .clearWatch(
-          this.watchId
-        );
-
-      this.watchId =
-        null;
-
-    }
-
-
-    if (
-      this.timerInterval
-    ) {
-
-      clearInterval(
-        this.timerInterval
+    navigator.geolocation
+      .clearWatch(
+        this.watchId
       );
 
-      this.timerInterval =
-        null;
+    this.watchId =
+      null;
 
-    }
+  }
 
 
-    await this.releaseWakeLock();
+  if (
+    this.timerInterval
+  ) {
 
+    clearInterval(
+      this.timerInterval
+    );
+
+    this.timerInterval =
+      null;
+
+  }
+
+
+  await this.releaseWakeLock();
+
+
+  const endedAt =
+    new Date();
+
+
+  if (
+    !this.startedAt ||
+    !this.lastPosition
+  ) {
 
     this.setTrackingState(
       false
     );
 
-
     this.setGpsStatus(
-      "Tracking ended."
+      "Tracking ended, but no GPS track was available to save."
     );
 
-  },
+    return;
 
+  }
+
+
+  const durationSeconds =
+    Math.floor(
+      (
+        endedAt.getTime() -
+        this.startedAt.getTime()
+      ) /
+      1000
+    );
+
+
+  const trackType =
+    document.getElementById(
+      "tracking-type"
+    ).value;
+
+
+  const firstPoint =
+    this.waypoints.length
+      ? this.waypoints[0]
+      : this.lastPosition;
+
+
+  const session = {
+
+    trackType:
+      trackType,
+
+    trackDate:
+      this.startedAt
+        .toISOString()
+        .slice(
+          0,
+          10
+        ),
+
+    startDateTime:
+      this.startedAt
+        .toISOString(),
+
+    endDateTime:
+      endedAt
+        .toISOString(),
+
+    durationSeconds:
+      durationSeconds,
+
+    totalDistanceMiles:
+      this.totalDistanceMiles,
+
+    startLatitude:
+      firstPoint.latitude,
+
+    startLongitude:
+      firstPoint.longitude,
+
+    endLatitude:
+      this.lastPosition.latitude,
+
+    endLongitude:
+      this.lastPosition.longitude,
+
+    notes:
+      ""
+
+  };
+
+
+  this.setTrackingState(
+    false
+  );
+
+
+  this.setGpsStatus(
+    "Saving track..."
+  );
+
+
+  try {
+
+    const result =
+      await Database
+        .saveTrackingSession({
+
+          session:
+            session,
+
+          points:
+            this.waypoints
+
+        });
+
+
+    this.setGpsStatus(
+      result.message ||
+      "Tracking session saved."
+    );
+
+  }
+  catch (
+    error
+  ) {
+
+    console.error(
+      "Unable to save tracking session.",
+      error
+    );
+
+
+    this.setGpsStatus(
+      error &&
+      error.message
+        ? error.message
+        : "Unable to save tracking session."
+    );
+
+  }
+
+},
 
   setTrackingState(
     active
