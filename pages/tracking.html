@@ -49,6 +49,23 @@
     background: #ffffff;
 }
 
+#tracking-waypoint-type {
+    width: 100%;
+    min-height: 58px;
+    padding: 10px 12px;
+    border: 1px solid #c7b76f;
+    border-radius: 13px;
+    font-size: 1rem;
+    font-weight: 800;
+    background: #f7f0cc;
+    color: #172018;
+}
+
+#tracking-waypoint-type:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
 .tracking-status-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -237,6 +254,18 @@
       >
         Start Tracking
       </button>
+
+      <select
+  id="tracking-waypoint-type"
+  disabled
+>
+  <option value="Blood">Blood</option>
+  <option value="Hair">Hair</option>
+  <option value="Track">Track</option>
+  <option value="Bed">Bed</option>
+  <option value="Last Seen">Last Seen</option>
+  <option value="Other">Other</option>
+</select>
 
       <button
         id="tracking-waypoint-button"
