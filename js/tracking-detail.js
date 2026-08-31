@@ -1,5 +1,8 @@
 window.WACTrackingDetail = {
 
+  selectedSession: null,
+  mapsApiKey: "",
+
   async init() {
 
     const status =
@@ -45,6 +48,9 @@ window.WACTrackingDetail = {
         await Database
           .getTrackingHistory();
 
+          this.mapsApiKey =
+  result.mapsApiKey ||
+  "";
 
       const sessions =
         Array.isArray(
@@ -81,6 +87,28 @@ window.WACTrackingDetail = {
 
       }
 
+      this.selectedSession =
+  session;
+
+
+const showMapButton =
+  document.getElementById(
+    "tracking-show-map-button"
+  );
+
+
+if (showMapButton) {
+
+  showMapButton.addEventListener(
+    "click",
+    () => {
+
+      this.showMap();
+
+    }
+  );
+
+}
 
       const trackType =
         session[
@@ -311,9 +339,63 @@ window.WACTrackingDetail = {
     }
 
   },
+showMap() {
+
+  const mapContainer =
+    document.getElementById(
+      "tracking-detail-map"
+    );
+
+  const showMapButton =
+    document.getElementById(
+      "tracking-show-map-button"
+    );
 
 
-  formatDuration(
+  if (!mapContainer) {
+    return;
+  }
+
+
+  if (!this.selectedSession) {
+
+    alert(
+      "Track information is not available."
+    );
+
+    return;
+
+  }
+
+
+  if (!this.mapsApiKey) {
+
+    alert(
+      "Google Maps is not configured."
+    );
+
+    return;
+
+  }
+
+
+  mapContainer.style.display =
+    "block";
+
+
+  if (showMapButton) {
+
+    showMapButton.disabled =
+      true;
+
+    showMapButton.textContent =
+      "Loading Map...";
+
+  }
+
+},
+
+formatDuration(
     totalSeconds
   ) {
 
