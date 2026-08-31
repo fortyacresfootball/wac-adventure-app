@@ -103,6 +103,16 @@ window.WACTrackingHistory = {
                   0
                 );
 
+                const points =
+  Array.isArray(
+    session[
+      "Points"
+    ]
+  )
+    ? session[
+        "Points"
+      ]
+    : [];
 
               return `
                 <div class="tracking-history-item">
@@ -142,6 +152,43 @@ window.WACTrackingHistory = {
 
                   </div>
 
+                                    ${
+                    points.length
+                      ? `
+                        <div style="margin-top: 14px;">
+
+                          <strong style="color: #123b25;">
+                            Waypoints
+                          </strong>
+
+                          <div style="margin-top: 8px; display: grid; gap: 6px;">
+
+                            ${points
+                              .map(
+                                point => {
+
+                                  return `
+                                    <div>
+                                      ${point["Point Type"] || "Waypoint"}
+                                      — Accuracy ±${Math.round(
+                                        Number(
+                                          point["Accuracy Feet"] || 0
+                                        )
+                                      )} ft
+                                    </div>
+                                  `;
+
+                                }
+                              )
+                              .join("")}
+
+                          </div>
+
+                        </div>
+                      `
+                      : ""
+                  }
+                  
                 </div>
               `;
 
