@@ -1,0 +1,132 @@
+<style>
+
+.tracking-history-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 38px 24px 70px;
+}
+
+.tracking-history-header {
+    margin-bottom: 28px;
+}
+
+.tracking-history-header h1 {
+    margin: 0 0 8px;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #123b25;
+}
+
+.tracking-history-header p {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #59645d;
+}
+
+.tracking-history-card {
+    background: #ffffff;
+    border: 1px solid rgba(18, 59, 37, 0.16);
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.tracking-history-status {
+    padding: 14px 16px;
+    background: #edf2ed;
+    border-left: 5px solid #123b25;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #35423a;
+}
+
+.tracking-history-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.tracking-history-item {
+    border: 1px solid #ddd7c7;
+    border-radius: 14px;
+    padding: 18px;
+    background: #f7f4eb;
+}
+
+.tracking-history-item h3 {
+    margin: 0 0 8px;
+    color: #123b25;
+}
+
+.tracking-history-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.tracking-history-meta div {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.tracking-history-meta span {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b746e;
+}
+
+.tracking-history-meta strong {
+    display: block;
+    margin-top: 4px;
+    color: #123b25;
+}
+
+@media (max-width: 720px) {
+
+    .tracking-history-page {
+        padding: 24px 16px 60px;
+    }
+
+    .tracking-history-card {
+        padding: 18px;
+    }
+
+    .tracking-history-meta {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+<section class="tracking-history-page">
+
+  <div class="tracking-history-header">
+    <h1>Track History</h1>
+    <p>
+      Review your saved WAC tracking sessions.
+    </p>
+  </div>
+
+  <div class="tracking-history-card">
+
+    <div
+      id="tracking-history-status"
+      class="tracking-history-status"
+    >
+      Loading tracking history...
+    </div>
+
+    <div
+      id="tracking-history-list"
+      class="tracking-history-list"
+    ></div>
+
+  </div>
+
+</section>

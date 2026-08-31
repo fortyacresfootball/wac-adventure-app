@@ -126,6 +126,12 @@ async saveTrackingSession(data) {
     );
 },
 
+async getTrackingHistory() {
+    return await this.authenticatedPost(
+        "getTrackingHistory"
+    );
+},
+
 //--------------------------------------------------
 // Hunt Board
 //--------------------------------------------------
