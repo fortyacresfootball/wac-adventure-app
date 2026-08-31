@@ -7,6 +7,8 @@ window.WACTracking = {
   totalDistanceMiles: 0,
   waypoints: [],
   timerInterval: null,
+  waypointSamples: [],
+isCapturingWaypoint: false,
 
 
   init() {
@@ -145,39 +147,88 @@ window.WACTracking = {
 
 
   handlePosition(
-    position
+  position
+) {
+
+  const currentPosition = {
+
+    latitude:
+      position.coords.latitude,
+
+    longitude:
+      position.coords.longitude,
+
+    accuracyFeet:
+      position.coords.accuracy *
+      3.28084,
+
+    pointDateTime:
+      new Date().toISOString()
+
+  };
+
+  if (
+  this.isCapturingWaypoint
+) {
+
+  this.waypointSamples.push({
+    ...currentPosition
+  });
+
+}
+
+  const maximumAccuracyFeet =
+    65;
+
+
+  if (
+    this.lastPosition
   ) {
 
-    const currentPosition = {
+    const distance =
+      this.calculateDistanceMiles(
+        this.lastPosition.latitude,
+        this.lastPosition.longitude,
+        currentPosition.latitude,
+        currentPosition.longitude
+      );
 
-      latitude:
-        position.coords.latitude,
 
-      longitude:
-        position.coords.longitude,
+    const distanceFeet =
+      distance *
+      5280;
 
-      accuracyFeet:
-        position.coords.accuracy *
-        3.28084,
 
-      pointDateTime:
-        new Date().toISOString()
+    const minimumMovementFeet =
+      Math.max(
+        8,
+        Math.min(
+          25,
+          Math.max(
+            this.lastPosition.accuracyFeet,
+            currentPosition.accuracyFeet
+          ) *
+          0.5
+        )
+      );
 
-    };
+
+    const accuracyIsUsable =
+      this.lastPosition.accuracyFeet <=
+        maximumAccuracyFeet &&
+      currentPosition.accuracyFeet <=
+        maximumAccuracyFeet;
+
+
+    const movementIsReal =
+      distanceFeet >=
+      minimumMovementFeet;
 
 
     if (
-      this.lastPosition
+      accuracyIsUsable &&
+      movementIsReal
     ) {
-
-      const distance =
-        this.calculateDistanceMiles(
-          this.lastPosition.latitude,
-          this.lastPosition.longitude,
-          currentPosition.latitude,
-          currentPosition.longitude
-        );
-
 
       this.totalDistanceMiles +=
         distance;
@@ -192,104 +243,262 @@ window.WACTracking = {
 
     }
 
+  }
 
-    this.lastPosition =
-      currentPosition;
+
+  this.lastPosition =
+    currentPosition;
+
+
+  let quality =
+    "Good";
+
+
+  if (
+    currentPosition.accuracyFeet <=
+    15
+  ) {
+
+    quality =
+      "Excellent";
+
+  }
+  else if (
+    currentPosition.accuracyFeet >
+    30
+  ) {
+
+    quality =
+      "Fair";
+
+  }
+
+
+  if (
+    currentPosition.accuracyFeet >
+    65
+  ) {
+
+    quality =
+      "Poor";
+
+  }
+
+
+  this.setGpsStatus(
+    "GPS " +
+    quality +
+    " — accuracy ±" +
+    Math.round(
+      currentPosition.accuracyFeet
+    ) +
+    " ft"
+  );
+
+},
+
+  async addWaypoint() {
+
+  if (
+    !this.lastPosition
+  ) {
+
+    this.setGpsStatus(
+      "Waiting for a GPS location."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    this.isCapturingWaypoint
+  ) {
+
+    return;
+
+  }
+
+
+  this.isCapturingWaypoint =
+    true;
+
+  this.waypointSamples =
+    [];
+
+
+  const waypointButton =
+    document.getElementById(
+      "tracking-waypoint-button"
+    );
+
+
+  waypointButton.disabled =
+    true;
+
+  waypointButton.textContent =
+    "Refining Location...";
+
+
+  this.setGpsStatus(
+    "Hold still — refining waypoint location..."
+  );
+
+
+  // Include the most recent GPS fix
+  // while we wait for additional fresh fixes.
+  this.waypointSamples.push({
+    ...this.lastPosition
+  });
+
+
+  await new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        7000
+      )
+  );
+
+
+  this.isCapturingWaypoint =
+    false;
+
+
+  if (
+    !this.waypointSamples.length
+  ) {
+
+    waypointButton.disabled =
+      false;
+
+    waypointButton.textContent =
+      "Add Waypoint";
 
 
     this.setGpsStatus(
-      "GPS active — accuracy ±" +
-      Math.round(
-        currentPosition.accuracyFeet
-      ) +
-      " ft"
+      "Unable to obtain a waypoint location."
     );
 
-  },
+    return;
+
+  }
 
 
-  addWaypoint() {
+  // Choose the GPS fix reporting
+  // the smallest accuracy radius.
+  const bestPosition =
+    this.waypointSamples.reduce(
+      (
+        best,
+        sample
+      ) => {
 
-    if (
-      !this.lastPosition
-    ) {
+        if (
+          sample.accuracyFeet <
+          best.accuracyFeet
+        ) {
 
-      this.setGpsStatus(
-        "Waiting for an accurate GPS location."
+          return sample;
+
+        }
+
+        return best;
+
+      }
+    );
+
+
+  const previousWaypoint =
+    this.waypoints.length
+      ? this.waypoints[
+          this.waypoints.length - 1
+        ]
+      : null;
+
+
+  let distanceFromPrevious =
+    0;
+
+
+  if (
+    previousWaypoint
+  ) {
+
+    distanceFromPrevious =
+      this.calculateDistanceMiles(
+        previousWaypoint.latitude,
+        previousWaypoint.longitude,
+        bestPosition.latitude,
+        bestPosition.longitude
       );
 
-      return;
-    }
+  }
 
 
-    const previousWaypoint =
-      this.waypoints.length
-        ? this.waypoints[
-            this.waypoints.length - 1
-          ]
-        : null;
+  const waypointType =
+  document.getElementById(
+    "tracking-waypoint-type"
+  ).value;
 
 
-    let distanceFromPrevious =
-      0;
+const waypoint = {
+
+  pointType:
+    waypointType,
+
+    latitude:
+      bestPosition.latitude,
+
+    longitude:
+      bestPosition.longitude,
+
+    accuracyFeet:
+      bestPosition.accuracyFeet,
+
+    pointDateTime:
+      new Date().toISOString(),
+
+    distanceFromPreviousMiles:
+      distanceFromPrevious,
+
+    notes:
+      ""
+
+  };
 
 
-    if (
-      previousWaypoint
-    ) {
-
-      distanceFromPrevious =
-        this.calculateDistanceMiles(
-          previousWaypoint.latitude,
-          previousWaypoint.longitude,
-          this.lastPosition.latitude,
-          this.lastPosition.longitude
-        );
-
-    }
+  this.waypoints.push(
+    waypoint
+  );
 
 
-    const waypoint = {
-
-      pointType:
-        "Waypoint",
-
-      latitude:
-        this.lastPosition.latitude,
-
-      longitude:
-        this.lastPosition.longitude,
-
-      accuracyFeet:
-        this.lastPosition.accuracyFeet,
-
-      pointDateTime:
-        new Date().toISOString(),
-
-      distanceFromPreviousMiles:
-        distanceFromPrevious,
-
-      notes:
-        ""
-
-    };
+  document.getElementById(
+    "tracking-waypoint-count"
+  ).textContent =
+    this.waypoints.length;
 
 
-    this.waypoints.push(
-      waypoint
-    );
+  this.renderWaypoints();
 
 
-    document.getElementById(
-      "tracking-waypoint-count"
-    ).textContent =
-      this.waypoints.length;
+  waypointButton.disabled =
+    false;
+
+  waypointButton.textContent =
+    "Add Waypoint";
 
 
-    this.renderWaypoints();
+  this.setGpsStatus(
+    "Waypoint saved — estimated accuracy ±" +
+    Math.round(
+      bestPosition.accuracyFeet
+    ) +
+    " ft"
+  );
 
-  },
-
+},
 
 async endTracking() {
 
@@ -485,6 +694,11 @@ async endTracking() {
         "tracking-end-button"
       );
 
+      const waypointType =
+  document.getElementById(
+    "tracking-waypoint-type"
+  );
+
     const status =
       document.getElementById(
         "tracking-status"
@@ -495,11 +709,13 @@ async endTracking() {
       active;
 
     waypointButton.disabled =
-      !active;
+  !active;
 
-    endButton.disabled =
-      !active;
+waypointType.disabled =
+  !active;
 
+endButton.disabled =
+  !active;
 
     status.textContent =
       active
@@ -662,8 +878,8 @@ async endTracking() {
               <div class="tracking-waypoint-item">
 
                 <strong>
-                  Waypoint ${index + 1}
-                </strong>
+  ${waypoint.pointType} ${index + 1}
+</strong>
 
                 <div>
                   ${waypoint.latitude.toFixed(6)},
