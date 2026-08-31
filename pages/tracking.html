@@ -1,0 +1,103 @@
+<section class="tracking-page">
+
+  <div class="tracking-header">
+    <h1>WAC Tracker</h1>
+    <p>
+      Record a route, mark waypoints, and save the completed track.
+    </p>
+  </div>
+
+
+  <div class="tracking-card">
+
+    <label for="tracking-type">
+      Track Type
+    </label>
+
+    <select id="tracking-type">
+      <option value="Blood Trail">Blood Trail</option>
+      <option value="Scouting">Scouting</option>
+      <option value="Hiking">Hiking</option>
+      <option value="Property Walk">Property Walk</option>
+      <option value="Recovery">Recovery</option>
+      <option value="Other">Other</option>
+    </select>
+
+
+    <div class="tracking-status-grid">
+
+      <div>
+        <span>Status</span>
+        <strong id="tracking-status">
+          Ready
+        </strong>
+      </div>
+
+      <div>
+        <span>Elapsed</span>
+        <strong id="tracking-elapsed">
+          00:00:00
+        </strong>
+      </div>
+
+      <div>
+        <span>Distance</span>
+        <strong id="tracking-distance">
+          0.00 mi
+        </strong>
+      </div>
+
+      <div>
+        <span>Waypoints</span>
+        <strong id="tracking-waypoint-count">
+          0
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="tracking-actions">
+
+      <button
+        id="tracking-start-button"
+        type="button"
+      >
+        Start Tracking
+      </button>
+
+      <button
+        id="tracking-waypoint-button"
+        type="button"
+        disabled
+      >
+        Add Waypoint
+      </button>
+
+      <button
+        id="tracking-end-button"
+        type="button"
+        disabled
+      >
+        End Track
+      </button>
+
+    </div>
+
+
+    <div
+      id="tracking-gps-status"
+      class="tracking-gps-status"
+    >
+      GPS has not started.
+    </div>
+
+
+    <div
+      id="tracking-waypoints"
+      class="tracking-waypoints"
+    ></div>
+
+  </div>
+
+</section>
