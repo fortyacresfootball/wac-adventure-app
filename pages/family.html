@@ -1,5 +1,1214 @@
 <section class="page-section page-enter family-page">
 
+    <style>
+
+/* =====================================================
+   WAC FAMILY & FRIENDS — CAMP ROSTER THEME
+   ===================================================== */
+
+.family-page,
+.family-highlights-section {
+    position: relative;
+
+    background:
+        radial-gradient(
+            circle at 18% 8%,
+            rgba(255, 248, 218, 0.82),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 84% 72%,
+            rgba(122, 94, 52, 0.12),
+            transparent 36%
+        ),
+        #e9dfc4;
+
+    color: #29271f;
+}
+
+
+/* paper grain */
+
+.family-page::before,
+.family-highlights-section::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.16;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(74, 55, 30, 0.05) 0px,
+            rgba(74, 55, 30, 0.05) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+
+/* topo texture */
+
+.family-page::after,
+.family-highlights-section::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.22;
+
+    background-image:
+        repeating-radial-gradient(
+            ellipse at 12% 34%,
+            transparent 0px,
+            transparent 25px,
+            rgba(46, 64, 43, 0.42) 26px,
+            transparent 28px,
+            transparent 44px
+        ),
+        repeating-radial-gradient(
+            ellipse at 88% 72%,
+            transparent 0px,
+            transparent 31px,
+            rgba(79, 57, 31, 0.36) 32px,
+            transparent 34px,
+            transparent 54px
+        );
+
+    background-size:
+        430px 310px,
+        510px 370px;
+}
+
+
+.family-page .container,
+.family-highlights-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =====================================================
+   PAGE HEADERS
+   ===================================================== */
+
+.family-page .page-header,
+.family-highlights-section .page-header {
+    position: relative;
+
+    padding-bottom: 22px;
+    margin-bottom: 28px;
+
+    border-bottom:
+        1px solid rgba(94,72,40,0.30);
+}
+
+
+.family-page .page-header::after,
+.family-highlights-section .page-header::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -2px;
+
+    width: 140px;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2f4a33,
+            #8d6c38,
+            transparent
+        );
+}
+
+
+/* hide little eyebrow labels */
+
+.family-page .page-header .eyebrow,
+.family-highlights-section .page-header .eyebrow {
+    display: none;
+}
+
+
+/* main wood title signs */
+
+.family-page .section-title,
+.family-highlights-section .section-title {
+    position: relative;
+
+    display: inline-block;
+
+    margin: 0;
+
+    padding:
+        10px 42px 11px;
+
+    background:
+        repeating-linear-gradient(
+            2deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.04) 3px,
+            rgba(0,0,0,0.04) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #704a24,
+            #452b16
+        );
+
+    border:
+        2px solid #2d1c0e;
+
+    border-radius:
+        5px 9px 4px 8px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 -3px 5px rgba(0,0,0,0.18),
+        0 5px 11px rgba(0,0,0,0.24);
+
+    color: #f0dfb3;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 900;
+
+    letter-spacing: 0.04em;
+
+    text-shadow:
+        0 2px 2px rgba(0,0,0,0.55);
+
+    transform:
+        rotate(-0.3deg);
+}
+
+
+/* gold nails */
+
+.family-page .section-title::before,
+.family-page .section-title::after,
+.family-highlights-section .section-title::before,
+.family-highlights-section .section-title::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    width: 14px;
+    height: 14px;
+
+    transform:
+        translateY(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff0a8 0%,
+            #e0bb50 34%,
+            #b88622 68%,
+            #795417 100%
+        );
+
+    border:
+        1px solid #6a4714;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.50),
+        0 1px 2px rgba(0,0,0,0.40);
+}
+
+
+.family-page .section-title::before,
+.family-highlights-section .section-title::before {
+    left: 13px;
+}
+
+
+.family-page .section-title::after,
+.family-highlights-section .section-title::after {
+    right: 13px;
+}
+
+
+.family-page .section-subtitle,
+.family-highlights-section .section-subtitle {
+    margin-top: 13px;
+
+    color: #554d3e;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   CHIPS
+   ===================================================== */
+
+.family-page .chip {
+    background:
+        #203a29;
+
+    border:
+        1px solid #112418;
+
+    border-radius:
+        4px;
+
+    box-shadow:
+        0 3px 7px rgba(0,0,0,0.18);
+
+    color:
+        #e6d6a5;
+
+    font-weight:
+        900;
+}
+
+
+/* =====================================================
+   SECTION HEADINGS
+   ===================================================== */
+
+.family-section-heading {
+    position: relative;
+
+    margin:
+        30px 0 18px;
+
+    padding-bottom:
+        12px;
+
+    border-bottom:
+        1px solid rgba(94,72,40,0.24);
+}
+
+
+.family-section-heading .eyebrow {
+    display: none;
+}
+
+
+.family-section-title {
+    display: inline-block;
+
+    margin: 0;
+
+    padding:
+        7px 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #5d3d20,
+            #3e2815
+        );
+
+    border:
+        1px solid #29190c;
+
+    border-radius:
+        3px;
+
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.22);
+
+    color:
+        #ead9a4;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        1.05rem;
+
+    font-weight:
+        900;
+}
+
+
+.family-section-description {
+    margin-top:
+        10px;
+
+    color:
+        #5c5443;
+
+    line-height:
+        1.5;
+}
+
+
+/* =====================================================
+   COMMUNITY SNAPSHOT
+   ===================================================== */
+
+.family-stats-grid {
+    gap:
+        14px;
+}
+
+
+.family-stats-grid .stat-card {
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246,238,208,0.98),
+            rgba(221,207,169,0.96)
+        );
+
+    border:
+        1px solid #9a8052;
+
+    border-left:
+        6px solid #2c4a32;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        0 7px 16px rgba(51,39,21,0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.24);
+}
+
+
+.family-stats-grid .stat-number {
+    color:
+        #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight:
+        900;
+}
+
+
+.family-stats-grid .stat-label {
+    color:
+        #655c49;
+
+    font-weight:
+        800;
+}
+
+
+/* =====================================================
+   MEMBER DIRECTORY SHELL
+   ===================================================== */
+
+/* =====================================================
+   METAL MEMBER PLAQUES
+   ===================================================== */
+
+.family-member-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(240px, 1fr)
+        );
+
+    gap: 24px;
+
+    padding: 26px;
+}
+
+
+/* =====================================================
+   PLAQUE BODY
+   ===================================================== */
+
+.family-member-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    min-width: 0;
+    min-height: 390px;
+
+    padding:
+        30px 22px 22px;
+
+    overflow: hidden;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,0.035) 0px,
+            rgba(255,255,255,0.035) 1px,
+            rgba(0,0,0,0.035) 1px,
+            rgba(0,0,0,0.035) 3px
+        ),
+        linear-gradient(
+            105deg,
+            rgba(255,255,255,0.12),
+            transparent 28%,
+            rgba(0,0,0,0.08) 48%,
+            rgba(255,255,255,0.08) 72%,
+            transparent
+        ),
+        linear-gradient(
+            180deg,
+            #817b6d 0%,
+            #666154 45%,
+            #4c483f 100%
+        );
+
+    border:
+        3px solid #282720;
+
+    border-radius: 7px;
+
+    box-shadow:
+        inset 0 0 0 2px rgba(190,184,164,0.38),
+        inset 0 0 0 9px rgba(26,25,21,0.17),
+        inset 0 1px 0 rgba(255,255,255,0.22),
+        inset 0 -5px 10px rgba(0,0,0,0.22),
+        0 9px 18px rgba(49,38,22,0.25);
+
+    color: #eee2be;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+
+.family-member-card:hover {
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        inset 0 0 0 2px rgba(190,184,164,0.42),
+        inset 0 0 0 9px rgba(26,25,21,0.17),
+        inset 0 1px 0 rgba(255,255,255,0.24),
+        inset 0 -5px 10px rgba(0,0,0,0.22),
+        0 13px 24px rgba(49,38,22,0.30);
+}
+
+
+/* =====================================================
+   FOUR CORNER RIVETS
+   ===================================================== */
+
+.family-member-card::before,
+.family-member-card::after {
+    content: "";
+
+    position: absolute;
+
+    top: 13px;
+
+    width: 14px;
+    height: 14px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 28%,
+            #ddd8c9 0%,
+            #aaa596 28%,
+            #68645a 58%,
+            #35332d 100%
+        );
+
+    border:
+        1px solid #24231f;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.58),
+        0 2px 3px rgba(0,0,0,0.48);
+}
+
+
+.family-member-card::before {
+    left: 14px;
+}
+
+
+.family-member-card::after {
+    right: 14px;
+}
+
+
+/* =====================================================
+   PORTRAIT MEDALLION
+   ===================================================== */
+
+.family-member-photo {
+    position: relative;
+
+    flex: 0 0 auto;
+
+    width: 128px;
+    height: 128px;
+
+    margin:
+        6px auto 18px;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #555147,
+            #2a2924
+        );
+
+    border:
+        6px solid #aaa38f;
+
+    box-shadow:
+        inset 0 0 0 2px #39372f,
+        inset 0 0 10px rgba(0,0,0,0.48),
+        0 5px 8px rgba(0,0,0,0.30);
+}
+
+
+.family-member-photo img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+
+.family-member-initials {
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle,
+            #504c42,
+            #292824
+        );
+
+    color: #eee2bd;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 2.25rem;
+
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   MEMBER CONTENT
+   ===================================================== */
+
+.family-member-content {
+    display: flex;
+    flex: 1;
+
+    width: 100%;
+
+    flex-direction: column;
+    align-items: center;
+
+    min-width: 0;
+
+    text-align: center;
+}
+
+
+.family-member-role {
+    min-height: 18px;
+
+    margin-bottom: 5px;
+
+    color: #d7c896;
+
+    font-size: 0.72rem;
+
+    font-weight: 900;
+
+    line-height: 1.25;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 1px 2px rgba(0,0,0,0.72);
+}
+
+
+.family-member-content h3 {
+    width: 100%;
+
+    margin:
+        3px 0 5px;
+
+    overflow: hidden;
+
+    color: #f2e5bd;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            1.35rem,
+            2vw,
+            1.65rem
+        );
+
+    font-weight: 900;
+
+    line-height: 1.1;
+
+    text-overflow: ellipsis;
+
+    text-shadow:
+        0 1px 0 rgba(255,255,255,0.08),
+        0 2px 2px rgba(0,0,0,0.75);
+}
+
+
+.family-member-rank {
+    margin-bottom: 17px;
+
+    color: #cabb8c;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 0.88rem;
+
+    font-style: italic;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   RECESSED STAT PLATES
+   ===================================================== */
+
+.family-member-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    width: 100%;
+
+    gap: 9px;
+
+    margin-bottom: 17px;
+}
+
+
+.family-member-stat {
+    min-width: 0;
+
+    padding:
+        9px 5px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #302f2a,
+            #191815
+        );
+
+    border:
+        1px solid #11100e;
+
+    border-radius: 4px;
+
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.50),
+        inset 0 -1px 0 rgba(255,255,255,0.08),
+        0 1px 1px rgba(255,255,255,0.08);
+}
+
+
+.family-member-stat strong {
+    display: block;
+
+    color: #e5cb72;
+
+    font-size: 1.15rem;
+
+    line-height: 1;
+
+    font-weight: 900;
+}
+
+
+.family-member-stat span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #bdb291;
+
+    font-size: 0.66rem;
+
+    font-weight: 900;
+
+    letter-spacing: 0.07em;
+
+    text-transform: uppercase;
+}
+
+
+/* =====================================================
+   ADVENTURE RECORD PLATE
+   ===================================================== */
+
+.family-member-action {
+    width: calc(100% - 2px);
+
+    margin-top: auto;
+
+    padding:
+        10px 8px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #413e35,
+            #292721
+        );
+
+    border:
+        1px solid #171612;
+
+    border-radius: 3px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 -2px 3px rgba(0,0,0,0.32);
+
+    color: #e4d49f;
+
+    font-size: 0.76rem;
+
+    font-weight: 900;
+
+    line-height: 1.2;
+
+    letter-spacing: 0.03em;
+
+    text-align: center;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.72);
+}
+
+
+.family-member-card:hover
+.family-member-action {
+    color: #fff0bb;
+
+    background:
+        linear-gradient(
+            180deg,
+            #4b483d,
+            #302e27
+        );
+}
+
+
+/* =====================================================
+   FOCUS
+   ===================================================== */
+
+.family-member-card:focus-visible {
+    outline:
+        3px solid rgba(181,142,57,0.70);
+
+    outline-offset: 4px;
+}
+
+
+/* =====================================================
+   RESPONSIVE PLAQUES
+   ===================================================== */
+
+@media (max-width: 620px) {
+
+    .family-member-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 12px;
+
+        padding: 15px;
+    }
+
+
+    .family-member-card {
+        min-height: 330px;
+
+        padding:
+            25px 12px 14px;
+    }
+
+
+    .family-member-photo {
+        width: 88px;
+        height: 88px;
+
+        margin-bottom: 13px;
+
+        border-width: 4px;
+    }
+
+
+    .family-member-role {
+        font-size: 0.60rem;
+    }
+
+
+    .family-member-content h3 {
+        font-size: 1.1rem;
+    }
+
+
+    .family-member-rank {
+        margin-bottom: 11px;
+
+        font-size: 0.76rem;
+    }
+
+
+    .family-member-stat {
+        padding:
+            7px 3px;
+    }
+
+
+    .family-member-action {
+        padding:
+            8px 4px;
+
+        font-size: 0.63rem;
+    }
+
+}
+
+.family-member-grid {
+    position:
+        relative;
+
+    margin-top:
+        18px;
+
+    padding:
+        22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(250,244,220,0.96),
+            rgba(228,214,176,0.94)
+        );
+
+    border:
+        1px solid #a18a5d;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        0 8px 18px rgba(46,35,19,0.13),
+        inset 0 0 0 3px rgba(255,255,255,0.24);
+}
+
+
+.family-loading-state {
+    color:
+        #5f5747;
+
+    text-align:
+        center;
+}
+
+
+/* =====================================================
+   COMMUNITY HIGHLIGHTS
+   ===================================================== */
+
+.family-highlight-grid {
+    gap:
+        18px;
+}
+
+
+.family-highlight-card {
+    position:
+        relative;
+
+    padding:
+        22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246,238,208,0.98),
+            rgba(221,207,169,0.96)
+        );
+
+    border:
+        1px solid #9a8052;
+
+    border-top:
+        6px solid #2c4a32;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        0 7px 16px rgba(51,39,21,0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.24);
+}
+
+
+.family-highlight-icon {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        46px;
+    height:
+        46px;
+
+    margin-bottom:
+        12px;
+
+    border-radius:
+        50%;
+
+    background:
+        #294830;
+
+    border:
+        2px solid #172719;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        0 4px 8px rgba(0,0,0,0.17);
+
+    font-size:
+        1.4rem;
+}
+
+
+.family-highlight-card .panel-label {
+    display:
+        inline-block;
+
+    margin-bottom:
+        10px;
+
+    padding:
+        5px 10px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #68451f,
+            #442b15
+        );
+
+    border:
+        1px solid #29190c;
+
+    border-radius:
+        3px;
+
+    color:
+        #ead9a4;
+
+    font-size:
+        0.76rem;
+
+    font-weight:
+        900;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.05em;
+}
+
+
+.family-highlight-card h3 {
+    margin:
+        6px 0 8px;
+
+    color:
+        #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight:
+        900;
+}
+
+
+.family-highlight-card p {
+    color:
+        #554d3e;
+
+    line-height:
+        1.5;
+}
+
+
+.family-highlight-meta {
+    color:
+        #74684f;
+
+    font-size:
+        0.84rem;
+
+    font-weight:
+        700;
+}
+
+
+/* =====================================================
+   COMPOUND GOAL BAR
+   ===================================================== */
+
+.family-goal-progress {
+    overflow:
+        hidden;
+
+    height:
+        12px;
+
+    margin:
+        16px 0 10px;
+
+    background:
+        rgba(104,87,55,0.18);
+
+    border:
+        1px solid #a3916c;
+
+    border-radius:
+        999px;
+
+    box-shadow:
+        inset 0 1px 3px rgba(0,0,0,0.14);
+}
+
+
+.family-goal-progress-fill {
+    height:
+        100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #294830,
+            #536f4d
+        );
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 720px) {
+
+    .family-page .section-title,
+    .family-highlights-section .section-title {
+        padding:
+            9px 34px 10px;
+    }
+
+
+    .family-member-grid {
+        padding:
+            15px;
+    }
+
+
+    .family-highlight-card {
+        padding:
+            18px;
+    }
+
+}
+
+</style>
+
     <div class="container">
 
         <!-- ===================================================== -->
@@ -9,10 +1218,6 @@
         <div class="page-header">
 
             <div>
-
-                <div class="eyebrow">
-                    Workman Adventure Compound
-                </div>
 
                 <h1 class="section-title">
                     Family &amp; Friends
@@ -38,10 +1243,6 @@
         <div class="family-section-heading">
 
             <div>
-
-                <div class="eyebrow">
-                    Compound Snapshot
-                </div>
 
                 <h2 class="family-section-title">
                     WAC Community at a Glance
@@ -123,10 +1324,6 @@
 
             <div>
 
-                <div class="eyebrow">
-                    WAC Community
-                </div>
-
                 <h2 class="family-section-title">
                     Meet the Family &amp; Friends
                 </h2>
@@ -173,10 +1370,6 @@
         <div class="page-header">
 
             <div>
-
-                <div class="eyebrow">
-                    Compound Activity
-                </div>
 
                 <h2 class="section-title">
                     WAC Community Highlights
