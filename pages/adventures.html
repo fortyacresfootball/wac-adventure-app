@@ -1,14 +1,1078 @@
-<section class="page-section page-enter">
+<section class="page-section page-enter adventure-explorer-page">
+
+    <style>
+
+/* =====================================================
+   WAC ADVENTURE EXPLORER — FIELD GUIDE THEME
+   ===================================================== */
+
+.adventure-explorer-page {
+    position: relative;
+
+    padding:
+        28px 0 80px;
+
+    background:
+        radial-gradient(
+            circle at 18% 8%,
+            rgba(255, 248, 218, 0.82),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 84% 72%,
+            rgba(122, 94, 52, 0.12),
+            transparent 36%
+        ),
+        #e9dfc4;
+
+    color:
+        #29271f;
+}
+
+
+/* paper grain */
+
+.adventure-explorer-page::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.16;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(74, 55, 30, 0.05) 0px,
+            rgba(74, 55, 30, 0.05) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+
+/* topographic field texture */
+
+.adventure-explorer-page::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.22;
+
+    background-image:
+        repeating-radial-gradient(
+            ellipse at 12% 34%,
+            transparent 0px,
+            transparent 25px,
+            rgba(46, 64, 43, 0.42) 26px,
+            transparent 28px,
+            transparent 44px
+        ),
+        repeating-radial-gradient(
+            ellipse at 88% 72%,
+            transparent 0px,
+            transparent 31px,
+            rgba(79, 57, 31, 0.36) 32px,
+            transparent 34px,
+            transparent 54px
+        );
+
+    background-size:
+        430px 310px,
+        510px 370px;
+}
+
+
+.adventure-explorer-page .container {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.adventure-explorer-page .page-header {
+    position: relative;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    gap: 16px;
+
+    margin-bottom: 26px;
+    padding-bottom: 22px;
+
+    border-bottom:
+        1px solid rgba(94, 72, 40, 0.30);
+}
+
+
+.adventure-explorer-page .page-header::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -2px;
+
+    width: 140px;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2f4a33,
+            #8d6c38,
+            transparent
+        );
+}
+
+
+/* hide old Live Database label */
+
+.adventure-explorer-page .eyebrow {
+    display: none;
+}
+
+
+/* main wood title sign */
+
+.adventure-explorer-page .section-title {
+    position: relative;
+
+    display: inline-block;
+
+    margin: 0;
+
+    padding:
+        11px 44px 12px;
+
+    background:
+        repeating-linear-gradient(
+            2deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.04) 3px,
+            rgba(0,0,0,0.04) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #704a24,
+            #452b16
+        );
+
+    border:
+        2px solid #2d1c0e;
+
+    border-radius:
+        5px 9px 4px 8px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 -3px 5px rgba(0,0,0,0.18),
+        0 5px 11px rgba(0,0,0,0.24);
+
+    color:
+        #f0dfb3;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            1.8rem,
+            4.5vw,
+            3rem
+        );
+
+    font-weight: 900;
+
+    letter-spacing:
+        0.04em;
+
+    text-shadow:
+        0 2px 2px rgba(0,0,0,0.55);
+
+    transform:
+        rotate(-0.3deg);
+}
+
+
+/* gold nails */
+
+.adventure-explorer-page .section-title::before,
+.adventure-explorer-page .section-title::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    width: 14px;
+    height: 14px;
+
+    transform:
+        translateY(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff0a8 0%,
+            #e0bb50 34%,
+            #b88622 68%,
+            #795417 100%
+        );
+
+    border:
+        1px solid #6a4714;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.50),
+        0 1px 2px rgba(0,0,0,0.40);
+}
+
+
+.adventure-explorer-page .section-title::before {
+    left: 14px;
+}
+
+
+.adventure-explorer-page .section-title::after {
+    right: 14px;
+}
+
+
+.adventure-explorer-page .section-subtitle {
+    margin:
+        14px 0 0;
+
+    color:
+        #554d3e;
+
+    font-size:
+        1rem;
+
+    line-height:
+        1.5;
+}
+
+
+/* =====================================================
+   ADVENTURE COUNT
+   ===================================================== */
+
+.adventure-explorer-page .chip {
+    padding:
+        8px 13px;
+
+    background:
+        #203a29;
+
+    border:
+        1px solid #112418;
+
+    border-radius:
+        4px;
+
+    color:
+        #e6d6a5;
+
+    box-shadow:
+        0 3px 7px rgba(0,0,0,0.18);
+
+    font-weight:
+        900;
+}
+
+
+/* =====================================================
+   ADVENTURE RECORD
+   ===================================================== */
+
+.adventure-explorer-page .page-header > .small-button {
+    position: relative;
+
+    display: inline-block;
+
+    padding:
+        11px 18px;
+
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.03) 3px,
+            rgba(0,0,0,0.03) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #3a5538,
+            #203520
+        );
+
+    border:
+        2px solid #172719;
+
+    border-radius:
+        5px 8px 4px 7px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        inset 0 -3px 5px rgba(0,0,0,0.16),
+        0 5px 9px rgba(0,0,0,0.20);
+
+    color:
+        #f3e8c4;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.035em;
+
+    text-decoration:
+        none;
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.55);
+}
+
+
+.adventure-explorer-page .page-header > .small-button:hover {
+    transform:
+        translateY(-2px);
+}
+
+
+/* =====================================================
+   ELIGIBILITY FIELD NOTE
+   ===================================================== */
+
+.adventure-explorer-page .adventure-eligibility-banner {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    margin-bottom:
+        22px;
+
+    padding:
+        18px 20px 18px 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246, 238, 208, 0.98),
+            rgba(221, 207, 169, 0.96)
+        );
+
+    border:
+        1px solid #9a8052;
+
+    border-left:
+        7px solid #2c4a32;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        0 7px 16px rgba(51, 39, 21, 0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.22);
+}
+
+
+.adventure-explorer-page
+.adventure-eligibility-banner::after {
+    content: "";
+
+    position: absolute;
+
+    top: -7px;
+    left: 50%;
+
+    width: 76px;
+    height: 18px;
+
+    transform:
+        translateX(-50%)
+        rotate(-1.5deg);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(207, 191, 149, 0.78),
+            rgba(235, 221, 177, 0.88),
+            rgba(194, 177, 137, 0.78)
+        );
+
+    border-left:
+        1px solid rgba(110, 91, 57, 0.18);
+
+    border-right:
+        1px solid rgba(110, 91, 57, 0.18);
+
+    box-shadow:
+        0 2px 3px rgba(0,0,0,0.08);
+}
+
+
+.adventure-explorer-page
+.adventure-eligibility-banner strong {
+    color:
+        #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        1rem;
+
+    font-weight:
+        900;
+}
+
+
+.adventure-explorer-page
+.adventure-eligibility-banner span {
+    color:
+        #5a5242;
+
+    font-size:
+        0.9rem;
+
+    line-height:
+        1.5;
+}
+
+
+/* =====================================================
+   SEARCH / FILTER TOOLBAR
+   ===================================================== */
+
+.adventure-explorer-page .adventure-toolbar {
+    display: grid;
+
+    grid-template-columns:
+        minmax(240px, 1.6fr)
+        minmax(200px, 0.8fr)
+        auto;
+
+    gap:
+        12px;
+
+    margin-bottom:
+        24px;
+
+    padding:
+        16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(238, 226, 190, 0.98),
+            rgba(215, 198, 154, 0.96)
+        );
+
+    border:
+        1px solid #a18a5d;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        0 8px 18px rgba(46, 35, 19, 0.12),
+        inset 0 0 0 3px rgba(255,255,255,0.22);
+}
+
+
+.adventure-explorer-page .search-input,
+.adventure-explorer-page .filter-select {
+    width: 100%;
+
+    box-sizing:
+        border-box;
+
+    padding:
+        11px 12px;
+
+    background:
+        rgba(255, 250, 230, 0.94);
+
+    border:
+        1px solid #ad9b72;
+
+    border-radius:
+        5px;
+
+    color:
+        #29271f;
+
+    font:
+        inherit;
+
+    box-shadow:
+        inset 0 1px 3px rgba(72,55,30,0.08);
+}
+
+
+.adventure-explorer-page .search-input:focus,
+.adventure-explorer-page .filter-select:focus {
+    outline:
+        2px solid rgba(47, 74, 51, 0.30);
+
+    outline-offset:
+        1px;
+
+    border-color:
+        #51694f;
+}
+
+
+/* Quick Guide wood button */
+
+.adventure-explorer-page
+.adventure-quick-guide-button {
+    padding:
+        10px 18px;
+
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.03) 3px,
+            rgba(0,0,0,0.03) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #3a5538,
+            #203520
+        );
+
+    border:
+        2px solid #172719;
+
+    border-radius:
+        5px 8px 4px 7px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        inset 0 -3px 5px rgba(0,0,0,0.16),
+        0 5px 9px rgba(0,0,0,0.18);
+
+    color:
+        #f3e8c4;
+
+    font-weight:
+        900;
+
+    cursor:
+        pointer;
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.55);
+}
+
+/* =====================================================
+   ADVENTURE CARDS — WAC FIELD GUIDE
+   ===================================================== */
+
+.adventure-explorer-page .card-grid {
+    gap: 22px;
+}
+
+
+/* Main adventure field card */
+
+.adventure-explorer-page .adventure-card {
+    position: relative;
+    overflow: hidden;
+
+    padding: 22px 20px 20px;
+
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.018) 0px,
+            rgba(255,255,255,0.018) 2px,
+            rgba(0,0,0,0.025) 3px,
+            rgba(0,0,0,0.025) 5px
+        ),
+        linear-gradient(
+            145deg,
+            #23452f,
+            #142f20
+        );
+
+    border:
+        1px solid #102719;
+
+    border-radius:
+        8px 11px 7px 10px;
+
+    box-shadow:
+        0 10px 22px rgba(35, 42, 28, 0.20),
+        inset 0 0 0 3px rgba(231, 216, 167, 0.06);
+
+    color:
+        #f1e8ca;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.adventure-explorer-page .adventure-card:hover {
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 14px 28px rgba(35, 42, 28, 0.25),
+        inset 0 0 0 3px rgba(231, 216, 167, 0.08);
+}
+
+
+/* inset field-guide border */
+
+.adventure-explorer-page .adventure-card::after {
+    content: "";
+
+    position: absolute;
+    inset: 7px;
+
+    border:
+        1px solid rgba(231, 216, 167, 0.15);
+
+    border-radius:
+        5px;
+
+    pointer-events: none;
+}
+
+
+/* subtle aged-paper tab at top */
+
+.adventure-explorer-page .adventure-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: -6px;
+    left: 50%;
+
+    width: 68px;
+    height: 16px;
+
+    transform:
+        translateX(-50%)
+        rotate(-1deg);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(198, 183, 141, 0.55),
+            rgba(230, 215, 168, 0.72),
+            rgba(190, 174, 132, 0.55)
+        );
+
+    opacity:
+        0.68;
+
+    pointer-events: none;
+}
+
+
+/* Keep card contents above decorative layers */
+
+.adventure-explorer-page .adventure-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =====================================================
+   BADGE IMAGE
+   ===================================================== */
+
+.adventure-explorer-page
+.adventure-card .card-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 165px;
+
+    margin:
+        0 0 15px;
+
+    padding:
+        8px;
+}
+
+
+.adventure-explorer-page
+.adventure-card .card-image img {
+    display: block;
+
+    width: 150px;
+    height: 150px;
+
+    max-width: 82%;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 7px 8px
+            rgba(0,0,0,0.28)
+        );
+}
+
+
+/* =====================================================
+   ADVENTURE ID PLAQUE
+   ===================================================== */
+
+.adventure-explorer-page
+.adventure-card .badge {
+    display: block;
+
+    width: auto;
+
+    margin:
+        0 0 14px;
+
+    padding:
+        7px 13px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #315b3d,
+            #24462f
+        );
+
+    border:
+        1px solid #173321;
+
+    border-radius:
+        4px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.10),
+        0 3px 6px rgba(0,0,0,0.15);
+
+    color:
+        #f0dfb3;
+
+    font-size:
+        0.82rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.08em;
+
+    text-align:
+        left;
+
+    text-transform:
+        uppercase;
+}
+
+
+/* =====================================================
+   TITLE / CATEGORY
+   ===================================================== */
+
+.adventure-explorer-page
+.adventure-card h3 {
+    margin:
+        0 0 7px;
+
+    color:
+        #f4e8c4;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        1.2rem;
+
+    font-weight:
+        900;
+
+    line-height:
+        1.25;
+
+    text-shadow:
+        0 2px 2px rgba(0,0,0,0.35);
+}
+
+
+.adventure-explorer-page
+.adventure-card p {
+    margin:
+        0 0 18px;
+
+    color:
+        #cfc5a8;
+
+    font-size:
+        0.86rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.025em;
+}
+
+
+/* =====================================================
+   OPEN ADVENTURE BUTTON
+   ===================================================== */
+
+.adventure-explorer-page
+.adventure-card .viewAdventure {
+    width: 100%;
+
+    padding:
+        10px 14px;
+
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.03) 3px,
+            rgba(0,0,0,0.03) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #795426,
+            #4e3218
+        );
+
+    border:
+        2px solid #38220f;
+
+    border-radius:
+        5px 8px 4px 7px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        inset 0 -3px 5px rgba(0,0,0,0.16),
+        0 5px 9px rgba(0,0,0,0.20);
+
+    color:
+        #fff0c7;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.035em;
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.55);
+
+    cursor:
+        pointer;
+}
+
+
+.adventure-explorer-page
+.adventure-card .viewAdventure:hover {
+    transform:
+        translateY(-1px);
+
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.035) 0px,
+            rgba(255,255,255,0.035) 2px,
+            rgba(0,0,0,0.035) 3px,
+            rgba(0,0,0,0.035) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #876130,
+            #59391c
+        );
+}
+
+/* =====================================================
+   LOAD MORE
+   ===================================================== */
+
+.adventure-explorer-page
+#loadMoreAdventures {
+    padding:
+        11px 22px;
+
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.03) 3px,
+            rgba(0,0,0,0.03) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #3a5538,
+            #203520
+        );
+
+    border:
+        2px solid #172719;
+
+    border-radius:
+        5px 8px 4px 7px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        inset 0 -3px 5px rgba(0,0,0,0.16),
+        0 5px 9px rgba(0,0,0,0.18);
+
+    color:
+        #f3e8c4;
+
+    font-weight:
+        900;
+
+    cursor:
+        pointer;
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.55);
+}
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
+
+.adventure-explorer-page .empty-state {
+    padding:
+        30px;
+
+    background:
+        rgba(246, 238, 208, 0.90);
+
+    border:
+        1px solid #a18a5d;
+
+    border-radius:
+        7px;
+
+    color:
+        #554d3e;
+
+    text-align:
+        center;
+}
+
+
+.adventure-explorer-page .empty-state h3 {
+    color:
+        #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 760px) {
+
+    .adventure-explorer-page {
+        padding:
+            18px 0 70px;
+    }
+
+
+    .adventure-explorer-page .page-header {
+        align-items:
+            flex-start;
+    }
+
+
+    .adventure-explorer-page .section-title {
+        padding:
+            10px 35px 11px;
+
+        font-size:
+            clamp(
+                1.6rem,
+                8vw,
+                2.25rem
+            );
+    }
+
+
+    .adventure-explorer-page .section-title::before {
+        left:
+            11px;
+    }
+
+
+    .adventure-explorer-page .section-title::after {
+        right:
+            11px;
+    }
+
+
+    .adventure-explorer-page .adventure-toolbar {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .adventure-explorer-page
+    .adventure-quick-guide-button {
+        width:
+            100%;
+    }
+
+}
+
+</style>
 
     <div class="container">
 
         <div class="page-header">
 
             <div>
-
-                <div class="eyebrow">
-                    Live Database
-                </div>
 
                 <h1 class="section-title">
                     WAC Adventure Explorer
