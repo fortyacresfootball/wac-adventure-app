@@ -360,6 +360,69 @@
             display: none;
         }
 
+                .hunt-tools {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .hunt-tool-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 17px 18px;
+            border-radius: 16px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #304a31,
+                    #203821
+                );
+            color: white;
+            text-decoration: none;
+            box-shadow:
+                0 7px 18px
+                rgba(0, 0, 0, 0.12);
+            transition:
+                transform 0.15s ease,
+                box-shadow 0.15s ease;
+        }
+
+        .hunt-tool-link:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 10px 22px
+                rgba(0, 0, 0, 0.16);
+        }
+
+        .hunt-tool-icon {
+            flex: 0 0 auto;
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .hunt-tool-text strong {
+            display: block;
+            font-size: 1rem;
+            font-weight: 900;
+        }
+
+        .hunt-tool-text span {
+            display: block;
+            margin-top: 3px;
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.72
+                );
+            font-size: 0.82rem;
+            line-height: 1.35;
+        }
+
         @media (
             max-width: 900px
         ) {
@@ -373,6 +436,10 @@
             }
 
             .hunt-board-layout {
+                grid-template-columns: 1fr;
+            }
+
+                        .hunt-tools {
                 grid-template-columns: 1fr;
             }
 
@@ -502,10 +569,56 @@
     </div>
 
 
-    <div
+        <div
         class="hunt-error"
         id="huntBoardError"
     ></div>
+
+
+    <!-- HUNTING TOOLS -->
+
+    <div class="hunt-tools">
+
+        <a
+            class="hunt-tool-link"
+            href="#"
+            data-page="tracking"
+        >
+            <div class="hunt-tool-icon">
+                📍
+            </div>
+
+            <div class="hunt-tool-text">
+                <strong>
+                    WAC Tracker
+                </strong>
+                <span>
+                    Record GPS tracks, mark field waypoints and review saved trips.
+                </span>
+            </div>
+        </a>
+
+
+        <a
+            class="hunt-tool-link"
+            href="#"
+            data-page="hunt-journal"
+        >
+            <div class="hunt-tool-icon">
+                📖
+            </div>
+
+            <div class="hunt-tool-text">
+                <strong>
+                    Hunting Journal
+                </strong>
+                <span>
+                    Record hunts, conditions, sightings, results and field notes.
+                </span>
+            </div>
+        </a>
+
+    </div>
 
 
     <div class="hunt-board-layout">
