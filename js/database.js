@@ -142,6 +142,31 @@ async getMovies() {
 },
 
 //--------------------------------------------------
+// Maintenance Center
+//--------------------------------------------------
+
+async getMaintenanceCenter() {
+
+    return await this.authenticatedPost(
+        "getMaintenanceCenter"
+    );
+
+},
+
+async saveMaintenanceRecord(
+    record
+) {
+
+    return await this.authenticatedPost(
+        "saveMaintenanceRecord",
+        {
+            record
+        }
+    );
+
+},
+
+//--------------------------------------------------
 // Hunt Board
 //--------------------------------------------------
 
