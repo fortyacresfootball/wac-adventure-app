@@ -2,221 +2,879 @@
 
     <style>
 
-        .hunt-board-page {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 22px 18px 48px;
-        }
+/* =====================================================
+   WAC HUNT BOARD — FIELD GUIDE / HUNT CAMP THEME
+   ===================================================== */
 
-        .hunt-board-hero {
-            position: relative;
-            overflow: hidden;
-            border-radius: 22px;
-            padding: 30px;
-            margin-bottom: 20px;
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(19, 43, 24, 0.98),
-                    rgba(45, 70, 38, 0.96)
-                );
-            color: white;
-            box-shadow:
-                0 12px 30px
-                rgba(0, 0, 0, 0.18);
-        }
-
-        .hunt-board-eyebrow {
-            font-size: 0.78rem;
-            font-weight: 800;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            opacity: 0.72;
-            margin-bottom: 7px;
-        }
-
-        .hunt-board-title {
-            margin: 0;
-            font-size: clamp(
-                2rem,
-                5vw,
-                3.5rem
-            );
-            line-height: 1;
-            font-weight: 900;
-        }
-
-        .hunt-board-subtitle {
-            margin:
-                10px 0 0;
-            max-width: 760px;
-            color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.82
-                );
-            font-size: 1rem;
-        }
-
-        .hunt-status-grid {
-            display: grid;
-            grid-template-columns:
-                repeat(
-                    5,
-                    minmax(0, 1fr)
-                );
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .hunt-status-card {
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.10
-                );
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.14
-                );
-            border-radius: 14px;
-            padding: 14px;
-        }
-
-        .hunt-status-label {
-            display: block;
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            opacity: 0.68;
-            margin-bottom: 4px;
-        }
-
-        .hunt-status-value {
-            font-size: 1.12rem;
-            font-weight: 800;
-        }
-
-        .hunt-board-layout {
-            display: grid;
-            grid-template-columns:
-                minmax(0, 2fr)
-                minmax(300px, 0.8fr);
-            gap: 18px;
-        }
-
-        .hunt-panel {
-            background: white;
-            border-radius: 18px;
-            box-shadow:
-                0 8px 25px
-                rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-
-        .hunt-panel-heading {
-            display: flex;
-            align-items: center;
-            justify-content:
-                space-between;
-            gap: 12px;
-            padding: 18px 20px;
-            border-bottom:
-                1px solid #e7e7e7;
-        }
-
-        .hunt-panel-title {
-            margin: 0;
-            font-size: 1.15rem;
-            font-weight: 900;
-            color: #263525;
-        }
-
-        .hunt-panel-subtitle {
-            margin-top: 3px;
-            font-size: 0.82rem;
-            color: #717171;
-        }
-
-        .hunt-radar {
-    width: 100%;
-    height: 520px;
-    background: #d9dfcf;
-}
-
-.hunt-radar iframe {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: 0;
-}
-
-        .hunt-map {
-            height: 520px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 30px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #d9dfcf,
-                    #b9c5ae
-                );
-            color: #41503e;
-        }
-
-        .hunt-map-placeholder strong {
-            display: block;
-            font-size: 1.35rem;
-            margin-bottom: 8px;
-        }
-
-        .hunt-map-placeholder span {
-            font-size: 0.9rem;
-        }
-
-        .hunt-side-column {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .hunt-moon-card {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
-
-.hunt-moon-visual {
+.hunt-board-page {
     position: relative;
-    flex: 0 0 92px;
-    width: 92px;
-    height: 92px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #11161c;
-    box-shadow:
-        inset 0 0 12px
-        rgba(255, 255, 255, 0.08),
-        0 6px 16px
-        rgba(0, 0, 0, 0.14);
+    max-width: none;
+    margin: 0;
+    padding: 26px 18px 80px;
+
+    background:
+        radial-gradient(
+            circle at 18% 8%,
+            rgba(255, 248, 218, 0.82),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 84% 72%,
+            rgba(122, 94, 52, 0.12),
+            transparent 36%
+        ),
+        #e9dfc4;
+
+    color: #29271f;
 }
 
-.hunt-moon-visual::before {
+
+/* Paper grain */
+
+.hunt-board-page::before {
     content: "";
     position: absolute;
     inset: 0;
+    pointer-events: none;
+    z-index: 0;
+
+    opacity: 0.16;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(74, 55, 30, 0.05) 0px,
+            rgba(74, 55, 30, 0.05) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+
+/* Topographic texture */
+
+.hunt-board-page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+
+    opacity: 0.22;
+
+    background-image:
+        repeating-radial-gradient(
+            ellipse at 12% 34%,
+            transparent 0px,
+            transparent 25px,
+            rgba(46, 64, 43, 0.42) 26px,
+            transparent 28px,
+            transparent 44px
+        ),
+        repeating-radial-gradient(
+            ellipse at 88% 72%,
+            transparent 0px,
+            transparent 31px,
+            rgba(79, 57, 31, 0.36) 32px,
+            transparent 34px,
+            transparent 54px
+        );
+
+    background-size:
+        430px 310px,
+        510px 370px;
+}
+
+
+.hunt-board-page > * {
+    position: relative;
+    z-index: 1;
+
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =====================================================
+   HERO
+   ===================================================== */
+
+.hunt-board-hero {
+    position: relative;
+    overflow: hidden;
+
+    padding: 30px;
+    margin-bottom: 28px;
+
+    border:
+        1px solid #102519;
+
+    border-radius:
+        7px 10px 6px 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(34, 57, 40, 0.98),
+            rgba(19, 39, 27, 0.99)
+        );
+
+    box-shadow:
+        0 12px 28px rgba(26, 35, 25, 0.25),
+        inset 0 0 0 3px rgba(221, 203, 148, 0.07);
+}
+
+
+.hunt-board-hero::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+
+    border:
+        1px solid rgba(223, 205, 153, 0.17);
+
+    border-radius: 5px;
+
+    pointer-events: none;
+}
+
+
+/* subtle topo inside hero */
+
+.hunt-board-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    opacity: 0.12;
+
+    background-image:
+        repeating-radial-gradient(
+            ellipse at 74% 40%,
+            transparent 0px,
+            transparent 24px,
+            rgba(230, 215, 170, 0.65) 25px,
+            transparent 27px,
+            transparent 43px
+        );
+}
+
+
+.hunt-board-eyebrow,
+.hunt-board-title,
+.hunt-board-subtitle,
+.hunt-status-grid {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* Small hunting club plaque */
+
+.hunt-board-eyebrow {
+    display: inline-block;
+
+    margin-bottom: 10px;
+    padding: 6px 12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #5b3a1e,
+            #382313
+        );
+
+    border:
+        1px solid #29190c;
+
+    border-radius: 4px;
+
+    box-shadow:
+        0 3px 7px rgba(0,0,0,0.22);
+
+    color: #ead8a5;
+
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+
+/* Main wood title sign */
+
+.hunt-board-title {
+    position: relative;
+    display: inline-block;
+
+    margin: 0;
+    padding: 11px 42px 12px;
+
+    background:
+        repeating-linear-gradient(
+            2deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.04) 3px,
+            rgba(0,0,0,0.04) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #704a24,
+            #452b16
+        );
+
+    border:
+        2px solid #2d1c0e;
+
+    border-radius:
+        5px 9px 4px 8px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 -3px 5px rgba(0,0,0,0.18),
+        0 5px 11px rgba(0,0,0,0.28);
+
+    color: #f0dfb3;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            1.9rem,
+            4.8vw,
+            3.25rem
+        );
+
+    font-weight: 900;
+    line-height: 1;
+
+    letter-spacing: 0.04em;
+
+    text-shadow:
+        0 2px 2px rgba(0,0,0,0.55);
+
+    transform:
+        rotate(-0.3deg);
+}
+
+
+/* Gold nail heads */
+
+.hunt-board-title::before,
+.hunt-board-title::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    width: 14px;
+    height: 14px;
+
+    transform:
+        translateY(-50%);
+
     border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff0a8 0%,
+            #e0bb50 34%,
+            #b88622 68%,
+            #795417 100%
+        );
+
+    border:
+        1px solid #6a4714;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.5),
+        0 1px 2px rgba(0,0,0,0.4);
+}
+
+
+.hunt-board-title::before {
+    left: 14px;
+}
+
+
+.hunt-board-title::after {
+    right: 14px;
+}
+
+
+.hunt-board-subtitle {
+    margin:
+        16px 0 0;
+
+    max-width: 760px;
+
+    color: #c8ba94;
+
+    font-size: 1rem;
+    line-height: 1.55;
+}
+
+
+/* =====================================================
+   LIVE CONDITION CARDS
+   ===================================================== */
+
+.hunt-status-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            5,
+            minmax(0, 1fr)
+        );
+
+    gap: 11px;
+
+    margin-top: 25px;
+}
+
+
+.hunt-status-card {
+    position: relative;
+
+    padding: 14px 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(237, 226, 192, 0.97),
+            rgba(205, 190, 150, 0.96)
+        );
+
+    border:
+        1px solid #9c8558;
+
+    border-radius:
+        5px 7px 4px 6px;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,0.18),
+        inset 0 0 0 2px rgba(255,255,255,0.18);
+
+    color: #263525;
+}
+
+
+.hunt-status-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 6px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #35553a,
+            #1c3323
+        );
+}
+
+
+.hunt-status-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #675d47;
+
+    font-size: 0.68rem;
+    font-weight: 900;
+
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+
+.hunt-status-value {
+    color: #203c2a;
+
+    font-size: 1.1rem;
+    font-weight: 900;
+
+    text-shadow:
+        0 1px 0 #fff6d8;
+}
+
+
+/* =====================================================
+   HUNTING TOOLS — HOME QUICK-LINK STYLE
+   ===================================================== */
+
+.hunt-tools {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 14px;
+
+    margin-top: 24px;
+    margin-bottom: 28px;
+}
+
+.hunt-tool-link {
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 17px 18px 17px 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246, 238, 208, 0.98),
+            rgba(221, 207, 169, 0.96)
+        );
+
+    border:
+        1px solid #9a8052;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 7px 16px rgba(51, 39, 21, 0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.24);
+
+    color: #2e2b23;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.hunt-tool-link::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 7px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #2c4a32,
+            #172d20
+        );
+}
+
+
+.hunt-tool-link::after {
+    content: "";
+
+    position: absolute;
+    inset: 6px;
+
+    border:
+        1px solid rgba(94, 72, 40, 0.18);
+
+    border-radius: 4px;
+
+    pointer-events: none;
+}
+
+
+.hunt-tool-link:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 22px rgba(51, 39, 21, 0.20),
+        inset 0 0 0 3px rgba(255,255,255,0.28);
+}
+
+
+.hunt-tool-icon {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 48px;
+
+    width: 48px;
+    height: 48px;
+
+    background: #243e2b;
+
+    border:
+        1px solid #122418;
+
+    border-radius: 50%;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        0 3px 6px rgba(0,0,0,0.16);
+
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+
+.hunt-tool-text {
+    position: relative;
+    z-index: 1;
+}
+
+
+.hunt-tool-text strong {
+    display: block;
+
+    color: #213928;
+
+    font-size: 1rem;
+    font-weight: 900;
+
+    letter-spacing: 0.02em;
+}
+
+
+.hunt-tool-text span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #5a5242;
+
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   MAIN LAYOUT
+   ===================================================== */
+
+.hunt-board-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(300px, 0.8fr);
+
+    gap: 18px;
+}
+
+
+.hunt-side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+
+/* =====================================================
+   FIELD GUIDE PANELS
+   ===================================================== */
+
+.hunt-panel {
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(250, 244, 220, 0.98),
+            rgba(228, 214, 176, 0.96)
+        );
+
+    border:
+        1px solid #a18a5d;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        0 8px 18px rgba(46, 35, 19, 0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.25);
+
+    color: #29271f;
+}
+
+
+.hunt-panel::after {
+    content: "";
+
+    position: absolute;
+    inset: 7px;
+
+    border:
+        1px solid rgba(95, 72, 39, 0.18);
+
+    border-radius: 4px;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* Tape strip on major field cards */
+
+.hunt-panel::before {
+    content: "";
+
+    position: absolute;
+
+    top: -7px;
+    left: 50%;
+
+    width: 70px;
+    height: 17px;
+
+    transform:
+        translateX(-50%)
+        rotate(-1.5deg);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(207, 191, 149, 0.78),
+            rgba(235, 221, 177, 0.88),
+            rgba(194, 177, 137, 0.78)
+        );
+
+    border-left:
+        1px solid rgba(110, 91, 57, 0.18);
+
+    border-right:
+        1px solid rgba(110, 91, 57, 0.18);
+
+    box-shadow:
+        0 2px 3px rgba(0,0,0,0.08);
+
+    opacity: 0.9;
+
+    pointer-events: none;
+
+    z-index: 3;
+}
+
+
+.hunt-panel-heading {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 20px 20px 15px;
+
+    border-bottom:
+        1px solid rgba(95, 72, 39, 0.20);
+}
+
+
+.hunt-panel-title {
+    position: relative;
+
+    display: inline-block;
+
+    margin: 0;
+    padding: 7px 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #5d3d20,
+            #3e2815
+        );
+
+    border:
+        1px solid #29190c;
+
+    border-radius: 3px;
+
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.22);
+
+    color: #ead9a4;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 1rem;
+    font-weight: 900;
+
+    letter-spacing: 0.04em;
+}
+
+
+.hunt-panel-subtitle {
+    margin-top: 7px;
+
+    color: #5a5242;
+
+    font-size: 0.82rem;
+    line-height: 1.35;
+}
+
+
+.hunt-panel-body {
+    position: relative;
+    z-index: 2;
+
+    padding: 18px 20px;
+}
+
+
+/* =====================================================
+   PROPERTY MAP / RADAR
+   ===================================================== */
+
+.hunt-map,
+.hunt-radar {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    height: 520px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #c7c7aa,
+            #9eaa92
+        );
+}
+
+
+.hunt-map {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #41503e;
+}
+
+
+.hunt-radar iframe {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0;
+}
+
+
+.hunt-map-placeholder {
+    position: relative;
+    z-index: 2;
+}
+
+
+.hunt-map-placeholder strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #263525;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+
+.hunt-map-placeholder span {
+    color: #565d4f;
+
+    font-size: 0.9rem;
+}
+
+
+/* =====================================================
+   MOON
+   ===================================================== */
+
+.hunt-moon-card {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+.hunt-moon-visual {
+    position: relative;
+
+    flex: 0 0 92px;
+
+    width: 92px;
+    height: 92px;
+
+    overflow: hidden;
+
+    border:
+        3px solid #6b5937;
+
+    border-radius: 50%;
+
+    background: #11161c;
+
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.08),
+        0 6px 16px rgba(0,0,0,0.16);
+}
+
+
+.hunt-moon-visual::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: 50%;
+
     background:
         radial-gradient(
             circle at 35% 30%,
@@ -226,270 +884,399 @@
         );
 }
 
+
 .hunt-moon-shadow {
     position: absolute;
+
     top: 0;
     bottom: 0;
+
     background: #11161c;
+
     border-radius: 50%;
 }
+
 
 .hunt-moon-details {
     min-width: 0;
 }
 
+
 .hunt-moon-phase {
-    color: #263525;
+    color: #213928;
+
     font-size: 1.08rem;
     font-weight: 900;
 }
 
+
 .hunt-moon-illumination {
     margin-top: 5px;
-    color: #717171;
+
+    color: #685f4c;
+
     font-size: 0.88rem;
     font-weight: 700;
 }
 
-        .hunt-panel-body {
-            padding: 18px 20px;
-        }
 
-        .hunt-checkin-status {
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 14px;
-            background: #f1f4ef;
-            color: #3b4939;
-            font-weight: 700;
-        }
+/* =====================================================
+   CHECK IN
+   ===================================================== */
 
-        .hunt-form-group {
-            margin-bottom: 12px;
-        }
+.hunt-checkin-status {
+    padding: 14px;
 
-        .hunt-form-group label {
-            display: block;
-            font-size: 0.78rem;
-            font-weight: 800;
-            color: #596357;
-            margin-bottom: 5px;
-        }
+    margin-bottom: 14px;
 
-        .hunt-form-group select,
-        .hunt-form-group input {
-            width: 100%;
-            box-sizing: border-box;
-            border:
-                1px solid #d6d9d4;
-            border-radius: 10px;
-            padding: 11px 12px;
-            background: white;
-            font: inherit;
-        }
+    background:
+        rgba(223, 213, 178, 0.70);
 
-        .hunt-primary-button,
-        .hunt-secondary-button {
-            width: 100%;
-            border: 0;
-            border-radius: 11px;
-            padding: 12px 14px;
-            font-weight: 900;
-            cursor: pointer;
-        }
+    border:
+        1px solid rgba(113, 94, 57, 0.30);
 
-        .hunt-primary-button {
-            background: #35583a;
-            color: white;
-        }
+    border-radius: 5px;
 
-        .hunt-secondary-button {
-            background: #792f28;
-            color: white;
-        }
+    color: #384331;
 
-        .hunt-primary-button:disabled,
-        .hunt-secondary-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .hunt-hunter-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .hunt-hunter {
-            border:
-                1px solid #e3e5e1;
-            border-radius: 12px;
-            padding: 12px;
-        }
-
-        .hunt-hunter-name {
-            font-weight: 900;
-            color: #2e3d2c;
-        }
-
-        .hunt-hunter-meta {
-            margin-top: 3px;
-            font-size: 0.82rem;
-            color: #777;
-        }
-
-        .hunt-empty {
-            color: #777;
-            font-size: 0.9rem;
-        }
-
-        .hunt-loading {
-            padding: 30px;
-            text-align: center;
-            color: #6c7569;
-        }
-
-        .hunt-error {
-            padding: 16px;
-            margin-bottom: 18px;
-            border-radius: 12px;
-            background: #fff1f0;
-            border:
-                1px solid #e7b5b1;
-            color: #8a312b;
-            display: none;
-        }
-
-                .hunt-tools {
-            display: grid;
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .hunt-tool-link {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 17px 18px;
-            border-radius: 16px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #304a31,
-                    #203821
-                );
-            color: white;
-            text-decoration: none;
-            box-shadow:
-                0 7px 18px
-                rgba(0, 0, 0, 0.12);
-            transition:
-                transform 0.15s ease,
-                box-shadow 0.15s ease;
-        }
-
-        .hunt-tool-link:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                0 10px 22px
-                rgba(0, 0, 0, 0.16);
-        }
-
-        .hunt-tool-icon {
-            flex: 0 0 auto;
-            font-size: 1.8rem;
-            line-height: 1;
-        }
-
-        .hunt-tool-text strong {
-            display: block;
-            font-size: 1rem;
-            font-weight: 900;
-        }
-
-        .hunt-tool-text span {
-            display: block;
-            margin-top: 3px;
-            color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.72
-                );
-            font-size: 0.82rem;
-            line-height: 1.35;
-        }
-
-        @media (
-            max-width: 900px
-        ) {
-
-            .hunt-status-grid {
-                grid-template-columns:
-                    repeat(
-                        2,
-                        minmax(0, 1fr)
-                    );
-            }
-
-            .hunt-board-layout {
-                grid-template-columns: 1fr;
-            }
-
-                        .hunt-tools {
-                grid-template-columns: 1fr;
-            }
-
-            .hunt-map {
-                height: 430px;
-            }
-
-            .hunt-radar {
-    height: 430px;
+    font-weight: 800;
 }
 
-        }
 
-        @media (
-            max-width: 520px
-        ) {
-
-            .hunt-radar {
-    height: 350px;
+.hunt-form-group {
+    margin-bottom: 13px;
 }
 
-            .hunt-board-page {
-                padding:
-                    14px 12px 36px;
-            }
 
-            .hunt-board-hero {
-                border-radius: 17px;
-                padding: 22px 18px;
-            }
+.hunt-form-group label {
+    display: block;
 
-            .hunt-status-grid {
-                grid-template-columns:
-                    1fr 1fr;
-                gap: 8px;
-            }
+    margin-bottom: 5px;
 
-            .hunt-map {
-                height: 350px;
-            }
-        }
+    color: #514b3d;
 
-    </style>
+    font-size: 0.77rem;
+    font-weight: 900;
+
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
 
 
-    <div class="hunt-board-hero">
+.hunt-form-group select,
+.hunt-form-group input {
+    width: 100%;
 
-        <div class="hunt-board-eyebrow">
-            WAC Hunting Club
-        </div>
+    box-sizing: border-box;
+
+    padding: 11px 12px;
+
+    background:
+        rgba(255, 250, 230, 0.92);
+
+    border:
+        1px solid #ad9b72;
+
+    border-radius: 5px;
+
+    color: #29271f;
+
+    font: inherit;
+
+    box-shadow:
+        inset 0 1px 3px rgba(72, 55, 30, 0.08);
+}
+
+
+/* Green wood button */
+
+.hunt-primary-button,
+.hunt-secondary-button {
+    position: relative;
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border-radius:
+        5px 8px 4px 7px;
+
+    font-weight: 900;
+    letter-spacing: 0.04em;
+
+    cursor: pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        inset 0 -3px 5px rgba(0,0,0,0.16),
+        0 5px 9px rgba(0,0,0,0.18);
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.55);
+}
+
+
+.hunt-primary-button {
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.03) 3px,
+            rgba(0,0,0,0.03) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #3a5538,
+            #203520
+        );
+
+    border:
+        2px solid #172719;
+
+    color: #f3e8c4;
+}
+
+
+/* aged-red checkout plaque */
+
+.hunt-secondary-button {
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.04) 3px,
+            rgba(0,0,0,0.04) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #82443a,
+            #552820
+        );
+
+    border:
+        2px solid #3e1d18;
+
+    color: #f7e7cf;
+}
+
+
+.hunt-primary-button:hover,
+.hunt-secondary-button:hover {
+    transform:
+        translateY(-1px);
+}
+
+
+.hunt-primary-button:disabled,
+.hunt-secondary-button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =====================================================
+   ACTIVE HUNTERS
+   ===================================================== */
+
+.hunt-hunter-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.hunt-hunter {
+    padding: 12px;
+
+    background:
+        rgba(246, 238, 208, 0.70);
+
+    border:
+        1px solid #b19d72;
+
+    border-left:
+        5px solid #29472f;
+
+    border-radius: 5px;
+
+    box-shadow:
+        0 3px 7px rgba(51,39,21,0.08);
+}
+
+
+.hunt-hunter-name {
+    color: #213928;
+
+    font-weight: 900;
+}
+
+
+.hunt-hunter-meta {
+    margin-top: 3px;
+
+    color: #665e4d;
+
+    font-size: 0.82rem;
+}
+
+
+.hunt-empty {
+    color: #6b6252;
+
+    font-size: 0.9rem;
+}
+
+
+/* =====================================================
+   SYSTEM STATES
+   ===================================================== */
+
+.hunt-loading {
+    padding: 30px;
+
+    text-align: center;
+
+    color: #6c6555;
+}
+
+
+.hunt-error {
+    display: none;
+
+    padding: 16px;
+    margin-bottom: 18px;
+
+    background:
+        #ead6c8;
+
+    border:
+        1px solid #aa7568;
+
+    border-left:
+        6px solid #7d352b;
+
+    border-radius: 5px;
+
+    color: #792f28;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+    .hunt-status-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+
+    .hunt-board-layout {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .hunt-tools {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .hunt-map,
+    .hunt-radar {
+        height: 430px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .hunt-board-page {
+        padding:
+            14px 12px 70px;
+    }
+
+
+    .hunt-board-hero {
+        padding:
+            22px 16px;
+
+        border-radius: 6px;
+    }
+
+
+    .hunt-board-title {
+        padding:
+            10px 34px 11px;
+
+        font-size:
+            clamp(
+                1.65rem,
+                9vw,
+                2.25rem
+            );
+    }
+
+
+    .hunt-board-title::before {
+        left: 11px;
+    }
+
+
+    .hunt-board-title::after {
+        right: 11px;
+    }
+
+
+    .hunt-status-grid {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 8px;
+    }
+
+
+    .hunt-status-card {
+        padding:
+            12px 11px;
+    }
+
+
+    .hunt-map,
+    .hunt-radar {
+        height: 350px;
+    }
+
+
+    .hunt-panel-heading,
+    .hunt-panel-body {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+
+    .hunt-moon-card {
+        align-items: flex-start;
+    }
+
+}
+
+</style>
 
         <h1 class="hunt-board-title">
             WAC Hunt Board
