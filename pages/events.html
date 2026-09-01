@@ -1,14 +1,1020 @@
 <section class="page-section page-enter events-page">
 
+    <style>
+
+/* =====================================================
+   WAC EVENTS — FIELD GUIDE / CAMP CALENDAR THEME
+   ===================================================== */
+
+.events-page,
+#upcomingEventsSection,
+#annualTraditionsSection {
+    position: relative;
+
+    background:
+        radial-gradient(
+            circle at 18% 8%,
+            rgba(255, 248, 218, 0.82),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 84% 72%,
+            rgba(122, 94, 52, 0.12),
+            transparent 36%
+        ),
+        #e9dfc4;
+
+    color: #29271f;
+}
+
+
+/* Paper grain */
+
+.events-page::before,
+#upcomingEventsSection::before,
+#annualTraditionsSection::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.16;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(74, 55, 30, 0.05) 0px,
+            rgba(74, 55, 30, 0.05) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+
+/* Topographic texture */
+
+.events-page::after,
+#upcomingEventsSection::after,
+#annualTraditionsSection::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.22;
+
+    background-image:
+        repeating-radial-gradient(
+            ellipse at 12% 34%,
+            transparent 0px,
+            transparent 25px,
+            rgba(46, 64, 43, 0.42) 26px,
+            transparent 28px,
+            transparent 44px
+        ),
+        repeating-radial-gradient(
+            ellipse at 88% 72%,
+            transparent 0px,
+            transparent 31px,
+            rgba(79, 57, 31, 0.36) 32px,
+            transparent 34px,
+            transparent 54px
+        );
+
+    background-size:
+        430px 310px,
+        510px 370px;
+}
+
+
+.events-page .container,
+#upcomingEventsSection .container,
+#annualTraditionsSection .container {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =====================================================
+   PAGE HEADERS
+   ===================================================== */
+
+.events-page .page-header,
+#upcomingEventsSection .page-header,
+#annualTraditionsSection .page-header {
+    position: relative;
+
+    padding-bottom: 22px;
+    margin-bottom: 26px;
+
+    border-bottom:
+        1px solid rgba(94, 72, 40, 0.30);
+}
+
+
+.events-page .page-header::after,
+#upcomingEventsSection .page-header::after,
+#annualTraditionsSection .page-header::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -2px;
+
+    width: 140px;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2f4a33,
+            #8d6c38,
+            transparent
+        );
+}
+
+
+/* remove little Gather / Upcoming / Traditions signs */
+
+.events-page .eyebrow,
+#upcomingEventsSection .eyebrow,
+#annualTraditionsSection .eyebrow {
+    display: none;
+}
+
+
+/* Main wood headings */
+
+.events-page .section-title,
+#upcomingEventsSection .section-title,
+#annualTraditionsSection .section-title {
+    position: relative;
+
+    display: inline-block;
+
+    margin: 0;
+
+    padding:
+        10px 42px 11px;
+
+    background:
+        repeating-linear-gradient(
+            2deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.04) 3px,
+            rgba(0,0,0,0.04) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #704a24,
+            #452b16
+        );
+
+    border:
+        2px solid #2d1c0e;
+
+    border-radius:
+        5px 9px 4px 8px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 -3px 5px rgba(0,0,0,0.18),
+        0 5px 11px rgba(0,0,0,0.24);
+
+    color: #f0dfb3;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 900;
+
+    letter-spacing: 0.04em;
+
+    text-shadow:
+        0 2px 2px rgba(0,0,0,0.55);
+
+    transform: rotate(-0.3deg);
+}
+
+
+/* gold nails */
+
+.events-page .section-title::before,
+.events-page .section-title::after,
+#upcomingEventsSection .section-title::before,
+#upcomingEventsSection .section-title::after,
+#annualTraditionsSection .section-title::before,
+#annualTraditionsSection .section-title::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    width: 14px;
+    height: 14px;
+
+    transform: translateY(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff0a8 0%,
+            #e0bb50 34%,
+            #b88622 68%,
+            #795417 100%
+        );
+
+    border: 1px solid #6a4714;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.50),
+        0 1px 2px rgba(0,0,0,0.40);
+}
+
+
+.events-page .section-title::before,
+#upcomingEventsSection .section-title::before,
+#annualTraditionsSection .section-title::before {
+    left: 13px;
+}
+
+
+.events-page .section-title::after,
+#upcomingEventsSection .section-title::after,
+#annualTraditionsSection .section-title::after {
+    right: 13px;
+}
+
+
+.events-page .section-subtitle,
+#upcomingEventsSection .section-subtitle,
+#annualTraditionsSection .section-subtitle {
+    margin-top: 13px;
+
+    color: #554d3e;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   CHIPS / VIEW ALL
+   ===================================================== */
+
+.events-page .chip,
+#upcomingEventsSection .chip {
+    background: #203a29;
+
+    border: 1px solid #112418;
+
+    border-radius: 4px;
+
+    color: #e6d6a5;
+
+    box-shadow:
+        0 3px 7px rgba(0,0,0,0.18);
+
+    font-weight: 900;
+}
+
+
+.events-scroll-link {
+    text-decoration: none;
+}
+
+
+/* =====================================================
+   FEATURED EVENT
+   ===================================================== */
+
+.events-featured-section {
+    position: relative;
+
+    margin-bottom: 28px;
+
+    padding: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(34, 57, 40, 0.98),
+            rgba(19, 39, 27, 0.99)
+        );
+
+    border:
+        1px solid #102519;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        0 12px 28px rgba(26,35,25,0.24),
+        inset 0 0 0 3px rgba(221,203,148,0.07);
+}
+
+
+.events-featured-section::after {
+    content: "";
+
+    position: absolute;
+    inset: 8px;
+
+    border:
+        1px solid rgba(223,205,153,0.17);
+
+    border-radius: 4px;
+
+    pointer-events: none;
+}
+
+
+.events-featured-section .panel-label {
+    position: relative;
+    z-index: 2;
+
+    display: inline-block;
+
+    margin-bottom: 16px;
+    padding: 7px 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #6d4923,
+            #432a15
+        );
+
+    border:
+        1px solid #29190c;
+
+    border-radius: 3px;
+
+    color: #ead9a4;
+
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.22);
+
+    font-weight: 900;
+}
+
+
+.featured-event-card {
+    position: relative;
+    z-index: 2;
+}
+
+
+.featured-event-content h2 {
+    color: #f3e8c5;
+    font-size: clamp(1.8rem, 3vw, 2.7rem);
+line-height: 1.05;
+margin: 6px 0 10px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    text-shadow:
+        0 2px 2px rgba(0,0,0,0.35);
+}
+
+
+.featured-event-category {
+    color: #d7c798;
+
+    font-weight: 900;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+}
+
+
+.featured-event-date,
+.featured-event-location,
+.featured-event-content p {
+    color: #ddd3b5;
+}
+
+
+/* =====================================================
+   DATE BLOCKS
+   ===================================================== */
+
+.featured-event-date-block,
+.event-date-block {
+    background:
+        linear-gradient(
+            180deg,
+            #704a24,
+            #452b16
+        );
+
+    border:
+        2px solid #2d1c0e;
+
+    border-radius:
+        5px 8px 4px 7px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 -3px 5px rgba(0,0,0,0.18),
+        0 5px 9px rgba(0,0,0,0.18);
+
+    color: #f0dfb3;
+}
+
+
+.featured-event-date-block {
+    width: 125px;
+    min-width: 125px;
+    min-height: 150px;
+
+    padding: 14px 10px;
+
+    box-sizing: border-box;
+}
+
+.featured-event-card {
+    display: grid;
+
+    grid-template-columns:
+        125px minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 20px;
+
+    min-height: 0;
+
+    padding: 18px;
+
+    background:
+        rgba(9, 47, 27, 0.52);
+
+    border-radius: 7px;
+
+    box-sizing: border-box;
+}
+
+.featured-event-content p {
+    margin-top: 10px;
+    margin-bottom: 12px;
+}
+
+.event-date-month,
+.event-date-year {
+    color: #dbc997;
+
+    font-weight: 900;
+}
+
+
+.event-date-day {
+    color: #fff0c7;
+}
+
+
+/* =====================================================
+   SEARCH PANEL
+   ===================================================== */
+
+.events-search-panel {
+    position: relative;
+
+    margin-bottom: 24px;
+    padding: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(238, 226, 190, 0.98),
+            rgba(215, 198, 154, 0.96)
+        );
+
+    border:
+        1px solid #a18a5d;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 8px 18px rgba(46,35,19,0.12),
+        inset 0 0 0 3px rgba(255,255,255,0.22);
+}
+
+
+.events-search-label {
+    color: #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 900;
+}
+
+
+.events-search-input {
+    background:
+        rgba(255,250,230,0.94);
+
+    border:
+        1px solid #ad9b72;
+
+    border-radius: 5px;
+
+    color: #29271f;
+
+    box-shadow:
+        inset 0 1px 3px rgba(72,55,30,0.08);
+}
+
+
+.events-search-clear {
+    background:
+        linear-gradient(
+            180deg,
+            #704a24,
+            #452b16
+        );
+
+    border:
+        2px solid #2d1c0e;
+
+    border-radius: 5px;
+
+    color: #f0dfb3;
+
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   LIST / CALENDAR TOGGLE
+   ===================================================== */
+
+.events-view-toggle {
+    overflow: hidden;
+
+    border:
+        1px solid #8d754d;
+
+    border-radius: 5px;
+
+    background:
+        rgba(238,226,190,0.85);
+}
+
+
+.events-view-button {
+    border: 0;
+
+    background: transparent;
+
+    color: #554d3e;
+
+    font-weight: 900;
+}
+
+
+.events-view-button.active {
+    background:
+        linear-gradient(
+            180deg,
+            #3a5538,
+            #203520
+        );
+
+    color: #f3e8c4;
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.45);
+}
+
+
+/* =====================================================
+   UPCOMING EVENT CARDS
+   ===================================================== */
+
+.events-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+
+.event-list-card {
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246,238,208,0.98),
+            rgba(221,207,169,0.96)
+        );
+
+    border:
+        1px solid #9a8052;
+
+    border-left:
+        7px solid #2c4a32;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 7px 16px rgba(51,39,21,0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.24);
+}
+
+
+.event-list-card::after {
+    content: "";
+
+    position: absolute;
+    inset: 6px;
+
+    border:
+        1px solid rgba(94,72,40,0.16);
+
+    border-radius: 4px;
+
+    pointer-events: none;
+}
+
+
+.event-list-card.next-event {
+    border-left-color: #8b6825;
+}
+
+
+.event-list-content,
+.event-list-card > button,
+.event-list-card > .event-date-block {
+    position: relative;
+    z-index: 2;
+}
+
+
+.event-list-heading h3 {
+    color: #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 900;
+}
+
+
+.event-list-meta {
+    color: #665d4b;
+}
+
+
+.event-list-content p {
+    color: #554d3e;
+
+    line-height: 1.5;
+}
+
+
+.event-next-label {
+    background:
+        #6c5421;
+
+    border:
+        1px solid #493814;
+
+    color: #fff0b5;
+
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+
+.event-row-button,
+.event-tradition-button,
+.featured-event-actions .small-button {
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.03) 3px,
+            rgba(0,0,0,0.03) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #3a5538,
+            #203520
+        );
+
+    border:
+        2px solid #172719;
+
+    border-radius:
+        5px 8px 4px 7px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        inset 0 -3px 5px rgba(0,0,0,0.16),
+        0 5px 9px rgba(0,0,0,0.18);
+
+    color: #f3e8c4;
+
+    font-weight: 900;
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.55);
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   CALENDAR
+   ===================================================== */
+
+.events-calendar-view {
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246,238,208,0.98),
+            rgba(221,207,169,0.96)
+        );
+
+    border:
+        1px solid #9a8052;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 8px 18px rgba(46,35,19,0.13);
+}
+
+
+.events-calendar-header h3 {
+    color: #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 900;
+}
+
+
+.events-calendar-nav {
+    background:
+        linear-gradient(
+            180deg,
+            #3a5538,
+            #203520
+        );
+
+    border:
+        1px solid #172719;
+
+    color: #f3e8c4;
+
+    border-radius: 5px;
+
+    font-weight: 900;
+}
+
+
+.events-calendar-weekday {
+    color: #5d543f;
+
+    font-weight: 900;
+}
+
+
+.events-calendar-day {
+    background:
+        rgba(255,250,230,0.76);
+
+    border:
+        1px solid #b5a275;
+
+    color: #29271f;
+}
+
+
+.events-calendar-day.today {
+    border:
+        2px solid #35553a;
+
+    background:
+        rgba(221,230,204,0.88);
+}
+
+
+.events-calendar-event,
+.events-calendar-event-end {
+    background:
+        #294830;
+
+    color: #f3e8c4;
+
+    border-radius: 3px;
+}
+
+
+/* =====================================================
+   ANNUAL TRADITIONS
+   ===================================================== */
+
+.events-tradition-grid {
+    gap: 18px;
+}
+
+
+.event-tradition-card {
+    position: relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246,238,208,0.98),
+            rgba(221,207,169,0.96)
+        );
+
+    border:
+        1px solid #9a8052;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 7px 16px rgba(51,39,21,0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.24);
+}
+
+
+.event-tradition-card h3 {
+    color: #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+}
+
+
+.event-tradition-card p,
+.event-tradition-date {
+    color: #5a5242;
+}
+
+
+/* =====================================================
+   EVENT DETAIL DIALOG
+   ===================================================== */
+
+.event-detail-overlay {
+    background:
+        rgba(12,22,15,0.72);
+}
+
+
+.event-detail-dialog {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(250,244,220,0.99),
+            rgba(228,214,176,0.99)
+        );
+
+    border:
+        1px solid #a18a5d;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.34),
+        inset 0 0 0 3px rgba(255,255,255,0.25);
+}
+
+
+.event-detail-dialog .panel-label {
+    background:
+        linear-gradient(
+            180deg,
+            #5d3d20,
+            #3e2815
+        );
+
+    border:
+        1px solid #29190c;
+
+    color: #ead9a4;
+}
+
+
+.event-detail-dialog h2 {
+    color: #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+}
+
+
+.event-detail-line,
+.event-detail-description {
+    color: #554d3e;
+}
+
+
+.event-detail-close {
+    background: #294830;
+
+    color: #f3e8c4;
+
+    border:
+        1px solid #172719;
+}
+
+
+/* =====================================================
+   LOADING / EMPTY
+   ===================================================== */
+
+.events-loading,
+.events-empty-state {
+    color: #5f5747;
+}
+
+
+.events-empty-state h3 {
+    color: #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 720px) {
+
+    .events-page .section-title,
+    #upcomingEventsSection .section-title,
+    #annualTraditionsSection .section-title {
+        padding:
+            9px 34px 10px;
+    }
+
+
+    .events-featured-section {
+        padding:
+            19px 16px;
+    }
+
+
+    .events-search-panel {
+        padding:
+            14px;
+    }
+
+}
+
+</style>
+
     <div class="container">
 
         <div class="page-header">
 
             <div>
 
-                <div class="eyebrow">
-                    Gather
-                </div>
+    
 
                 <h1 class="section-title">
                     WAC Events
@@ -71,10 +1077,6 @@
         <div class="page-header">
 
             <div>
-
-                <div class="eyebrow">
-                    Upcoming
-                </div>
 
                 <h2 class="section-title">
                     Upcoming Events
@@ -251,10 +1253,6 @@
         <div class="page-header">
 
             <div>
-
-                <div class="eyebrow">
-                    WAC Traditions
-                </div>
 
                 <h2 class="section-title">
                     Annual Traditions
