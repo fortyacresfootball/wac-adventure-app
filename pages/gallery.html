@@ -1,12 +1,978 @@
 <section class="page-section gallery-page">
 
+    <style>
+
+/* =====================================================
+   WAC GALLERY — FIELD GUIDE / PHOTO JOURNAL THEME
+   ===================================================== */
+
+.gallery-page {
+    position: relative;
+
+    padding: 28px 18px 80px;
+
+    background:
+        radial-gradient(
+            circle at 18% 8%,
+            rgba(255, 248, 218, 0.82),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 84% 72%,
+            rgba(122, 94, 52, 0.12),
+            transparent 36%
+        ),
+        #e9dfc4;
+
+    color: #29271f;
+}
+
+
+/* Paper grain */
+
+.gallery-page::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.16;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(74, 55, 30, 0.05) 0px,
+            rgba(74, 55, 30, 0.05) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+
+/* Topographic texture */
+
+.gallery-page::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.22;
+
+    background-image:
+        repeating-radial-gradient(
+            ellipse at 12% 34%,
+            transparent 0px,
+            transparent 25px,
+            rgba(46, 64, 43, 0.42) 26px,
+            transparent 28px,
+            transparent 44px
+        ),
+        repeating-radial-gradient(
+            ellipse at 88% 72%,
+            transparent 0px,
+            transparent 31px,
+            rgba(79, 57, 31, 0.36) 32px,
+            transparent 34px,
+            transparent 54px
+        );
+
+    background-size:
+        430px 310px,
+        510px 370px;
+}
+
+
+.gallery-page > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =====================================================
+   PAGE HEADER
+   ===================================================== */
+
+.gallery-page .page-header {
+    position: relative;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    gap: 16px;
+
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+
+    border-bottom:
+        1px solid rgba(94, 72, 40, 0.30);
+}
+
+
+.gallery-page .page-header::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -2px;
+
+    width: 140px;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2f4a33,
+            #8d6c38,
+            transparent
+        );
+}
+
+
+/* hide small gallery eyebrow */
+
+.gallery-page > .page-header .eyebrow {
+    display: none;
+}
+
+
+/* Main wood title sign */
+
+.gallery-page > .page-header h1 {
+    position: relative;
+
+    display: inline-block;
+
+    margin: 0;
+
+    padding:
+        11px 42px 12px;
+
+    background:
+        repeating-linear-gradient(
+            2deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.04) 3px,
+            rgba(0,0,0,0.04) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #704a24,
+            #452b16
+        );
+
+    border:
+        2px solid #2d1c0e;
+
+    border-radius:
+        5px 9px 4px 8px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 -3px 5px rgba(0,0,0,0.18),
+        0 5px 11px rgba(0,0,0,0.24);
+
+    color: #f0dfb3;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            1.8rem,
+            4.5vw,
+            3rem
+        );
+
+    font-weight: 900;
+
+    letter-spacing: 0.04em;
+
+    text-shadow:
+        0 2px 2px rgba(0,0,0,0.55);
+
+    transform: rotate(-0.3deg);
+}
+
+
+/* gold nails */
+
+.gallery-page > .page-header h1::before,
+.gallery-page > .page-header h1::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    width: 14px;
+    height: 14px;
+
+    transform: translateY(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff0a8 0%,
+            #e0bb50 34%,
+            #b88622 68%,
+            #795417 100%
+        );
+
+    border:
+        1px solid #6a4714;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.50),
+        0 1px 2px rgba(0,0,0,0.40);
+}
+
+
+.gallery-page > .page-header h1::before {
+    left: 13px;
+}
+
+
+.gallery-page > .page-header h1::after {
+    right: 13px;
+}
+
+
+.gallery-page .page-intro {
+    margin-top: 13px;
+
+    color: #554d3e;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   TOP BUTTONS
+   ===================================================== */
+
+.gallery-page .primary-button {
+    background:
+        repeating-linear-gradient(
+            3deg,
+            rgba(255,255,255,0.025) 0px,
+            rgba(255,255,255,0.025) 2px,
+            rgba(0,0,0,0.03) 3px,
+            rgba(0,0,0,0.03) 5px
+        ),
+        linear-gradient(
+            180deg,
+            #3a5538,
+            #203520
+        );
+
+    border:
+        2px solid #172719;
+
+    border-radius:
+        5px 8px 4px 7px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.16),
+        inset 0 -3px 5px rgba(0,0,0,0.16),
+        0 5px 9px rgba(0,0,0,0.18);
+
+    color: #f3e8c4;
+
+    font-weight: 900;
+
+    text-shadow:
+        0 1px 1px rgba(0,0,0,0.55);
+}
+
+
+/* =====================================================
+   UPLOAD PANEL
+   ===================================================== */
+
+.gallery-upload-panel {
+    position: relative;
+
+    margin-bottom: 28px;
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246,238,208,0.98),
+            rgba(221,207,169,0.96)
+        );
+
+    border:
+        1px solid #9a8052;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 8px 18px rgba(46,35,19,0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.24);
+}
+
+
+.gallery-upload-panel::before {
+    content: "";
+
+    position: absolute;
+
+    top: -7px;
+    left: 50%;
+
+    width: 76px;
+    height: 18px;
+
+    transform:
+        translateX(-50%)
+        rotate(-1.5deg);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(207,191,149,0.78),
+            rgba(235,221,177,0.88),
+            rgba(194,177,137,0.78)
+        );
+
+    opacity: 0.9;
+}
+
+
+.gallery-upload-panel .section-heading {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* upload subheading */
+
+.gallery-upload-panel .section-heading .eyebrow {
+    display: none;
+}
+
+
+.gallery-upload-panel h2 {
+    margin: 0;
+
+    color: #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   FORM FIELDS
+   ===================================================== */
+
+.gallery-upload-form {
+    position: relative;
+    z-index: 1;
+}
+
+
+.gallery-upload-form .form-field > span {
+    color: #514b3d;
+
+    font-size: 0.78rem;
+    font-weight: 900;
+
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+
+.gallery-upload-form input,
+.gallery-upload-form select,
+.gallery-upload-form textarea {
+    background:
+        rgba(255,250,230,0.94);
+
+    border:
+        1px solid #ad9b72;
+
+    border-radius: 5px;
+
+    color: #29271f;
+
+    box-shadow:
+        inset 0 1px 3px rgba(72,55,30,0.08);
+}
+
+
+.gallery-upload-form .form-help,
+.gallery-upload-form small {
+    color: #665d4b;
+}
+
+
+/* =====================================================
+   PHOTO PICKER / PREVIEW
+   ===================================================== */
+
+.gallery-photo-picker {
+    padding: 16px;
+
+    background:
+        rgba(238,226,190,0.78);
+
+    border:
+        1px solid #b29f73;
+
+    border-radius: 6px;
+}
+
+
+.gallery-photo-preview-wrap {
+    margin-top: 14px;
+
+    padding: 8px;
+
+    background: #203a29;
+
+    border:
+        1px solid #112418;
+
+    border-radius: 6px;
+}
+
+
+.gallery-photo-preview {
+    display: block;
+
+    max-width: 100%;
+
+    border-radius: 4px;
+}
+
+
+/* =====================================================
+   GALLERY DISPLAY SECTION
+   ===================================================== */
+
+.gallery-display-section {
+    position: relative;
+
+    padding: 22px;
+
+    overflow: visible;
+    
+    background:
+        linear-gradient(
+            145deg,
+            rgba(250,244,220,0.98),
+            rgba(228,214,176,0.96)
+        );
+
+    border:
+        1px solid #a18a5d;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 8px 18px rgba(46,35,19,0.14),
+        inset 0 0 0 3px rgba(255,255,255,0.25);
+}
+
+
+.gallery-display-section::before {
+    content: "";
+
+    position: absolute;
+
+    top: -7px;
+    left: 50%;
+
+    width: 74px;
+    height: 18px;
+
+    transform:
+        translateX(-50%)
+        rotate(-1.5deg);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(207,191,149,0.78),
+            rgba(235,221,177,0.88),
+            rgba(194,177,137,0.78)
+        );
+
+    opacity: 0.9;
+}
+
+
+.gallery-display-section .section-heading {
+    position: relative;
+    z-index: 1;
+
+    margin-bottom: 20px;
+}
+
+
+/* remove Approved Photos small sign */
+
+.gallery-display-section .eyebrow {
+    display: none;
+}
+
+
+.gallery-display-section h2 {
+    display: inline-block;
+
+    margin: 0;
+
+    padding: 7px 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #5d3d20,
+            #3e2815
+        );
+
+    border:
+        1px solid #29190c;
+
+    border-radius: 3px;
+
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.22);
+
+    color: #ead9a4;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 1.05rem;
+
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   LOADING / EMPTY
+   ===================================================== */
+
+.gallery-page .empty-state {
+    position: relative;
+    z-index: 1;
+
+    padding: 28px;
+
+    background:
+        rgba(246,238,208,0.70);
+
+    border:
+        1px solid #b19d72;
+
+    border-radius: 6px;
+
+    color: #5a5242;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   PHOTO GRID
+   ===================================================== */
+
+.gallery-grid {
+    position: relative;
+    z-index: 1;
+
+    overflow: visible;
+
+    gap: 18px;
+
+    padding-top: 14px;
+}
+
+/* =====================================================
+   PINNED BULLETIN BOARD PHOTO CARDS
+   ===================================================== */
+
+.gallery-card {
+    position: relative;
+
+    overflow: visible;
+
+    margin-top: 0;
+
+    background: transparent;
+
+    border: 0;
+
+    box-shadow: none;
+
+    transform:
+        rotate(-0.45deg);
+
+    transition:
+        transform 0.18s ease,
+        filter 0.18s ease;
+}
+
+
+/* Slight natural variation */
+
+.gallery-card:nth-child(2n) {
+    transform:
+        rotate(0.55deg);
+}
+
+
+.gallery-card:nth-child(3n) {
+    transform:
+        rotate(-0.8deg);
+}
+
+
+.gallery-card:nth-child(5n) {
+    transform:
+        rotate(0.25deg);
+}
+
+
+.gallery-card:hover {
+    transform:
+        rotate(0deg)
+        translateY(-4px);
+
+    filter:
+        drop-shadow(
+            0 8px 8px
+            rgba(46,35,19,0.18)
+        );
+}
+
+
+/* The physical paper/photo card */
+
+.gallery-card-button {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+
+    overflow: visible;
+
+    padding:
+        10px 10px 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fffdf2,
+            #eee5c8
+        );
+
+    border:
+        1px solid #b9aa82;
+
+    border-radius: 2px;
+
+    box-shadow:
+        0 6px 12px rgba(56,43,24,0.22),
+        0 2px 3px rgba(56,43,24,0.16);
+
+    color: #29271f;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+/* Push pin */
+
+.gallery-card-button::before {
+    content: "";
+
+    position: absolute;
+
+    z-index: 5;
+
+    top: -9px;
+    left: 50%;
+
+    width: 18px;
+    height: 18px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff2a3 0%,
+            #e2bb3f 28%,
+            #b78118 58%,
+            #71500e 100%
+        );
+
+    border:
+        1px solid #6d4d12;
+
+    box-shadow:
+        inset 0 2px 2px rgba(255,255,255,0.55),
+        0 2px 4px rgba(0,0,0,0.38);
+}
+
+
+/* tiny pin shadow */
+
+.gallery-card-button::after {
+    content: "";
+
+    position: absolute;
+
+    z-index: 4;
+
+    top: 6px;
+    left: 50%;
+
+    width: 14px;
+    height: 5px;
+
+    transform:
+        translateX(-38%);
+
+    border-radius: 50%;
+
+    background:
+        rgba(44,32,15,0.22);
+
+    filter:
+        blur(2px);
+}
+
+
+/* Snapshot */
+
+.gallery-card-image {
+    display: block;
+
+    width: 100%;
+
+    border-radius: 1px;
+
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.16);
+
+    filter:
+        saturate(0.96)
+        contrast(1.02);
+}
+
+
+/* Note-card caption area */
+
+.gallery-card-details {
+    position: relative;
+
+    min-height: 92px;
+
+    padding:
+        16px 7px 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,253,240,0.96),
+            rgba(241,232,204,0.98)
+        );
+}
+
+
+/* faint ruled-paper line */
+
+.gallery-card-details::before {
+    content: "";
+
+    position: absolute;
+
+    left: 7px;
+    right: 7px;
+    top: 9px;
+
+    height: 1px;
+
+    background:
+        rgba(103,88,56,0.14);
+}
+
+
+.gallery-card-caption {
+    margin:
+        0 0 8px;
+
+    color: #203a29;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 1rem;
+
+    font-weight: 900;
+
+    line-height: 1.3;
+}
+
+
+.gallery-card-meta {
+    margin: 0;
+
+    color: #74684f;
+
+    font-size: 0.78rem;
+
+    line-height: 1.35;
+
+    font-weight: 600;
+}
+
+
+/* keep button defaults from interfering */
+
+.gallery-card-button:hover,
+.gallery-card-button:focus {
+    background:
+        linear-gradient(
+            145deg,
+            #fffdf2,
+            #eee5c8
+        );
+
+    color: #29271f;
+}
+
+
+.gallery-card-button:focus-visible {
+    outline:
+        3px solid rgba(48,76,51,0.55);
+
+    outline-offset: 4px;
+}
+
+/* =====================================================
+   LIGHTBOX
+   ===================================================== */
+
+.gallery-lightbox {
+    background:
+        rgba(12,22,15,0.88);
+}
+
+
+.gallery-lightbox-content {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(250,244,220,0.99),
+            rgba(228,214,176,0.99)
+        );
+
+    border:
+        1px solid #a18a5d;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.35);
+}
+
+
+.gallery-lightbox-details {
+    color: #554d3e;
+}
+
+
+.gallery-lightbox-caption {
+    color: #213928;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 900;
+}
+
+
+.gallery-lightbox-meta {
+    color: #665d4b;
+}
+
+
+.gallery-lightbox-close {
+    background: #294830;
+
+    border:
+        1px solid #172719;
+
+    color: #f3e8c4;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 720px) {
+
+    .gallery-page {
+        padding:
+            18px 12px 70px;
+    }
+
+
+    .gallery-page > .page-header h1 {
+        padding:
+            10px 34px 11px;
+    }
+
+
+    .gallery-upload-panel,
+    .gallery-display-section {
+        padding:
+            17px 14px;
+    }
+
+}
+
+</style>
+
     <div class="page-header">
 
         <div>
-
-            <p class="eyebrow">
-                WAC MEMBER GALLERY
-            </p>
 
             <h1>
                 Adventure Gallery
@@ -56,10 +1022,6 @@
         <div class="section-heading">
 
             <div>
-
-                <p class="eyebrow">
-                    SUBMIT A PHOTO
-                </p>
 
                 <h2>
                     Add to the Gallery
@@ -211,10 +1173,6 @@
         <div class="section-heading">
 
             <div>
-
-                <p class="eyebrow">
-                    APPROVED PHOTOS
-                </p>
 
                 <h2>
                     WAC in the Wild
