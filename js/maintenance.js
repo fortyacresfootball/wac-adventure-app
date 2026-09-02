@@ -29,11 +29,7 @@
                 : [];
 
         const parts =
-            Array.isArray(
-                response.parts
-            )
-                ? response.parts
-                : [];
+    [];
 
         const logs =
             Array.isArray(
@@ -126,21 +122,20 @@ initializeMaintenanceForm(
 // Maintenance Form Controls
 //--------------------------------------------------
 
-const openMaintenanceFormButton =
+var openMaintenanceFormButton =
     document.getElementById(
         "openMaintenanceForm"
     );
 
-const maintenanceFormPanel =
+var maintenanceFormPanel =
     document.getElementById(
         "maintenanceFormPanel"
     );
 
-const cancelMaintenanceFormButton =
+var cancelMaintenanceFormButton =
     document.getElementById(
         "cancelMaintenanceForm"
     );
-
 
 if (
     openMaintenanceFormButton &&
@@ -148,8 +143,8 @@ if (
 ) {
 
     openMaintenanceFormButton.addEventListener(
-        "click",
-        () => {
+    "click",
+    async () => {
 
             //--------------------------------------------------
             // Hide Dashboard Sections
@@ -199,7 +194,31 @@ if (
 
             }
 
+//--------------------------------------------------
+// Load Maintenance Parts
+//--------------------------------------------------
 
+try {
+
+    const partsResponse =
+        await Database.getMaintenanceParts();
+
+    window.WACMaintenance.parts =
+        Array.isArray(
+            partsResponse.parts
+        )
+            ? partsResponse.parts
+            : [];
+
+}
+catch (error) {
+
+    console.error(
+        "Maintenance Parts Load Error:",
+        error
+    );
+
+}
             //--------------------------------------------------
             // Show Maintenance Form
             //--------------------------------------------------
@@ -489,10 +508,10 @@ function initializeMaintenanceForm(
             );
 
             renderRecommendedMaintenanceParts(
-                equipmentSelect.value,
-                "",
-                parts
-            );
+    equipmentSelect.value,
+    "",
+    window.WACMaintenance?.parts || []
+);
 
         }
     );
@@ -507,10 +526,10 @@ function initializeMaintenanceForm(
         () => {
 
             renderRecommendedMaintenanceParts(
-                equipmentSelect.value,
-                maintenanceTypeSelect.value,
-                parts
-            );
+    equipmentSelect.value,
+    maintenanceTypeSelect.value,
+    window.WACMaintenance?.parts || []
+);
 
         }
     );
@@ -826,7 +845,7 @@ function renderRecommendedMaintenanceParts(
 // Save Maintenance Record
 //--------------------------------------------------
 
-const maintenanceForm =
+var maintenanceForm =
     document.getElementById(
         "maintenanceForm"
     );

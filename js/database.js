@@ -146,11 +146,15 @@ async getMovies() {
 //--------------------------------------------------
 
 async getMaintenanceCenter() {
-
     return await this.authenticatedPost(
         "getMaintenanceCenter"
     );
+},
 
+async getMaintenanceParts() {
+    return await this.authenticatedPost(
+        "getMaintenanceParts"
+    );
 },
 
 async saveMaintenanceRecord(
