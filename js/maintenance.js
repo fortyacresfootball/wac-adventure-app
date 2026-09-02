@@ -1632,10 +1632,115 @@ function renderMaintenanceHistory(
                     );
 
 
-                row.append(
-                    heading,
-                    details
-                );
+                //--------------------------------------------------
+// Additional Service Details
+//--------------------------------------------------
+
+const partsUsed =
+    cleanMaintenanceText(
+        log[
+            "Parts Used"
+        ]
+    );
+
+const cost =
+    cleanMaintenanceText(
+        log[
+            "Cost"
+        ]
+    );
+
+const notes =
+    cleanMaintenanceText(
+        log[
+            "Notes"
+        ]
+    );
+
+
+const serviceDetails =
+    document.createElement(
+        "div"
+    );
+
+serviceDetails.className =
+    "maintenance-history-service-details";
+
+
+if (partsUsed) {
+
+    const partsRow =
+        document.createElement(
+            "p"
+        );
+
+    partsRow.innerHTML =
+        "<strong>Parts / Fluids:</strong> ";
+
+    partsRow.append(
+        document.createTextNode(
+            partsUsed
+        )
+    );
+
+    serviceDetails.appendChild(
+        partsRow
+    );
+
+}
+
+
+if (cost) {
+
+    const costRow =
+        document.createElement(
+            "p"
+        );
+
+    costRow.innerHTML =
+        "<strong>Cost:</strong> ";
+
+    costRow.append(
+        document.createTextNode(
+            `$${cost}`
+        )
+    );
+
+    serviceDetails.appendChild(
+        costRow
+    );
+
+}
+
+
+if (notes) {
+
+    const notesRow =
+        document.createElement(
+            "p"
+        );
+
+    notesRow.innerHTML =
+        "<strong>Notes:</strong> ";
+
+    notesRow.append(
+        document.createTextNode(
+            notes
+        )
+    );
+
+    serviceDetails.appendChild(
+        notesRow
+    );
+
+}
+
+
+row.append(
+    heading,
+    details,
+    serviceDetails
+);
 
 
                 container.appendChild(
