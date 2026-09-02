@@ -227,8 +227,71 @@ if (
         "click",
         () => {
 
+            //--------------------------------------------------
+            // Hide Form
+            //--------------------------------------------------
+
             maintenanceFormPanel.hidden =
                 true;
+
+
+            //--------------------------------------------------
+            // Restore Dashboard Sections
+            //--------------------------------------------------
+
+            [
+                "maintenanceDueList",
+                "maintenanceEquipmentList",
+                "maintenanceHistoryList"
+            ].forEach(
+                (elementId) => {
+
+                    const element =
+                        document.getElementById(
+                            elementId
+                        );
+
+                    const section =
+                        element?.closest(
+                            ".maintenance-section"
+                        );
+
+                    if (section) {
+
+                        section.hidden =
+                            false;
+
+                    }
+
+                }
+            );
+
+
+            //--------------------------------------------------
+            // Restore Complete Maintenance Panel
+            //--------------------------------------------------
+
+            const actionPanel =
+                openMaintenanceFormButton?.closest(
+                    ".maintenance-section"
+                );
+
+            if (actionPanel) {
+
+                actionPanel.hidden =
+                    false;
+
+            }
+
+
+            //--------------------------------------------------
+            // Return To Top Of Dashboard
+            //--------------------------------------------------
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
 
         }
     );
