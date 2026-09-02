@@ -1933,20 +1933,59 @@ dueStatuses.forEach(
                 );
 
 
-            const detail =
-                document.createElement(
-                    "p"
-                );
+            //--------------------------------------------------
+// Maintenance Description
+//--------------------------------------------------
 
-            detail.textContent =
-                item.detail;
+const scheduleRecord =
+    schedules.find(
+        (schedule) =>
+            cleanMaintenanceText(
+                schedule[
+                    "Equipment ID"
+                ]
+            ) ===
+                item.equipmentId &&
+            cleanMaintenanceText(
+                schedule[
+                    "Maintenance Type"
+                ]
+            ).toLowerCase() ===
+                item.maintenanceType.toLowerCase()
+    );
 
 
-            row.append(
-                heading,
-                status,
-                detail
-            );
+const description =
+    document.createElement(
+        "p"
+    );
+
+description.className =
+    "maintenance-due-description";
+
+description.textContent =
+    cleanMaintenanceText(
+        scheduleRecord?.[
+            "Description"
+        ]
+    );
+
+
+const detail =
+    document.createElement(
+        "p"
+    );
+
+detail.textContent =
+    item.detail;
+
+
+row.append(
+    heading,
+    status,
+    description,
+    detail
+);
 
             //--------------------------------------------------
 // Quick Complete Action
