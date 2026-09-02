@@ -778,6 +778,55 @@
 }
 
 
+/* =====================================================
+   QUICK COMPLETE
+   ===================================================== */
+
+.maintenance-due-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+
+.maintenance-quick-complete {
+    padding: 7px 13px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #345c3d,
+            #203f2a
+        );
+
+    border: 1px solid #142c1c;
+    border-radius: 4px;
+
+    color: #f1dfad;
+
+    font-size: 0.76rem;
+    font-weight: 900;
+
+    letter-spacing: 0.03em;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        0 2px 5px rgba(0,0,0,0.20);
+
+    cursor: pointer;
+}
+
+
+.maintenance-quick-complete:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #406e49,
+            #294f34
+        );
+}
+
 .maintenance-status-label {
     position: relative;
     z-index: 1;

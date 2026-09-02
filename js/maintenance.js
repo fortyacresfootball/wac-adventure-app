@@ -954,7 +954,6 @@ if (maintenanceForm) {
 
                 });
 
-
                 if (message) {
 
                     message.textContent =
@@ -1438,9 +1437,7 @@ function renderMaintenanceHistory(
         );
 
     if (!container) {
-
         return;
-
     }
 
 
@@ -1461,7 +1458,6 @@ function renderMaintenanceHistory(
             `;
 
         return;
-
     }
 
 
@@ -1483,6 +1479,7 @@ function renderMaintenanceHistory(
                             "Equipment ID"
                         ]
                     );
+
 
                 const equipmentRecord =
                     equipment.find(
@@ -1633,114 +1630,114 @@ function renderMaintenanceHistory(
 
 
                 //--------------------------------------------------
-// Additional Service Details
-//--------------------------------------------------
+                // Additional Service Details
+                //--------------------------------------------------
 
-const partsUsed =
-    cleanMaintenanceText(
-        log[
-            "Parts Used"
-        ]
-    );
+                const partsUsed =
+                    cleanMaintenanceText(
+                        log[
+                            "Parts Used"
+                        ]
+                    );
 
-const cost =
-    cleanMaintenanceText(
-        log[
-            "Cost"
-        ]
-    );
+                const cost =
+                    cleanMaintenanceText(
+                        log[
+                            "Cost"
+                        ]
+                    );
 
-const notes =
-    cleanMaintenanceText(
-        log[
-            "Notes"
-        ]
-    );
-
-
-const serviceDetails =
-    document.createElement(
-        "div"
-    );
-
-serviceDetails.className =
-    "maintenance-history-service-details";
+                const notes =
+                    cleanMaintenanceText(
+                        log[
+                            "Notes"
+                        ]
+                    );
 
 
-if (partsUsed) {
+                const serviceDetails =
+                    document.createElement(
+                        "div"
+                    );
 
-    const partsRow =
-        document.createElement(
-            "p"
-        );
-
-    partsRow.innerHTML =
-        "<strong>Parts / Fluids:</strong> ";
-
-    partsRow.append(
-        document.createTextNode(
-            partsUsed
-        )
-    );
-
-    serviceDetails.appendChild(
-        partsRow
-    );
-
-}
+                serviceDetails.className =
+                    "maintenance-history-service-details";
 
 
-if (cost) {
+                if (partsUsed) {
 
-    const costRow =
-        document.createElement(
-            "p"
-        );
+                    const partsRow =
+                        document.createElement(
+                            "p"
+                        );
 
-    costRow.innerHTML =
-        "<strong>Cost:</strong> ";
+                    partsRow.innerHTML =
+                        "<strong>Parts / Fluids:</strong> ";
 
-    costRow.append(
-        document.createTextNode(
-            `$${cost}`
-        )
-    );
+                    partsRow.append(
+                        document.createTextNode(
+                            partsUsed
+                        )
+                    );
 
-    serviceDetails.appendChild(
-        costRow
-    );
+                    serviceDetails.appendChild(
+                        partsRow
+                    );
 
-}
-
-
-if (notes) {
-
-    const notesRow =
-        document.createElement(
-            "p"
-        );
-
-    notesRow.innerHTML =
-        "<strong>Notes:</strong> ";
-
-    notesRow.append(
-        document.createTextNode(
-            notes
-        )
-    );
-
-    serviceDetails.appendChild(
-        notesRow
-    );
-
-}
+                }
 
 
-row.append(
-    heading,
-    details,
-    serviceDetails
-);
+                if (cost) {
+
+                    const costRow =
+                        document.createElement(
+                            "p"
+                        );
+
+                    costRow.innerHTML =
+                        "<strong>Cost:</strong> ";
+
+                    costRow.append(
+                        document.createTextNode(
+                            `$${cost}`
+                        )
+                    );
+
+                    serviceDetails.appendChild(
+                        costRow
+                    );
+
+                }
+
+
+                if (notes) {
+
+                    const notesRow =
+                        document.createElement(
+                            "p"
+                        );
+
+                    notesRow.innerHTML =
+                        "<strong>Notes:</strong> ";
+
+                    notesRow.append(
+                        document.createTextNode(
+                            notes
+                        )
+                    );
+
+                    serviceDetails.appendChild(
+                        notesRow
+                    );
+
+                }
+
+
+                row.append(
+                    heading,
+                    details,
+                    serviceDetails
+                );
 
 
                 container.appendChild(
@@ -1769,9 +1766,7 @@ function renderMaintenanceDue(
         );
 
     if (!container) {
-
         return;
-
     }
 
 
@@ -1801,9 +1796,7 @@ function renderMaintenanceDue(
             `;
 
         return;
-
     }
-
 
     container.className =
         "maintenance-due-list";
@@ -1812,8 +1805,37 @@ function renderMaintenanceDue(
         "";
 
 
-    statuses.forEach(
-        (item) => {
+    const dueStatuses =
+    statuses.filter(
+        (item) =>
+            item.status === "overdue" ||
+            item.status === "due-soon"
+    );
+
+
+if (!dueStatuses.length) {
+
+    container.className =
+        "maintenance-empty-state";
+
+    container.innerHTML =
+        `
+            <strong>
+                No maintenance currently due.
+            </strong>
+
+            <p>
+                Scheduled maintenance will appear here
+                when it is approaching its service interval.
+            </p>
+        `;
+
+    return;
+}
+
+
+dueStatuses.forEach(
+    (item) => {
 
             const row =
                 document.createElement(
@@ -1851,9 +1873,49 @@ function renderMaintenanceDue(
                 item.equipmentName;
 
 
+            //--------------------------------------------------
+            // Equipment Tag + Quick Complete
+            //--------------------------------------------------
+
+            const cardActions =
+                document.createElement(
+                    "div"
+                );
+
+            cardActions.className =
+                "maintenance-due-actions";
+
+
+            const quickCompleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            quickCompleteButton.type =
+                "button";
+
+            quickCompleteButton.className =
+                "maintenance-quick-complete";
+
+            quickCompleteButton.textContent =
+                "✓ Complete";
+
+            quickCompleteButton.dataset.equipmentId =
+                item.equipmentId;
+
+            quickCompleteButton.dataset.maintenanceType =
+                item.maintenanceType;
+
+
+            cardActions.append(
+                equipmentLabel,
+                quickCompleteButton
+            );
+
+
             heading.append(
                 title,
-                equipmentLabel
+                cardActions
             );
 
 
@@ -1886,6 +1948,243 @@ function renderMaintenanceDue(
                 detail
             );
 
+            //--------------------------------------------------
+// Quick Complete Action
+//--------------------------------------------------
+
+quickCompleteButton.addEventListener(
+    "click",
+    async () => {
+
+        const equipmentRecord =
+            equipment.find(
+                (equipmentItem) => {
+
+                    return (
+                        cleanMaintenanceText(
+                            equipmentItem[
+                                "Equipment ID"
+                            ]
+                        ) ===
+                        item.equipmentId
+                    );
+
+                }
+            );
+
+
+        const currentHours =
+            cleanMaintenanceText(
+                equipmentRecord?.[
+                    "Current Hours"
+                ]
+            );
+
+
+        const currentMileage =
+            cleanMaintenanceText(
+                equipmentRecord?.[
+                    "Current Mileage"
+                ]
+            );
+
+
+        const now =
+            new Date();
+
+
+        const confirmed =
+            window.confirm(
+                `Mark ${item.maintenanceType} complete` +
+                (
+                    currentHours
+                        ? ` at ${currentHours} hours?`
+                        : "?"
+                )
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        quickCompleteButton.disabled =
+            true;
+
+        quickCompleteButton.textContent =
+            "Saving...";
+
+
+        try {
+
+            await Database.saveMaintenanceRecord({
+
+                equipmentId:
+                    item.equipmentId,
+
+                maintenanceType:
+                    item.maintenanceType,
+
+                completedDate:
+                    [
+                        now.getFullYear(),
+                        String(
+                            now.getMonth() + 1
+                        ).padStart(
+                            2,
+                            "0"
+                        ),
+                        String(
+                            now.getDate()
+                        ).padStart(
+                            2,
+                            "0"
+                        )
+                    ].join("-"),
+
+                completedTime:
+                    [
+                        String(
+                            now.getHours()
+                        ).padStart(
+                            2,
+                            "0"
+                        ),
+                        String(
+                            now.getMinutes()
+                        ).padStart(
+                            2,
+                            "0"
+                        )
+                    ].join(":"),
+
+                completedBy:
+                    window.WACMaintenance
+                        ?.currentMember
+                        ?.memberName || "",
+
+                hours:
+                    currentHours,
+
+                mileage:
+                    currentMileage,
+
+                partsUsed:
+                    "",
+
+                cost:
+                    "",
+
+                notes:
+                    "Quick Complete"
+
+            });
+
+            //--------------------------------------------------
+// Refresh Dashboard After Quick Complete
+//--------------------------------------------------
+
+const refreshedResponse =
+    await Database.getMaintenanceCenter();
+
+
+const refreshedEquipment =
+    Array.isArray(
+        refreshedResponse.equipment
+    )
+        ? refreshedResponse.equipment
+        : [];
+
+
+const refreshedSchedules =
+    Array.isArray(
+        refreshedResponse.schedules
+    )
+        ? refreshedResponse.schedules
+        : [];
+
+
+const refreshedParts =
+    Array.isArray(
+        refreshedResponse.parts
+    )
+        ? refreshedResponse.parts
+        : [];
+
+
+const refreshedLogs =
+    Array.isArray(
+        refreshedResponse.logs
+    )
+        ? refreshedResponse.logs
+        : [];
+
+
+window.WACMaintenance = {
+
+    currentMember:
+        refreshedResponse.currentMember || null,
+
+    equipment:
+        refreshedEquipment,
+
+    schedules:
+        refreshedSchedules,
+
+    parts:
+        refreshedParts,
+
+    logs:
+        refreshedLogs
+
+};
+
+
+renderMaintenanceSummary(
+    refreshedEquipment,
+    refreshedSchedules,
+    refreshedLogs
+);
+
+
+renderEquipmentList(
+    refreshedEquipment,
+    refreshedSchedules,
+    refreshedLogs
+);
+
+
+renderMaintenanceHistory(
+    refreshedEquipment,
+    refreshedLogs
+);
+
+
+renderMaintenanceDue(
+    refreshedEquipment,
+    refreshedSchedules,
+    refreshedLogs
+);
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Quick Complete Error:",
+                error
+            );
+
+            window.alert(
+                error?.message ||
+                "Maintenance could not be completed."
+            );
+
+        }
+
+    }
+);
 
             container.appendChild(
                 row
@@ -1895,7 +2194,6 @@ function renderMaintenanceDue(
     );
 
 }
-
 
 //--------------------------------------------------
 // Calculate Maintenance Statuses
