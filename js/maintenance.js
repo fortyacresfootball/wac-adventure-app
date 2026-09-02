@@ -94,6 +94,17 @@
             logs
         );
 
+        //--------------------------------------------------
+// Initialize Maintenance Form Data
+//--------------------------------------------------
+
+initializeMaintenanceForm(
+    equipment,
+    schedules,
+    parts,
+    response.currentMember || null
+);
+
     }
 
     catch (error) {
@@ -111,6 +122,964 @@
 
 })();
 
+//--------------------------------------------------
+// Maintenance Form Controls
+//--------------------------------------------------
+
+const openMaintenanceFormButton =
+    document.getElementById(
+        "openMaintenanceForm"
+    );
+
+const maintenanceFormPanel =
+    document.getElementById(
+        "maintenanceFormPanel"
+    );
+
+const cancelMaintenanceFormButton =
+    document.getElementById(
+        "cancelMaintenanceForm"
+    );
+
+
+if (
+    openMaintenanceFormButton &&
+    maintenanceFormPanel
+) {
+
+    openMaintenanceFormButton.addEventListener(
+        "click",
+        () => {
+
+            //--------------------------------------------------
+            // Hide Dashboard Sections
+            //--------------------------------------------------
+
+            [
+                "maintenanceDueList",
+                "maintenanceEquipmentList",
+                "maintenanceHistoryList"
+            ].forEach(
+                (elementId) => {
+
+                    const element =
+                        document.getElementById(
+                            elementId
+                        );
+
+                    const section =
+                        element?.closest(
+                            ".maintenance-section"
+                        );
+
+                    if (section) {
+
+                        section.hidden =
+                            true;
+
+                    }
+
+                }
+            );
+
+
+            //--------------------------------------------------
+            // Hide Dashboard Action Panel
+            //--------------------------------------------------
+
+            const actionPanel =
+                openMaintenanceFormButton.closest(
+                    ".maintenance-section"
+                );
+
+            if (actionPanel) {
+
+                actionPanel.hidden =
+                    true;
+
+            }
+
+
+            //--------------------------------------------------
+            // Show Maintenance Form
+            //--------------------------------------------------
+
+            maintenanceFormPanel.hidden =
+                false;
+
+
+            maintenanceFormPanel.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+    );
+
+}
+
+if (
+    cancelMaintenanceFormButton &&
+    maintenanceFormPanel
+) {
+
+    cancelMaintenanceFormButton.addEventListener(
+        "click",
+        () => {
+
+            maintenanceFormPanel.hidden =
+                true;
+
+        }
+    );
+
+}
+
+//--------------------------------------------------
+// Initialize Maintenance Form
+//--------------------------------------------------
+
+function initializeMaintenanceForm(
+    equipment,
+    schedules,
+    parts,
+    currentMember
+) {
+
+    const equipmentSelect =
+        document.getElementById(
+            "maintenanceEquipment"
+        );
+
+    const maintenanceTypeSelect =
+        document.getElementById(
+            "maintenanceType"
+        );
+
+    const completedByInput =
+        document.getElementById(
+            "maintenanceCompletedBy"
+        );
+
+    const completedDateInput =
+        document.getElementById(
+            "maintenanceCompletedDate"
+        );
+
+    const completedTimeInput =
+        document.getElementById(
+            "maintenanceCompletedTime"
+        );
+
+
+    if (
+        !equipmentSelect ||
+        !maintenanceTypeSelect
+    ) {
+
+        return;
+
+    }
+
+
+    //--------------------------------------------------
+    // Default Member
+    //--------------------------------------------------
+
+    if (
+        completedByInput &&
+        currentMember &&
+        currentMember.memberName
+    ) {
+
+        completedByInput.value =
+            currentMember.memberName;
+
+    }
+
+
+    //--------------------------------------------------
+    // Default Date / Time
+    //--------------------------------------------------
+
+    const now =
+        new Date();
+
+
+    if (
+        completedDateInput &&
+        !completedDateInput.value
+    ) {
+
+        completedDateInput.value =
+            [
+                now.getFullYear(),
+                String(
+                    now.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                ),
+                String(
+                    now.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                )
+            ].join("-");
+
+    }
+
+
+    if (
+        completedTimeInput &&
+        !completedTimeInput.value
+    ) {
+
+        completedTimeInput.value =
+            [
+                String(
+                    now.getHours()
+                ).padStart(
+                    2,
+                    "0"
+                ),
+                String(
+                    now.getMinutes()
+                ).padStart(
+                    2,
+                    "0"
+                )
+            ].join(":");
+
+    }
+
+
+    //--------------------------------------------------
+    // Populate Equipment Dropdown
+    //--------------------------------------------------
+
+    equipmentSelect.innerHTML =
+        `
+            <option value="">
+                Select equipment...
+            </option>
+        `;
+
+
+    equipment.forEach(
+        (item) => {
+
+            const equipmentId =
+                cleanMaintenanceText(
+                    item[
+                        "Equipment ID"
+                    ]
+                );
+
+            if (!equipmentId) {
+
+                return;
+
+            }
+
+
+            const equipmentName =
+                cleanMaintenanceText(
+                    item[
+                        "Equipment Name"
+                    ]
+                ) ||
+                equipmentId;
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                equipmentId;
+
+            option.textContent =
+                equipmentName;
+
+            equipmentSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    //--------------------------------------------------
+    // Equipment Selection
+    //--------------------------------------------------
+
+    equipmentSelect.addEventListener(
+        "change",
+        () => {
+
+            populateMaintenanceTypes(
+                equipmentSelect.value,
+                schedules
+            );
+
+            renderRecommendedMaintenanceParts(
+                equipmentSelect.value,
+                "",
+                parts
+            );
+
+        }
+    );
+
+
+    //--------------------------------------------------
+    // Maintenance Type Selection
+    //--------------------------------------------------
+
+    maintenanceTypeSelect.addEventListener(
+        "change",
+        () => {
+
+            renderRecommendedMaintenanceParts(
+                equipmentSelect.value,
+                maintenanceTypeSelect.value,
+                parts
+            );
+
+        }
+    );
+
+}
+
+
+//--------------------------------------------------
+// Populate Maintenance Types
+//--------------------------------------------------
+
+function populateMaintenanceTypes(
+    equipmentId,
+    schedules
+) {
+
+    const select =
+        document.getElementById(
+            "maintenanceType"
+        );
+
+
+    if (!select) {
+
+        return;
+
+    }
+
+
+    select.innerHTML =
+        "";
+
+
+    if (!equipmentId) {
+
+        select.disabled =
+            true;
+
+        select.innerHTML =
+            `
+                <option value="">
+                    Select equipment first...
+                </option>
+            `;
+
+        return;
+
+    }
+
+
+    const matchingSchedules =
+        schedules.filter(
+            (schedule) => {
+
+                return (
+                    cleanMaintenanceText(
+                        schedule[
+                            "Equipment ID"
+                        ]
+                    ) ===
+                    equipmentId
+                );
+
+            }
+        );
+
+
+    select.disabled =
+        false;
+
+
+    const placeholder =
+        document.createElement(
+            "option"
+        );
+
+    placeholder.value =
+        "";
+
+    placeholder.textContent =
+        matchingSchedules.length
+            ? "Select maintenance type..."
+            : "No scheduled maintenance found";
+
+    select.appendChild(
+        placeholder
+    );
+
+
+    matchingSchedules.forEach(
+        (schedule) => {
+
+            const maintenanceType =
+                cleanMaintenanceText(
+                    schedule[
+                        "Maintenance Type"
+                    ]
+                );
+
+            if (!maintenanceType) {
+
+                return;
+
+            }
+
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                maintenanceType;
+
+            option.textContent =
+                maintenanceType;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+//--------------------------------------------------
+// Recommended Parts
+//--------------------------------------------------
+
+function renderRecommendedMaintenanceParts(
+    equipmentId,
+    maintenanceType,
+    parts
+) {
+
+    const panel =
+        document.getElementById(
+            "maintenanceRecommendedParts"
+        );
+
+    const list =
+        document.getElementById(
+            "maintenanceRecommendedPartsList"
+        );
+
+
+    if (
+        !panel ||
+        !list
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        !equipmentId ||
+        !maintenanceType
+    ) {
+
+        panel.hidden =
+            true;
+
+        list.innerHTML =
+            "";
+
+        return;
+
+    }
+
+
+    const matchingParts =
+        parts.filter(
+            (part) => {
+
+                return (
+                    cleanMaintenanceText(
+                        part[
+                            "Equipment ID"
+                        ]
+                    ) ===
+                        equipmentId &&
+                    cleanMaintenanceText(
+                        part[
+                            "Maintenance Type"
+                        ]
+                    ).toLowerCase() ===
+                        maintenanceType.toLowerCase()
+                );
+
+            }
+        );
+
+
+    if (!matchingParts.length) {
+
+        panel.hidden =
+            true;
+
+        list.innerHTML =
+            "";
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        "";
+
+
+    matchingParts.forEach(
+        (part) => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "maintenance-recommended-part";
+
+
+            const title =
+                document.createElement(
+                    "strong"
+                );
+
+            title.textContent =
+                cleanMaintenanceText(
+                    part[
+                        "Description"
+                    ]
+                ) ||
+                cleanMaintenanceText(
+                    part[
+                        "Part Category"
+                    ]
+                ) ||
+                "Part / Supply";
+
+
+            const details =
+                [
+                    cleanMaintenanceText(
+                        part[
+                            "Manufacturer"
+                        ]
+                    ),
+                    cleanMaintenanceText(
+                        part[
+                            "Part Number"
+                        ]
+                    ),
+                    cleanMaintenanceText(
+                        part[
+                            "Alternate Part Number"
+                        ]
+                    ),
+                    cleanMaintenanceText(
+                        part[
+                            "Specification"
+                        ]
+                    ),
+                    cleanMaintenanceText(
+                        part[
+                            "Quantity"
+                        ]
+                    )
+                        ? `Qty ${cleanMaintenanceText(
+                            part[
+                                "Quantity"
+                            ]
+                        )}`
+                        : ""
+                ]
+                    .filter(Boolean)
+                    .join(" • ");
+
+
+            const detail =
+                document.createElement(
+                    "span"
+                );
+
+            detail.textContent =
+                details;
+
+
+            item.append(
+                title,
+                detail
+            );
+
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    panel.hidden =
+        false;
+
+}
+
+//--------------------------------------------------
+// Save Maintenance Record
+//--------------------------------------------------
+
+const maintenanceForm =
+    document.getElementById(
+        "maintenanceForm"
+    );
+
+
+if (maintenanceForm) {
+
+    maintenanceForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            const equipmentId =
+                document.getElementById(
+                    "maintenanceEquipment"
+                )?.value || "";
+
+            const maintenanceType =
+                document.getElementById(
+                    "maintenanceType"
+                )?.value || "";
+
+            const completedDate =
+                document.getElementById(
+                    "maintenanceCompletedDate"
+                )?.value || "";
+
+            const completedTime =
+                document.getElementById(
+                    "maintenanceCompletedTime"
+                )?.value || "";
+
+            const completedBy =
+                document.getElementById(
+                    "maintenanceCompletedBy"
+                )?.value || "";
+
+            const hours =
+                document.getElementById(
+                    "maintenanceHours"
+                )?.value || "";
+
+            const mileage =
+                document.getElementById(
+                    "maintenanceMileage"
+                )?.value || "";
+
+            const partsUsed =
+                document.getElementById(
+                    "maintenancePartsUsed"
+                )?.value || "";
+
+            const cost =
+                document.getElementById(
+                    "maintenanceCost"
+                )?.value || "";
+
+            const notes =
+                document.getElementById(
+                    "maintenanceNotes"
+                )?.value || "";
+
+            const message =
+                document.getElementById(
+                    "maintenanceFormMessage"
+                );
+
+            const saveButton =
+                document.getElementById(
+                    "saveMaintenanceRecord"
+                );
+
+
+            try {
+
+                if (message) {
+
+                    message.textContent =
+                        "Saving maintenance record...";
+
+                }
+
+
+                if (saveButton) {
+
+                    saveButton.disabled =
+                        true;
+
+                }
+
+
+                await Database.saveMaintenanceRecord({
+
+                    equipmentId:
+                        equipmentId,
+
+                    maintenanceType:
+                        maintenanceType,
+
+                    completedDate:
+                        completedDate,
+
+                    completedTime:
+                        completedTime,
+
+                    completedBy:
+                        completedBy,
+
+                    hours:
+                        hours,
+
+                    mileage:
+                        mileage,
+
+                    partsUsed:
+                        partsUsed,
+
+                    cost:
+                        cost,
+
+                    notes:
+                        notes
+
+                });
+
+
+                if (message) {
+
+                    message.textContent =
+                        "Maintenance record saved.";
+
+                }
+
+
+                //--------------------------------------------------
+// Refresh Maintenance Dashboard
+//--------------------------------------------------
+
+const refreshedResponse =
+    await Database.getMaintenanceCenter();
+
+
+const refreshedEquipment =
+    Array.isArray(
+        refreshedResponse.equipment
+    )
+        ? refreshedResponse.equipment
+        : [];
+
+
+const refreshedSchedules =
+    Array.isArray(
+        refreshedResponse.schedules
+    )
+        ? refreshedResponse.schedules
+        : [];
+
+
+const refreshedParts =
+    Array.isArray(
+        refreshedResponse.parts
+    )
+        ? refreshedResponse.parts
+        : [];
+
+
+const refreshedLogs =
+    Array.isArray(
+        refreshedResponse.logs
+    )
+        ? refreshedResponse.logs
+        : [];
+
+
+window.WACMaintenance = {
+
+    currentMember:
+        refreshedResponse.currentMember || null,
+
+    equipment:
+        refreshedEquipment,
+
+    schedules:
+        refreshedSchedules,
+
+    parts:
+        refreshedParts,
+
+    logs:
+        refreshedLogs
+
+};
+
+
+renderMaintenanceSummary(
+    refreshedEquipment,
+    refreshedSchedules,
+    refreshedLogs
+);
+
+
+renderEquipmentList(
+    refreshedEquipment,
+    refreshedSchedules,
+    refreshedLogs
+);
+
+
+renderMaintenanceHistory(
+    refreshedEquipment,
+    refreshedLogs
+);
+
+
+renderMaintenanceDue(
+    refreshedEquipment,
+    refreshedSchedules,
+    refreshedLogs
+);
+
+
+if (maintenanceFormPanel) {
+
+    maintenanceFormPanel.hidden =
+        true;
+
+}
+
+
+//--------------------------------------------------
+// Restore Dashboard View
+//--------------------------------------------------
+
+[
+    "maintenanceDueList",
+    "maintenanceEquipmentList",
+    "maintenanceHistoryList"
+].forEach(
+    (elementId) => {
+
+        const element =
+            document.getElementById(
+                elementId
+            );
+
+        const section =
+            element?.closest(
+                ".maintenance-section"
+            );
+
+        if (section) {
+
+            section.hidden =
+                false;
+
+        }
+
+    }
+);
+
+
+const actionPanel =
+    openMaintenanceFormButton?.closest(
+        ".maintenance-section"
+    );
+
+if (actionPanel) {
+
+    actionPanel.hidden =
+        false;
+
+}
+
+
+window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+});
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Save Maintenance Error:",
+                    error
+                );
+
+
+                if (message) {
+
+                    message.textContent =
+                        error?.message ||
+                        "Maintenance record could not be saved.";
+
+                }
+
+            }
+
+            finally {
+
+                if (saveButton) {
+
+                    saveButton.disabled =
+                        false;
+
+                }
+
+            }
+
+        }
+    );
+
+}
 
 //--------------------------------------------------
 // Dashboard Summary
