@@ -1219,44 +1219,55 @@ function getResourceIcon(
     }
 
     if (
-        category === "governance"
-    ) {
+    category.includes("regulation") ||
+    category === "governance"
+) {
 
-        return "📜";
+    return "📜";
 
-    }
+}
 
-    if (
-        category === "safety"
-    ) {
+if (
+    category.includes("safety") ||
+    category.includes("handbook")
+) {
 
-        return "🛡️";
+    return "🛡️";
 
-    }
+}
 
-    if (
-        category === "history"
-    ) {
+if (
+    category.includes("instruction") ||
+    category.includes("checklist")
+) {
 
-        return "🏕️";
+    return "📋";
 
-    }
+}
 
-    if (
-        category === "guides"
-    ) {
+if (
+    category === "history"
+) {
 
-        return "📖";
+    return "🏕️";
 
-    }
+}
 
-    if (
-        type.includes("pdf")
-    ) {
+if (
+    category.includes("guide")
+) {
 
-        return "📄";
+    return "📖";
 
-    }
+}
+
+if (
+    type.includes("pdf")
+) {
+
+    return "📕";
+
+}
 
     if (
         type.includes("link") ||
