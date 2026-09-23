@@ -170,6 +170,46 @@ async saveMaintenanceRecord(
 
 },
 
+async submitBlindReactionQuestion(
+    question
+) {
+    return await this.authenticatedPost(
+        "submitBlindReactionQuestion",
+        {
+            question
+        }
+    );
+},
+
+async getBlindReactionAccess() {
+    return await this.authenticatedPost(
+        "getBlindReactionAccess"
+    );
+},
+
+async drawBlindReactionQuestion() {
+    return await this.authenticatedPost(
+        "drawBlindReactionQuestion"
+    );
+},
+
+async saveBlindReactionAnswer(
+    answer
+) {
+    return await this.authenticatedPost(
+        "saveBlindReactionAnswer",
+        {
+            answer
+        }
+    );
+},
+
+async getBlindReactionArchive() {
+    return await this.authenticatedPost(
+        "getBlindReactionArchive"
+    );
+},
+
 //--------------------------------------------------
 // Hunt Board
 //--------------------------------------------------

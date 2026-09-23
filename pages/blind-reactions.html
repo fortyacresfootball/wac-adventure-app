@@ -1,0 +1,876 @@
+<style>
+
+.blind-reactions-page {
+    min-height: 100%;
+
+    padding:
+        28px
+        18px
+        48px;
+
+    background:
+        radial-gradient(
+            circle at 15% 12%,
+            rgba(255, 248, 220, 0.82),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 88% 72%,
+            rgba(89, 67, 38, 0.10),
+            transparent 32%
+        ),
+        #e9dfc4;
+
+    color:
+        #2f2b22;
+}
+
+
+.blind-reactions-page::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity:
+        0.14;
+
+    background-image:
+        repeating-radial-gradient(
+            ellipse at 18% 30%,
+            transparent 0px,
+            transparent 26px,
+            rgba(46, 64, 43, 0.38) 27px,
+            transparent 29px,
+            transparent 44px
+        ),
+        repeating-radial-gradient(
+            ellipse at 84% 74%,
+            transparent 0px,
+            transparent 30px,
+            rgba(79, 57, 31, 0.30) 31px,
+            transparent 33px,
+            transparent 50px
+        );
+
+    background-size:
+        420px 300px,
+        520px 380px;
+}
+
+
+.blind-reactions-page > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+.blind-reactions-page .page-hero {
+    max-width:
+        920px;
+
+    margin:
+        0 auto
+        24px;
+
+    padding:
+        28px
+        24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(35, 57, 40, 0.98),
+            rgba(20, 38, 27, 0.99)
+        );
+
+    border:
+        1px solid
+        #102519;
+
+    border-radius:
+        8px;
+
+    box-shadow:
+        0 12px 26px
+        rgba(28, 35, 25, 0.24),
+        inset 0 0 0 3px
+        rgba(224, 205, 150, 0.08);
+}
+
+
+.blind-reactions-page .page-hero-kicker {
+    display:
+        inline-block;
+
+    margin-bottom:
+        10px;
+
+    padding:
+        6px 12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #7a5427,
+            #4a2f17
+        );
+
+    border:
+        1px solid
+        #3a2412;
+
+    border-radius:
+        4px;
+
+    color:
+        #f0ddb0;
+
+    font-size:
+        0.72rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.12em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.blind-reactions-page .page-hero h1 {
+    margin:
+        0;
+
+    color:
+        #f3e8c5;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            2rem,
+            5vw,
+            3rem
+        );
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.04em;
+
+    text-shadow:
+        0 2px 3px
+        rgba(0, 0, 0, 0.35);
+}
+
+
+.blind-reactions-page .page-hero-subtitle {
+    margin:
+        10px 0 0;
+
+    color:
+        #ddd3b6;
+
+    font-size:
+        1rem;
+
+    line-height:
+        1.5;
+}
+
+
+.blind-reactions-submit-card,
+.blind-reactions-draw-card,
+.blind-reactions-archive {
+    max-width:
+        920px;
+
+    margin:
+        0 auto
+        22px;
+
+    padding:
+        24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(247, 239, 211, 0.98),
+            rgba(222, 208, 171, 0.96)
+        );
+
+    border:
+        1px solid
+        #9b8254;
+
+    border-radius:
+        8px;
+
+    box-shadow:
+        0 8px 18px
+        rgba(49, 38, 22, 0.15),
+        inset 0 0 0 3px
+        rgba(255, 255, 255, 0.24);
+}
+
+
+.blind-reactions-page .section-kicker {
+    display:
+        inline-block;
+
+    margin-bottom:
+        8px;
+
+    padding:
+        6px 11px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #5b3a1e,
+            #382313
+        );
+
+    border:
+        1px solid
+        #2a1a0e;
+
+    border-radius:
+        4px;
+
+    color:
+        #ead8a5;
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.10em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.blind-reactions-page .section-heading h2 {
+    margin:
+        0 0 18px;
+
+    color:
+        #1d3828;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        1.45rem;
+
+    font-weight:
+        900;
+}
+
+
+.blind-reactions-page .form-label {
+    display:
+        block;
+
+    margin-bottom:
+        8px;
+
+    color:
+        #2d3529;
+
+    font-weight:
+        900;
+}
+
+
+.blind-reactions-page textarea {
+    width:
+        100%;
+
+    box-sizing:
+        border-box;
+
+    min-height:
+        135px;
+
+    padding:
+        14px;
+
+    resize:
+        vertical;
+
+    background:
+        rgba(255, 251, 234, 0.92);
+
+    border:
+        1px solid
+        #9c865d;
+
+    border-radius:
+        6px;
+
+    color:
+        #29271f;
+
+    font:
+        inherit;
+
+    line-height:
+        1.45;
+
+    box-shadow:
+        inset 0 2px 5px
+        rgba(54, 41, 22, 0.08);
+}
+
+
+.blind-reactions-page textarea:focus {
+    outline:
+        2px solid
+        rgba(46, 74, 50, 0.30);
+
+    border-color:
+        #49664a;
+}
+
+
+.blind-reactions-anonymous-option {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+    margin:
+        14px 0 18px;
+
+    color:
+        #514a3e;
+
+    font-weight:
+        700;
+}
+
+
+.blind-reactions-form-actions {
+    margin-top:
+        4px;
+}
+
+
+.blind-reactions-page .primary-button {
+    padding:
+        11px 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #3d583b,
+            #223820
+        );
+
+    border:
+        2px solid
+        #182719;
+
+    border-radius:
+        6px;
+
+    color:
+        #f4e9c5;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.04em;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.14),
+        0 5px 9px
+        rgba(0, 0, 0, 0.20);
+}
+
+
+.blind-reactions-page .primary-button:hover {
+    transform:
+        translateY(-1px);
+}
+
+
+.blind-reactions-page .primary-button:disabled {
+    opacity:
+        0.55;
+
+    cursor:
+        default;
+
+    transform:
+        none;
+}
+
+
+.blind-reactions-page .form-message {
+    margin-top:
+        14px;
+
+    min-height:
+        22px;
+
+    color:
+        #2c4a32;
+
+    font-weight:
+        800;
+}
+
+.blind-reaction-entry {
+    position: relative;
+
+    padding:
+        20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 249, 226, 0.96),
+            rgba(229, 215, 177, 0.96)
+        );
+
+    border:
+        1px solid
+        #9e875d;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        0 6px 14px
+        rgba(51, 39, 21, 0.12),
+        inset 0 0 0 2px
+        rgba(255,255,255,0.22);
+}
+
+
+.blind-reaction-entry-question {
+    margin-bottom:
+        7px;
+
+    color:
+        #1f3929;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        1.18rem;
+
+    font-weight:
+        900;
+
+    line-height:
+        1.4;
+}
+
+
+.blind-reaction-entry-meta {
+    margin-bottom:
+        16px;
+
+    color:
+        #6b5d46;
+
+    font-size:
+        0.82rem;
+
+    font-weight:
+        700;
+}
+
+
+.blind-reaction-entry-answer {
+    padding:
+        14px 16px;
+
+    background:
+        rgba(44, 67, 46, 0.09);
+
+    border-left:
+        4px solid
+        #3c5a40;
+
+    border-radius:
+        3px;
+
+    color:
+        #312d25;
+
+    font-size:
+        0.98rem;
+
+    line-height:
+        1.55;
+
+    white-space:
+        pre-wrap;
+}
+
+
+.blind-reaction-entry-footer {
+    margin-top:
+        12px;
+
+    color:
+        #655b49;
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        700;
+}
+
+
+.blind-reaction-draw-result {
+    margin-top:
+        18px;
+
+    padding:
+        18px;
+
+    background:
+        rgba(255, 249, 225, 0.72);
+
+    border:
+        1px solid
+        #9c865d;
+
+    border-radius:
+        6px;
+}
+
+
+.blind-reaction-draw-submitter {
+    margin-bottom:
+        7px;
+
+    color:
+        #6c5e47;
+
+    font-size:
+        0.82rem;
+
+    font-weight:
+        800;
+}
+
+
+.blind-reaction-draw-question {
+    margin-bottom:
+        18px;
+
+    color:
+        #1d3828;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        1.3rem;
+
+    font-weight:
+        900;
+
+    line-height:
+        1.4;
+}
+
+.blind-reaction-list {
+    display:
+        grid;
+
+    gap:
+        14px;
+}
+
+
+.blind-reactions-page .empty-state {
+    padding:
+        18px;
+
+    background:
+        rgba(255, 250, 229, 0.55);
+
+    border:
+        1px dashed
+        #9d8962;
+
+    border-radius:
+        6px;
+
+    color:
+        #5b5345;
+
+    text-align:
+        center;
+
+    font-style:
+        italic;
+}
+
+
+@media (max-width: 720px) {
+
+    .blind-reactions-page {
+        padding:
+            18px
+            12px
+            36px;
+    }
+
+    .blind-reactions-page .page-hero,
+    .blind-reactions-submit-card,
+    .blind-reactions-archive {
+        padding:
+            18px;
+    }
+
+}
+
+</style>
+
+<section class="wac-page blind-reactions-page">
+
+    <div class="page-hero">
+
+        <div class="page-hero-kicker">
+            WAC FIELD FEATURE
+        </div>
+
+        <h1>
+            Blind Reactions
+        </h1>
+
+        <p class="page-hero-subtitle">
+            Random questions. Straight answers. From the blind.
+        </p>
+
+    </div>
+
+
+    <section class="blind-reactions-submit-card">
+
+        <div class="section-heading">
+
+            <div>
+
+                <div class="section-kicker">
+                    ASK A QUESTION
+                </div>
+
+                <h2>
+                    Toss One in the Bucket
+                </h2>
+
+            </div>
+
+        </div>
+
+        <form id="blindReactionQuestionForm">
+
+            <label
+                for="blindReactionQuestion"
+                class="form-label"
+            >
+                Your Question
+            </label>
+
+            <textarea
+                id="blindReactionQuestion"
+                name="question"
+                rows="5"
+                maxlength="500"
+                placeholder="Ask something funny, serious, random, or completely unexpected..."
+                required
+            ></textarea>
+
+            <label class="blind-reactions-anonymous-option">
+
+                <input
+                    type="checkbox"
+                    id="blindReactionAnonymous"
+                >
+
+                <span>
+                    Ask anonymously
+                </span>
+
+            </label>
+
+            <div class="blind-reactions-form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                    id="submitBlindReactionQuestion"
+                >
+                    Submit Question
+                </button>
+
+            </div>
+
+            <div
+                id="blindReactionSubmitMessage"
+                class="form-message"
+                aria-live="polite"
+            ></div>
+
+        </form>
+
+    </section>
+
+<section
+    class="blind-reactions-draw-card"
+    id="blindReactionDrawCard"
+    hidden
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-kicker">
+                BLIND DUTY
+            </div>
+
+            <h2>
+                Draw a Question
+            </h2>
+
+        </div>
+
+    </div>
+
+    <p>
+        Pull one random unanswered question from the Blind Reactions bucket.
+    </p>
+
+    <button
+        type="button"
+        class="primary-button"
+        id="drawBlindReactionQuestion"
+    >
+        Draw a Question
+    </button>
+
+    <div
+        id="blindReactionDrawResult"
+        class="blind-reaction-draw-result"
+        hidden
+    >
+
+        <div
+            id="blindReactionDrawSubmittedBy"
+            class="blind-reaction-draw-submitter"
+        ></div>
+
+        <div
+            id="blindReactionDrawQuestion"
+            class="blind-reaction-draw-question"
+        ></div>
+
+        <label
+    for="blindReactionAnswer"
+    class="form-label"
+>
+    Your Reaction
+</label>
+
+<textarea
+    id="blindReactionAnswer"
+    rows="6"
+    maxlength="1500"
+    placeholder="Answer the question..."
+></textarea>
+
+<div class="blind-reactions-form-actions">
+
+    <button
+        type="button"
+        class="primary-button"
+        id="saveBlindReactionAnswer"
+    >
+        Save Reaction
+    </button>
+
+</div>
+
+    </div>
+
+    <div
+        id="blindReactionDrawMessage"
+        class="form-message"
+        aria-live="polite"
+    ></div>
+
+</section>
+
+    <section class="blind-reactions-archive">
+
+        <div class="section-heading">
+
+            <div>
+
+                <div class="section-kicker">
+                    FROM THE BLIND
+                </div>
+
+                <h2>
+                    Recent Reactions
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div
+            id="blindReactionArchive"
+            class="blind-reaction-list"
+        >
+
+            <div class="empty-state">
+                No Blind Reactions have been answered yet.
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
