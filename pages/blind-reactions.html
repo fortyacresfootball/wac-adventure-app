@@ -376,6 +376,38 @@
         4px;
 }
 
+.blind-reactions-page .secondary-button {
+    padding:
+        11px 18px;
+
+    background:
+        rgba(255, 248, 224, 0.72);
+
+    border:
+        2px solid
+        #7f6b49;
+
+    border-radius:
+        6px;
+
+    color:
+        #4d4334;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.04em;
+
+    cursor:
+        pointer;
+}
+
+
+.blind-reactions-page .secondary-button:hover {
+    background:
+        rgba(235, 221, 180, 0.95);
+}
 
 .blind-reactions-page .primary-button {
     padding:
@@ -474,6 +506,57 @@
         rgba(255,255,255,0.22);
 }
 
+.blind-reaction-entry.is-featured {
+    border:
+        2px solid
+        #8a6a2f;
+
+    box-shadow:
+        0 8px 18px
+        rgba(67, 49, 20, 0.18),
+        inset 0 0 0 2px
+        rgba(255, 248, 219, 0.45);
+}
+
+.blind-reaction-featured-tag {
+    display:
+        inline-block;
+
+    margin-bottom:
+        10px;
+
+    padding:
+        5px 9px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #8a6a2f,
+            #5b421c
+        );
+
+    border:
+        1px solid
+        #4a3517;
+
+    border-radius:
+        4px;
+
+    color:
+        #f5e7b9;
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.10em;
+
+    text-transform:
+        uppercase;
+}
 
 .blind-reaction-entry-question {
     margin-bottom:
@@ -512,6 +595,25 @@
         700;
 }
 
+.blind-reaction-entry-answer-label {
+    margin-bottom:
+        7px;
+
+    color:
+        #4b3923;
+
+    font-size:
+        0.70rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.10em;
+
+    text-transform:
+        uppercase;
+}
 
 .blind-reaction-entry-answer {
     padding:
@@ -555,6 +657,39 @@
         700;
 }
 
+.blind-reaction-pending-count {
+    display:
+        inline-block;
+
+    margin:
+        4px 0
+        16px;
+
+    padding:
+        6px 10px;
+
+    background:
+        rgba(61, 88, 59, 0.10);
+
+    border:
+        1px solid
+        rgba(61, 88, 59, 0.30);
+
+    border-radius:
+        4px;
+
+    color:
+        #2f4a32;
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.03em;
+}
 
 .blind-reaction-draw-result {
     margin-top:
@@ -612,6 +747,71 @@
         1.4;
 }
 
+.blind-reaction-filter-row {
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    margin:
+        -6px 0
+        18px;
+}
+
+
+.blind-reaction-filter-button {
+    padding:
+        7px 12px;
+
+    background:
+        rgba(255, 248, 224, 0.72);
+
+    border:
+        1px solid
+        #927a50;
+
+    border-radius:
+        5px;
+
+    color:
+        #4f4636;
+
+    font-size:
+        0.75rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.04em;
+
+    cursor:
+        pointer;
+}
+
+
+.blind-reaction-filter-button:hover {
+    background:
+        rgba(239, 225, 184, 0.92);
+}
+
+
+.blind-reaction-filter-button.is-active {
+    background:
+        linear-gradient(
+            180deg,
+            #3d583b,
+            #223820
+        );
+
+    border-color:
+        #182719;
+
+    color:
+        #f4e9c5;
+}
+
 .blind-reaction-list {
     display:
         grid;
@@ -653,11 +853,43 @@
             18px
             12px
             36px;
+
+            .blind-reaction-filter-row {
+    flex-wrap:
+        wrap;
+}
+
+.blind-reaction-filter-button {
+    flex:
+        1 1 120px;
+
+    text-align:
+        center;
+}
+
     }
 
+    .blind-reactions-form-actions {
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        10px;
+}
+
+.blind-reactions-form-actions .primary-button,
+.blind-reactions-form-actions .secondary-button {
+    width:
+        100%;
+}
+
     .blind-reactions-page .page-hero,
-    .blind-reactions-submit-card,
-    .blind-reactions-archive {
+.blind-reactions-submit-card,
+.blind-reactions-draw-card,
+.blind-reactions-archive {
         padding:
             18px;
     }
@@ -782,6 +1014,13 @@
         Pull one random unanswered question from the Blind Reactions bucket.
     </p>
 
+    <div
+    id="blindReactionPendingCount"
+    class="blind-reaction-pending-count"
+>
+    Checking the bucket...
+</div>
+
     <button
         type="button"
         class="primary-button"
@@ -830,6 +1069,14 @@
         Save Reaction
     </button>
 
+    <button
+    type="button"
+    class="secondary-button"
+    id="returnBlindReactionQuestion"
+>
+    Return to Bucket
+</button>
+
 </div>
 
     </div>
@@ -839,6 +1086,15 @@
         class="form-message"
         aria-live="polite"
     ></div>
+
+    <button
+    type="button"
+    class="secondary-button"
+    id="drawAnotherBlindReaction"
+    hidden
+>
+    Draw Another
+</button>
 
 </section>
 
@@ -855,6 +1111,25 @@
                 <h2>
                     Recent Reactions
                 </h2>
+                <div class="blind-reaction-filter-row">
+
+    <button
+        type="button"
+        class="blind-reaction-filter-button is-active"
+        data-filter="all"
+    >
+        Newest
+    </button>
+
+    <button
+        type="button"
+        class="blind-reaction-filter-button"
+        data-filter="featured"
+    >
+        Featured
+    </button>
+
+</div>
 
             </div>
 

@@ -55,10 +55,26 @@ const drawMessage =
         "blindReactionDrawMessage"
     );
 
+    const pendingCount =
+    document.getElementById(
+        "blindReactionPendingCount"
+    );
+
     const archive =
     document.getElementById(
         "blindReactionArchive"
     );
+
+    const filterButtons =
+    document.querySelectorAll(
+        ".blind-reaction-filter-button"
+    );
+
+let blindReactionArchiveItems =
+    [];
+
+let blindReactionArchiveFilter =
+    "all";
 
     const answerInput =
     document.getElementById(
@@ -68,6 +84,16 @@ const drawMessage =
 const saveAnswerButton =
     document.getElementById(
         "saveBlindReactionAnswer"
+    );
+
+    const returnQuestionButton =
+    document.getElementById(
+        "returnBlindReactionQuestion"
+    );
+
+    const drawAnotherButton =
+    document.getElementById(
+        "drawAnotherBlindReaction"
     );
 
 async function initializeBlindReactionDrawAccess() {
@@ -85,13 +111,27 @@ async function initializeBlindReactionDrawAccess() {
                 .getBlindReactionAccess();
 
         if (
-            response?.canDraw === true
-        ) {
+    response?.canDraw === true
+) {
 
-            drawCard.hidden =
-                false;
+    drawCard.hidden =
+        false;
 
-        }
+    if (pendingCount) {
+
+        const count =
+            Number(
+                response.pendingCount || 0
+            );
+
+        pendingCount.textContent =
+            count === 1
+                ? "1 question waiting in the bucket."
+                : `${count} questions waiting in the bucket.`;
+
+    }
+
+}
 
     }
     catch (error) {
@@ -118,6 +158,13 @@ async function loadBlindReactionArchive() {
 
     }
 
+    archive.innerHTML =
+    `
+        <div class="empty-state">
+            Loading reactions from the blind...
+        </div>
+    `;
+
     try {
 
         const response =
@@ -131,82 +178,10 @@ async function loadBlindReactionArchive() {
                 ? response.reactions
                 : [];
 
-        if (!reactions.length) {
+                blindReactionArchiveItems =
+    reactions;
 
-            archive.innerHTML =
-                `
-                    <div class="empty-state">
-                        No Blind Reactions have been answered yet.
-                    </div>
-                `;
-
-            return;
-
-        }
-
-        archive.innerHTML =
-            reactions
-                .map(
-                    function (reaction) {
-
-                        const submittedBy =
-                            reaction.submittedBy
-                                ? reaction.submittedBy
-                                : "Anonymous";
-
-                        const answeredBy =
-                            reaction.answeredBy
-                                ? reaction.answeredBy
-                                : "Paul";
-
-                        const answeredDate =
-                            reaction.answeredDateTime
-                                ? reaction.answeredDateTime
-                                : "";
-
-                        return `
-                            <article class="blind-reaction-entry">
-
-                                <div class="blind-reaction-entry-question">
-                                    ${escapeBlindReactionHtml(
-                                        reaction.question
-                                    )}
-                                </div>
-
-                                <div class="blind-reaction-entry-meta">
-                                    Asked by
-                                    ${escapeBlindReactionHtml(
-                                        submittedBy
-                                    )}
-                                </div>
-
-                                <div class="blind-reaction-entry-answer">
-                                    ${escapeBlindReactionHtml(
-                                        reaction.answer
-                                    )}
-                                </div>
-
-                                <div class="blind-reaction-entry-footer">
-                                    Answered by
-                                    ${escapeBlindReactionHtml(
-                                        answeredBy
-                                    )}
-                                    ${
-                                        answeredDate
-                                            ? " • " +
-                                              escapeBlindReactionHtml(
-                                                  answeredDate
-                                              )
-                                            : ""
-                                    }
-                                </div>
-
-                            </article>
-                        `;
-
-                    }
-                )
-                .join("");
+        renderBlindReactionArchive();
 
     }
     catch (error) {
@@ -227,6 +202,199 @@ async function loadBlindReactionArchive() {
 
 }
 
+function renderBlindReactionArchive() {
+
+    if (!archive) {
+
+        return;
+
+    }
+
+    let reactions =
+        blindReactionArchiveItems
+            .slice();
+
+    if (
+        blindReactionArchiveFilter ===
+        "featured"
+    ) {
+
+        reactions =
+            reactions.filter(
+                function (reaction) {
+
+                    return (
+                        reaction.featured ===
+                        true
+                    );
+
+                }
+            );
+
+    }
+
+    reactions.sort(
+        function (
+            firstReaction,
+            secondReaction
+        ) {
+
+            return Number(
+                secondReaction.featured === true
+            ) -
+            Number(
+                firstReaction.featured === true
+            );
+
+        }
+    );
+
+    if (!reactions.length) {
+
+        archive.innerHTML =
+            `
+                <div class="empty-state">
+                    ${
+                        blindReactionArchiveFilter ===
+                        "featured"
+                            ? "No Featured Reactions yet."
+                            : "No Blind Reactions have been answered yet."
+                    }
+                </div>
+            `;
+
+        return;
+
+    }
+
+    archive.innerHTML =
+        reactions
+            .map(
+                function (reaction) {
+
+                    const submittedBy =
+                        reaction.submittedBy
+                            ? reaction.submittedBy
+                            : "Anonymous";
+
+                    const answeredBy =
+                        reaction.answeredBy
+                            ? reaction.answeredBy
+                            : "Paul";
+
+                    const answeredDate =
+                        reaction.answeredDateTime
+                            ? formatBlindReactionDate(
+                                reaction.answeredDateTime
+                            )
+                            : "";
+
+                    return `
+                        <article class="blind-reaction-entry ${
+                            reaction.featured
+                                ? "is-featured"
+                                : ""
+                        }">
+
+                            ${
+                                reaction.featured
+                                    ? `
+                                        <div class="blind-reaction-featured-tag">
+                                            FEATURED
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            <div class="blind-reaction-entry-question">
+                                ${escapeBlindReactionHtml(
+                                    reaction.question
+                                )}
+                            </div>
+
+                            <div class="blind-reaction-entry-meta">
+                                Asked by
+                                ${escapeBlindReactionHtml(
+                                    submittedBy
+                                )}
+                            </div>
+
+                            <div class="blind-reaction-entry-answer-label">
+                                PAUL'S REACTION
+                            </div>
+
+                            <div class="blind-reaction-entry-answer">
+                                ${escapeBlindReactionHtml(
+                                    reaction.answer
+                                )}
+                            </div>
+
+                            <div class="blind-reaction-entry-footer">
+                                Answered by
+                                ${escapeBlindReactionHtml(
+                                    answeredBy
+                                )}
+                                ${
+                                    answeredDate
+                                        ? " • " +
+                                          escapeBlindReactionHtml(
+                                              answeredDate
+                                          )
+                                        : ""
+                                }
+                            </div>
+
+                        </article>
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+
+function formatBlindReactionDate(
+    value
+) {
+
+    const date =
+        new Date(
+            value
+        );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return String(
+            value || ""
+        );
+
+    }
+
+    return date.toLocaleString(
+        [],
+        {
+            month:
+                "short",
+
+            day:
+                "numeric",
+
+            year:
+                "numeric",
+
+            hour:
+                "numeric",
+
+            minute:
+                "2-digit"
+        }
+    );
+
+}
 
 function escapeBlindReactionHtml(
     value
@@ -261,6 +429,36 @@ function escapeBlindReactionHtml(
 
 loadBlindReactionArchive();
 
+filterButtons.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                blindReactionArchiveFilter =
+                    button.dataset.filter ||
+                    "all";
+
+                filterButtons.forEach(
+                    function (otherButton) {
+
+                        otherButton.classList.toggle(
+                            "is-active",
+                            otherButton === button
+                        );
+
+                    }
+                );
+
+                renderBlindReactionArchive();
+
+            }
+        );
+
+    }
+);
+
 if (
     drawButton &&
     drawResult &&
@@ -282,10 +480,17 @@ if (
             drawMessage.textContent =
                 "";
 
-            drawResult.hidden =
-                true;
+                if (drawAnotherButton) {
 
-            try {
+    drawAnotherButton.hidden =
+        true;
+
+}
+
+            drawResult.hidden =
+    true;
+
+try {
 
                 const response =
                     await Database
@@ -352,6 +557,63 @@ if (
                     "Draw a Question";
 
             }
+
+        }
+    );
+
+}
+
+if (
+    returnQuestionButton &&
+    drawResult &&
+    answerInput &&
+    drawMessage
+) {
+
+    returnQuestionButton.addEventListener(
+        "click",
+        function () {
+
+            currentBlindReactionQuestionId =
+                "";
+
+            answerInput.value =
+                "";
+
+            drawResult.hidden =
+                true;
+
+            if (drawAnotherButton) {
+
+                drawAnotherButton.hidden =
+                    true;
+
+            }
+
+            drawMessage.textContent =
+                "Question returned to the bucket.";
+
+        }
+    );
+
+}
+
+if (
+    drawAnotherButton &&
+    drawButton
+) {
+
+    drawAnotherButton.addEventListener(
+        "click",
+        function () {
+
+            drawAnotherButton.hidden =
+                true;
+
+            drawMessage.textContent =
+                "";
+
+            drawButton.click();
 
         }
     );
@@ -434,6 +696,17 @@ if (
 
                 drawResult.hidden =
                     true;
+
+                    if (drawAnotherButton) {
+
+    drawAnotherButton.hidden =
+        false;
+
+}
+
+await initializeBlindReactionDrawAccess();
+
+await loadBlindReactionArchive();
 
             }
             catch (error) {
@@ -530,6 +803,8 @@ if (
                 message.textContent =
                     "Your question was tossed into the Blind Reactions bucket.";
 
+                    await initializeBlindReactionDrawAccess();
+                    
             }
             catch (error) {
 
