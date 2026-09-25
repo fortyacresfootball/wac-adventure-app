@@ -76,6 +76,9 @@ let blindReactionArchiveItems =
 let blindReactionArchiveFilter =
     "all";
 
+    let blindReactionCanManage =
+    false;
+
     const answerInput =
     document.getElementById(
         "blindReactionAnswer"
@@ -113,6 +116,9 @@ async function initializeBlindReactionDrawAccess() {
         if (
     response?.canDraw === true
 ) {
+
+    blindReactionCanManage =
+    true;
 
     drawCard.hidden =
         false;
@@ -344,6 +350,31 @@ function renderBlindReactionArchive() {
                                 }
                             </div>
 
+                                                        ${
+                                blindReactionCanManage
+                                    ? `
+                                        <button
+                                            type="button"
+                                            class="blind-reaction-feature-toggle"
+                                            data-question-id="${escapeBlindReactionHtml(
+                                                reaction.questionId
+                                            )}"
+                                            data-featured="${
+                                                reaction.featured
+                                                    ? "true"
+                                                    : "false"
+                                            }"
+                                        >
+                                            ${
+                                                reaction.featured
+                                                    ? "Remove Featured"
+                                                    : "Mark Featured"
+                                            }
+                                        </button>
+                                    `
+                                    : ""
+                            }
+
                         </article>
                     `;
 
@@ -428,6 +459,91 @@ function escapeBlindReactionHtml(
 
 
 loadBlindReactionArchive();
+
+if (archive) {
+
+    archive.addEventListener(
+        "click",
+        async function (event) {
+
+            const button =
+                event.target.closest(
+                    ".blind-reaction-feature-toggle"
+                );
+
+            if (
+                !button ||
+                !blindReactionCanManage
+            ) {
+
+                return;
+
+            }
+
+            const questionId =
+                button.dataset.questionId || "";
+
+            const currentlyFeatured =
+                button.dataset.featured ===
+                "true";
+
+            if (!questionId) {
+
+                return;
+
+            }
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Saving...";
+
+            try {
+
+                const response =
+                    await Database
+                        .setBlindReactionFeatured(
+                            questionId,
+                            !currentlyFeatured
+                        );
+
+                if (
+                    !response ||
+                    response.success !== true
+                ) {
+
+                    throw new Error(
+                        response?.error ||
+                        "Featured status could not be updated."
+                    );
+
+                }
+
+                await loadBlindReactionArchive();
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Blind Reactions Featured Error:",
+                    error
+                );
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    currentlyFeatured
+                        ? "Remove Featured"
+                        : "Mark Featured";
+
+            }
+
+        }
+    );
+
+}
 
 filterButtons.forEach(
     function (button) {

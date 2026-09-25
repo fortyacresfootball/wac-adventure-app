@@ -204,6 +204,19 @@ async saveBlindReactionAnswer(
     );
 },
 
+async setBlindReactionFeatured(
+    questionId,
+    featured
+) {
+    return await this.authenticatedPost(
+        "setBlindReactionFeatured",
+        {
+            questionId,
+            featured
+        }
+    );
+},
+
 async getBlindReactionArchive() {
     return await this.authenticatedPost(
         "getBlindReactionArchive"
