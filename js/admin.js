@@ -337,7 +337,10 @@ if (
 // Initial Load
 //--------------------------------------------------
 
-await loadPendingQueue();
+await Promise.all([
+    loadPendingQueue(),
+    loadWacPollAdmin()
+]);
 
 //--------------------------------------------------
 // Load WAC Quick Poll Administration
@@ -419,7 +422,7 @@ if (
     )
         ? result.polls
         : [];
-        
+
         list.innerHTML =
             "";
 
@@ -433,60 +436,220 @@ if (
         }
 
         polls.forEach(
-            function (poll) {
+    function (poll) {
 
-                const item =
-                    document.createElement(
-                        "div"
+        const item =
+            document.createElement(
+                "div"
+            );
+
+        item.className =
+            "admin-poll-item";
+
+        const title =
+            document.createElement(
+                "strong"
+            );
+
+        title.textContent =
+            poll.question ||
+            "Untitled Poll";
+
+        const details =
+            document.createElement(
+                "div"
+            );
+
+        details.className =
+            "admin-poll-meta";
+
+        const mode =
+            poll.autoRotate
+                ? "Auto Rotate"
+                : "Manual";
+
+        const status =
+            poll.active
+                ? "Active"
+                : "Inactive";
+
+        details.textContent =
+            `${poll.pollId} • ${mode} • ${status} • ${poll.voteCount} vote${poll.voteCount === 1 ? "" : "s"}`;
+
+        const editButton =
+            document.createElement(
+                "button"
+            );
+
+        editButton.type =
+            "button";
+
+        editButton.className =
+            "small-button";
+
+        editButton.textContent =
+            "Edit Poll";
+
+        editButton.addEventListener(
+            "click",
+            function () {
+
+                const formatDateInput =
+                    function (value) {
+
+                        const text =
+                            String(
+                                value || ""
+                            ).trim();
+
+                        if (!text) {
+
+                            return "";
+
+                        }
+
+                        const slashDate =
+                            text.match(
+                                /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+                            );
+
+                        if (slashDate) {
+
+                            return (
+                                slashDate[3] +
+                                "-" +
+                                slashDate[1].padStart(
+                                    2,
+                                    "0"
+                                ) +
+                                "-" +
+                                slashDate[2].padStart(
+                                    2,
+                                    "0"
+                                )
+                            );
+
+                        }
+
+                        const dashDate =
+                            text.match(
+                                /^(\d{4})-(\d{1,2})-(\d{1,2})$/
+                            );
+
+                        if (dashDate) {
+
+                            return (
+                                dashDate[1] +
+                                "-" +
+                                dashDate[2].padStart(
+                                    2,
+                                    "0"
+                                ) +
+                                "-" +
+                                dashDate[3].padStart(
+                                    2,
+                                    "0"
+                                )
+                            );
+
+                        }
+
+                        return "";
+
+                    };
+
+                document.getElementById(
+                    "wacPollId"
+                ).value =
+                    poll.pollId || "";
+
+                document.getElementById(
+                    "wacPollQuestion"
+                ).value =
+                    poll.question || "";
+
+                document.getElementById(
+                    "wacPollOption1"
+                ).value =
+                    poll.option1 || "";
+
+                document.getElementById(
+                    "wacPollOption2"
+                ).value =
+                    poll.option2 || "";
+
+                document.getElementById(
+                    "wacPollOption3"
+                ).value =
+                    poll.option3 || "";
+
+                document.getElementById(
+                    "wacPollOption4"
+                ).value =
+                    poll.option4 || "";
+
+                document.getElementById(
+                    "wacPollAllowWriteIn"
+                ).checked =
+                    poll.allowWriteIn === true;
+
+                document.getElementById(
+                    "wacPollAutoRotate"
+                ).checked =
+                    poll.autoRotate === true;
+
+                document.getElementById(
+                    "wacPollRotationOrder"
+                ).value =
+                    poll.rotationOrder || "";
+
+                document.getElementById(
+                    "wacPollActive"
+                ).checked =
+                    poll.active === true;
+
+                document.getElementById(
+                    "wacPollStartDate"
+                ).value =
+                    formatDateInput(
+                        poll.startDate
                     );
 
-                item.className =
-                    "admin-poll-item";
-
-                const title =
-                    document.createElement(
-                        "strong"
+                document.getElementById(
+                    "wacPollEndDate"
+                ).value =
+                    formatDateInput(
+                        poll.endDate
                     );
 
-                title.textContent =
-                    poll.question ||
-                    "Untitled Poll";
+                if (pollFormPanel) {
 
-                const details =
-                    document.createElement(
-                        "div"
-                    );
+                    pollFormPanel.hidden =
+                        false;
 
-                details.className =
-                    "admin-poll-meta";
-
-                const mode =
-                    poll.autoRotate
-                        ? "Auto Rotate"
-                        : "Manual";
-
-                const status =
-                    poll.active
-                        ? "Active"
-                        : "Inactive";
-
-                details.textContent =
-                    `${poll.pollId} • ${mode} • ${status} • ${poll.voteCount} vote${poll.voteCount === 1 ? "" : "s"}`;
-
-                item.appendChild(
-                    title
-                );
-
-                item.appendChild(
-                    details
-                );
-
-                list.appendChild(
-                    item
-                );
+                }
 
             }
         );
+
+        item.appendChild(
+            title
+        );
+
+        item.appendChild(
+            details
+        );
+
+        item.appendChild(
+            editButton
+        );
+
+        list.appendChild(
+            item
+        );
+
+    }
+);
 
     }
 

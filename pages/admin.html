@@ -11,188 +11,7 @@
                 ← Back to Home
             </a>
 
-            <!-- WAC Quick Poll Administration -->
 
-<section
-    class="admin-section"
-    id="wacPollAdminSection"
->
-
-    <div class="page-header">
-
-        <div>
-
-            <h2 class="section-title">
-                WAC Quick Polls
-            </h2>
-
-            <p class="section-subtitle">
-                Create, schedule and manage member polls.
-            </p>
-
-        </div>
-
-        <button
-            type="button"
-            class="small-button"
-            id="wacPollNewButton"
-        >
-            + New Poll
-        </button>
-
-    </div>
-
-    <div
-        id="wacPollAdminList"
-    >
-        Loading polls...
-    </div>
-
-    <div
-    id="wacPollFormPanel"
-    hidden
->
-
-    <form
-        id="wacPollForm"
-    >
-
-        <input
-            type="hidden"
-            id="wacPollId"
-        >
-
-        <label>
-            Poll Question
-
-            <input
-                type="text"
-                id="wacPollQuestion"
-                required
-            >
-        </label>
-
-        <label>
-            Option 1
-
-            <input
-                type="text"
-                id="wacPollOption1"
-                required
-            >
-        </label>
-
-        <label>
-            Option 2
-
-            <input
-                type="text"
-                id="wacPollOption2"
-                required
-            >
-        </label>
-
-        <label>
-            Option 3
-
-            <input
-                type="text"
-                id="wacPollOption3"
-            >
-        </label>
-
-        <label>
-            Option 4
-
-            <input
-                type="text"
-                id="wacPollOption4"
-            >
-        </label>
-
-        <label>
-            <input
-                type="checkbox"
-                id="wacPollAllowWriteIn"
-            >
-
-            Allow write-in answer
-        </label>
-
-        <label>
-            <input
-                type="checkbox"
-                id="wacPollAutoRotate"
-            >
-
-            Automatic weekly rotation
-        </label>
-
-        <label>
-            Rotation Order
-
-            <input
-                type="number"
-                id="wacPollRotationOrder"
-                min="1"
-            >
-        </label>
-
-        <label>
-            Start Date
-
-            <input
-                type="date"
-                id="wacPollStartDate"
-            >
-        </label>
-
-        <label>
-            End Date
-
-            <input
-                type="date"
-                id="wacPollEndDate"
-            >
-        </label>
-
-        <label>
-            <input
-                type="checkbox"
-                id="wacPollActive"
-                checked
-            >
-
-            Active
-        </label>
-
-        <div>
-
-            <button
-                type="submit"
-                class="small-button"
-                id="wacPollSaveButton"
-            >
-                Save Poll
-            </button>
-
-            <button
-                type="button"
-                class="small-button"
-                id="wacPollCancelButton"
-            >
-                Cancel
-            </button>
-
-        </div>
-
-    </form>
-
-</div>
-
-</section>
-
-        </div>
 
         <!-- ======================================
         ADMINISTRATOR SUMMARY
@@ -242,6 +61,256 @@
             </div>
 
         </section>
+
+        <!-- ======================================
+WAC QUICK POLL ADMINISTRATION
+======================================= -->
+
+<section class="profile-content-section admin-poll-section">
+
+    <div class="profile-section-header">
+
+        <div>
+
+            <div class="eyebrow">
+                Poll Administration
+            </div>
+
+            <h2 class="profile-section-title">
+                WAC Quick Polls
+            </h2>
+
+            <p class="admin-section-description">
+                Create, schedule and manage member polls.
+            </p>
+
+        </div>
+
+        <div class="admin-section-controls">
+
+            <button
+                type="button"
+                class="small-button"
+                id="wacPollNewButton"
+            >
+                + New Poll
+            </button>
+
+        </div>
+
+    </div>
+
+    <div
+        id="wacPollAdminList"
+        class="profile-recent-list"
+    >
+        Loading polls...
+    </div>
+
+    <div
+        id="wacPollFormPanel"
+        hidden
+    >
+
+    <style>
+    #wacPollForm {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 24px;
+        margin-top: 28px;
+        padding-top: 26px;
+        border-top: 1px solid rgba(20, 48, 79, 0.18);
+    }
+
+    #wacPollForm label {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        font-weight: 700;
+        color: #14304f;
+    }
+
+    #wacPollForm input[type="text"],
+    #wacPollForm input[type="number"],
+    #wacPollForm input[type="date"] {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 44px;
+        padding: 10px 12px;
+        border: 1px solid #b9b5aa;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #1f1f1f;
+        font: inherit;
+        font-weight: 400;
+    }
+
+    #wacPollForm input:focus {
+        outline: 2px solid rgba(216, 155, 44, 0.35);
+        border-color: #d89b2c;
+    }
+
+    #wacPollForm label:has(#wacPollQuestion) {
+        grid-column: 1 / -1;
+    }
+
+    #wacPollForm label:has(input[type="checkbox"]) {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        min-height: 44px;
+    }
+
+    #wacPollForm input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #143f2a;
+    }
+
+    #wacPollForm .admin-submission-actions {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    @media (max-width: 760px) {
+        #wacPollForm {
+            grid-template-columns: 1fr;
+        }
+
+        #wacPollForm label:has(#wacPollQuestion),
+        #wacPollForm .admin-submission-actions {
+            grid-column: 1;
+        }
+    }
+</style>
+
+        <form id="wacPollForm">
+
+            <input
+                type="hidden"
+                id="wacPollId"
+            >
+
+            <label>
+                Poll Question
+                <input
+                    type="text"
+                    id="wacPollQuestion"
+                    required
+                >
+            </label>
+
+            <label>
+                Option 1
+                <input
+                    type="text"
+                    id="wacPollOption1"
+                    required
+                >
+            </label>
+
+            <label>
+                Option 2
+                <input
+                    type="text"
+                    id="wacPollOption2"
+                    required
+                >
+            </label>
+
+            <label>
+                Option 3
+                <input
+                    type="text"
+                    id="wacPollOption3"
+                >
+            </label>
+
+            <label>
+                Option 4
+                <input
+                    type="text"
+                    id="wacPollOption4"
+                >
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="wacPollAllowWriteIn"
+                >
+                Allow write-in answer
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="wacPollAutoRotate"
+                >
+                Automatic weekly rotation
+            </label>
+
+            <label>
+                Rotation Order
+                <input
+                    type="number"
+                    id="wacPollRotationOrder"
+                    min="1"
+                >
+            </label>
+
+            <label>
+                Start Date
+                <input
+                    type="date"
+                    id="wacPollStartDate"
+                >
+            </label>
+
+            <label>
+                End Date
+                <input
+                    type="date"
+                    id="wacPollEndDate"
+                >
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="wacPollActive"
+                    checked
+                >
+                Active
+            </label>
+
+            <div class="admin-submission-actions">
+
+                <button
+                    type="submit"
+                    class="small-button"
+                    id="wacPollSaveButton"
+                >
+                    Save Poll
+                </button>
+
+                <button
+                    type="button"
+                    class="small-button admin-return-button"
+                    id="wacPollCancelButton"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
 
         <!-- ======================================
         ADMINISTRATOR MESSAGE
