@@ -358,29 +358,68 @@ async function loadWacPollAdmin() {
 
     try {
 
-        const response =
-            await Database
-                .getWacPollAdmin();
+       const idToken =
+    await AuthService.getIdToken(
+        true
+    );
 
-        if (
-            !response ||
-            response.success !== true
-        ) {
+const response =
+    await fetch(
+        API_URL,
+        {
+            method:
+                "POST",
 
-            throw new Error(
-                response?.error ||
-                "WAC polls could not be loaded."
-            );
+            headers: {
+
+                "Content-Type":
+                    "text/plain;charset=utf-8"
+
+            },
+
+            body:
+                JSON.stringify({
+
+                    action:
+                        "getWacPollAdmin",
+
+                    idToken
+
+                })
+
+        }
+    );
+
+if (!response.ok) {
+
+    throw new Error(
+        "The poll administration service could not be reached."
+    );
+
+}
+
+const result =
+    await response.json();
+
+if (
+    !result ||
+    result.success !== true
+) {
+
+    throw new Error(
+        result?.error ||
+        "WAC polls could not be loaded."
+    );
 
         }
 
         const polls =
-            Array.isArray(
-                response.polls
-            )
-                ? response.polls
-                : [];
-
+    Array.isArray(
+        result.polls
+    )
+        ? result.polls
+        : [];
+        
         list.innerHTML =
             "";
 
