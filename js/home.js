@@ -26,10 +26,13 @@
 
         await Promise.all([
 
+    loadTodaysAdventure(
+        todayWeather
+    ),
+
     loadAdventureCount(),
     loadNextEvent(),
     loadCompoundBadgeCount(),
-    loadCabinWeather(),
     loadLatestNews(),
     loadWacQuickPoll()
 
@@ -61,13 +64,15 @@ if (
         true;
 
     window.addEventListener(
-        "wac-auth-changed",
-        function () {
+    "wac-auth-changed",
+    function () {
 
-            updateHuntBoardAccess();
+        updateHuntBoardAccess();
+        loadWacQuickPoll();
 
-        }
-    );
+    }
+);
+
 }
 
 //--------------------------------------------------
