@@ -70,6 +70,26 @@ const messageBox =
         "adminQueueMessage"
     );
 
+    const pollNewButton =
+    document.getElementById(
+        "wacPollNewButton"
+    );
+
+const pollFormPanel =
+    document.getElementById(
+        "wacPollFormPanel"
+    );
+
+const pollForm =
+    document.getElementById(
+        "wacPollForm"
+    );
+
+const pollCancelButton =
+    document.getElementById(
+        "wacPollCancelButton"
+    );
+
 //--------------------------------------------------
 // Bind Refresh Button
 //--------------------------------------------------
@@ -80,7 +100,233 @@ if (refreshButton) {
         "click",
         async () => {
 
-            await loadPendingQueue();
+            await Promise.all([
+    loadPendingQueue(),
+    loadWacPollAdmin()
+]);
+
+        }
+    );
+
+}
+
+//--------------------------------------------------
+// Bind WAC Quick Poll Controls
+//--------------------------------------------------
+
+if (
+    pollNewButton &&
+    pollFormPanel &&
+    pollForm
+) {
+
+    pollNewButton.addEventListener(
+        "click",
+        function () {
+
+            pollForm.reset();
+
+            const pollId =
+                document.getElementById(
+                    "wacPollId"
+                );
+
+            const active =
+                document.getElementById(
+                    "wacPollActive"
+                );
+
+            if (pollId) {
+
+                pollId.value =
+                    "";
+
+            }
+
+            if (active) {
+
+                active.checked =
+                    true;
+
+            }
+
+            pollFormPanel.hidden =
+                false;
+
+        }
+    );
+
+}
+
+if (
+    pollCancelButton &&
+    pollFormPanel &&
+    pollForm
+) {
+
+    pollCancelButton.addEventListener(
+        "click",
+        function () {
+
+            pollForm.reset();
+
+            pollFormPanel.hidden =
+                true;
+
+        }
+    );
+
+}
+
+if (
+    pollForm
+) {
+
+    pollForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+            const saveButton =
+                document.getElementById(
+                    "wacPollSaveButton"
+                );
+
+            const poll = {
+
+                pollId:
+                    document.getElementById(
+                        "wacPollId"
+                    )?.value || "",
+
+                question:
+                    document.getElementById(
+                        "wacPollQuestion"
+                    )?.value || "",
+
+                option1:
+                    document.getElementById(
+                        "wacPollOption1"
+                    )?.value || "",
+
+                option2:
+                    document.getElementById(
+                        "wacPollOption2"
+                    )?.value || "",
+
+                option3:
+                    document.getElementById(
+                        "wacPollOption3"
+                    )?.value || "",
+
+                option4:
+                    document.getElementById(
+                        "wacPollOption4"
+                    )?.value || "",
+
+                allowWriteIn:
+                    document.getElementById(
+                        "wacPollAllowWriteIn"
+                    )?.checked === true,
+
+                autoRotate:
+                    document.getElementById(
+                        "wacPollAutoRotate"
+                    )?.checked === true,
+
+                rotationOrder:
+                    document.getElementById(
+                        "wacPollRotationOrder"
+                    )?.value || "",
+
+                active:
+                    document.getElementById(
+                        "wacPollActive"
+                    )?.checked === true,
+
+                startDate:
+                    document.getElementById(
+                        "wacPollStartDate"
+                    )?.value || "",
+
+                endDate:
+                    document.getElementById(
+                        "wacPollEndDate"
+                    )?.value || ""
+
+            };
+
+            if (saveButton) {
+
+                saveButton.disabled =
+                    true;
+
+                saveButton.textContent =
+                    "Saving...";
+
+            }
+
+            try {
+
+                const response =
+                    await Database
+                        .saveWacPoll(
+                            poll
+                        );
+
+                if (
+                    !response ||
+                    response.success !== true
+                ) {
+
+                    throw new Error(
+                        response?.error ||
+                        "The poll could not be saved."
+                    );
+
+                }
+
+                pollForm.reset();
+
+                if (pollFormPanel) {
+
+                    pollFormPanel.hidden =
+                        true;
+
+                }
+
+                await loadWacPollAdmin();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Unable to save WAC poll.",
+                    error
+                );
+
+                alert(
+                    error?.message ||
+                    "The poll could not be saved."
+                );
+
+            }
+
+            finally {
+
+                if (saveButton) {
+
+                    saveButton.disabled =
+                        false;
+
+                    saveButton.textContent =
+                        "Save Poll";
+
+                }
+
+            }
 
         }
     );
@@ -92,6 +338,133 @@ if (refreshButton) {
 //--------------------------------------------------
 
 await loadPendingQueue();
+
+//--------------------------------------------------
+// Load WAC Quick Poll Administration
+//--------------------------------------------------
+
+async function loadWacPollAdmin() {
+
+    const list =
+        document.getElementById(
+            "wacPollAdminList"
+        );
+
+    if (!list) {
+
+        return;
+
+    }
+
+    try {
+
+        const response =
+            await Database
+                .getWacPollAdmin();
+
+        if (
+            !response ||
+            response.success !== true
+        ) {
+
+            throw new Error(
+                response?.error ||
+                "WAC polls could not be loaded."
+            );
+
+        }
+
+        const polls =
+            Array.isArray(
+                response.polls
+            )
+                ? response.polls
+                : [];
+
+        list.innerHTML =
+            "";
+
+        if (!polls.length) {
+
+            list.textContent =
+                "No WAC polls have been created.";
+
+            return;
+
+        }
+
+        polls.forEach(
+            function (poll) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "admin-poll-item";
+
+                const title =
+                    document.createElement(
+                        "strong"
+                    );
+
+                title.textContent =
+                    poll.question ||
+                    "Untitled Poll";
+
+                const details =
+                    document.createElement(
+                        "div"
+                    );
+
+                details.className =
+                    "admin-poll-meta";
+
+                const mode =
+                    poll.autoRotate
+                        ? "Auto Rotate"
+                        : "Manual";
+
+                const status =
+                    poll.active
+                        ? "Active"
+                        : "Inactive";
+
+                details.textContent =
+                    `${poll.pollId} • ${mode} • ${status} • ${poll.voteCount} vote${poll.voteCount === 1 ? "" : "s"}`;
+
+                item.appendChild(
+                    title
+                );
+
+                item.appendChild(
+                    details
+                );
+
+                list.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to load WAC Quick Poll administration.",
+            error
+        );
+
+        list.textContent =
+            error?.message ||
+            "WAC polls could not be loaded.";
+
+    }
+
+}
 
 //--------------------------------------------------
 // Load Pending Queue
