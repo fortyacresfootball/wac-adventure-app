@@ -820,6 +820,142 @@
 }
 
 /* -----------------------------------------
+   WAC Quick Poll
+   ----------------------------------------- */
+
+.home-quick-poll-form {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.home-quick-poll-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 9px 11px;
+
+    background:
+        rgba(255, 248, 224, 0.55);
+
+    border:
+        1px solid rgba(120, 91, 47, 0.35);
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+.home-quick-poll-option:hover {
+    background:
+        rgba(239, 225, 184, 0.80);
+}
+
+.home-quick-poll-option input[type="radio"] {
+    margin: 0;
+
+    accent-color:
+        #2f4a33;
+}
+
+.home-quick-poll-option span {
+    color:
+        #3f392f;
+
+    font-size:
+        0.95rem;
+
+    font-weight:
+        700;
+}
+
+.home-quick-poll-write-in {
+    width: 100%;
+
+    padding: 9px 10px;
+
+    border:
+        1px solid #9a8052;
+
+    border-radius:
+        5px;
+
+    background:
+        rgba(255, 252, 239, 0.90);
+
+    color:
+        #2e2b23;
+
+    font: inherit;
+
+    box-sizing:
+        border-box;
+}
+
+.home-quick-poll-write-in:focus {
+    outline:
+        2px solid rgba(47, 74, 51, 0.30);
+
+    border-color:
+        #2f4a33;
+}
+
+.home-quick-poll-voted {
+    margin:
+        10px 0 14px;
+
+    padding:
+        9px 11px;
+
+    background:
+        rgba(47, 74, 51, 0.10);
+
+    border-left:
+        4px solid #2f4a33;
+
+    color:
+        #2f4a33;
+
+    font-weight:
+        800;
+}
+
+.home-quick-poll-result {
+    margin-top:
+        8px;
+
+    padding:
+        8px 10px;
+
+    background:
+        rgba(255, 248, 224, 0.50);
+
+    border:
+        1px solid rgba(120, 91, 47, 0.25);
+
+    border-radius:
+        4px;
+
+    color:
+        #4a4336;
+}
+
+.home-quick-poll-total {
+    margin-top:
+        12px;
+
+    color:
+        #6a5c43;
+
+    font-size:
+        0.85rem;
+
+    font-weight:
+        800;
+}
+
+/* -----------------------------------------
    Mobile
    ----------------------------------------- */
 

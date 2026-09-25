@@ -2079,6 +2079,158 @@ async function loadWacQuickPoll() {
             question
         );
 
+        if (
+    poll.hasVoted
+) {
+
+    const voteMessage =
+        document.createElement(
+            "p"
+        );
+
+    voteMessage.className =
+        "home-quick-poll-voted";
+
+    const memberAnswer =
+        poll.memberVote
+            ?.writeInResponse ||
+        poll.memberVote
+            ?.selectedOption ||
+        "";
+
+    voteMessage.textContent =
+        memberAnswer
+            ? "Your vote: " +
+              memberAnswer
+            : "Your vote has been recorded.";
+
+    content.appendChild(
+        voteMessage
+    );
+
+    const results =
+        Array.isArray(
+            poll.results
+        )
+            ? poll.results
+            : [];
+
+    results.forEach(
+        function (result) {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "home-quick-poll-result";
+
+            const percent =
+                poll.totalVotes > 0
+                    ? Math.round(
+                        (
+                            Number(
+                                result.count ||
+                                0
+                            ) /
+                            poll.totalVotes
+                        ) *
+                        100
+                    )
+                    : 0;
+
+            row.textContent =
+                result.option +
+                " — " +
+                result.count +
+                " vote" +
+                (
+                    Number(
+                        result.count
+                    ) === 1
+                        ? ""
+                        : "s"
+                ) +
+                " (" +
+                percent +
+                "%)";
+
+            content.appendChild(
+                row
+            );
+
+        }
+    );
+
+    if (
+        poll.allowWriteIn &&
+        poll.writeInCount > 0
+    ) {
+
+        const writeInResult =
+            document.createElement(
+                "div"
+            );
+
+        writeInResult.className =
+            "home-quick-poll-result";
+
+        const writeInPercent =
+            poll.totalVotes > 0
+                ? Math.round(
+                    (
+                        poll.writeInCount /
+                        poll.totalVotes
+                    ) *
+                    100
+                )
+                : 0;
+
+        writeInResult.textContent =
+            "Other / Write-In — " +
+            poll.writeInCount +
+            " vote" +
+            (
+                poll.writeInCount === 1
+                    ? ""
+                    : "s"
+            ) +
+            " (" +
+            writeInPercent +
+            "%)";
+
+        content.appendChild(
+            writeInResult
+        );
+
+    }
+
+    const total =
+        document.createElement(
+            "p"
+        );
+
+    total.className =
+        "home-quick-poll-total";
+
+    total.textContent =
+        poll.totalVotes +
+        " total vote" +
+        (
+            poll.totalVotes === 1
+                ? ""
+                : "s"
+        );
+
+    content.appendChild(
+        total
+    );
+
+    return;
+
+}
+
         const options =
             Array.isArray(
                 poll.options
@@ -2086,43 +2238,274 @@ async function loadWacQuickPoll() {
                 ? poll.options
                 : [];
 
-        options.forEach(
-            function (
-                option
-            ) {
+const form =
+    document.createElement(
+        "form"
+    );
 
-                const optionText =
-                    document.createElement(
-                        "p"
+form.className =
+    "home-quick-poll-form";
+
+options.forEach(
+    function (
+        option,
+        index
+    ) {
+
+        const label =
+            document.createElement(
+                "label"
+            );
+
+        label.className =
+            "home-quick-poll-option";
+
+        const radio =
+            document.createElement(
+                "input"
+            );
+
+        radio.type =
+            "radio";
+
+        radio.name =
+            "homeQuickPollChoice";
+
+        radio.value =
+            option;
+
+        radio.id =
+            "homeQuickPollOption" +
+            index;
+
+        const text =
+            document.createElement(
+                "span"
+            );
+
+        text.textContent =
+            option;
+
+        label.appendChild(
+            radio
+        );
+
+        label.appendChild(
+            text
+        );
+
+        form.appendChild(
+            label
+        );
+
+    }
+);
+
+if (
+    poll.allowWriteIn
+) {
+
+    const writeInLabel =
+        document.createElement(
+            "label"
+        );
+
+    writeInLabel.className =
+        "home-quick-poll-option";
+
+    const writeInRadio =
+        document.createElement(
+            "input"
+        );
+
+    writeInRadio.type =
+        "radio";
+
+    writeInRadio.name =
+        "homeQuickPollChoice";
+
+    writeInRadio.value =
+        "__write_in__";
+
+    const writeInText =
+        document.createElement(
+            "span"
+        );
+
+    writeInText.textContent =
+        "Other";
+
+    writeInLabel.appendChild(
+        writeInRadio
+    );
+
+    writeInLabel.appendChild(
+        writeInText
+    );
+
+    form.appendChild(
+        writeInLabel
+    );
+
+    const writeInInput =
+        document.createElement(
+            "input"
+        );
+
+    writeInInput.type =
+        "text";
+
+    writeInInput.id =
+        "homeQuickPollWriteIn";
+
+    writeInInput.placeholder =
+        "Enter your answer";
+
+    writeInInput.className =
+        "home-quick-poll-write-in";
+
+    form.appendChild(
+        writeInInput
+    );
+
+}
+
+const voteButton =
+    document.createElement(
+        "button"
+    );
+
+voteButton.type =
+    "submit";
+
+voteButton.className =
+    "small-button";
+
+voteButton.textContent =
+    "Vote";
+
+form.appendChild(
+    voteButton
+);
+
+form.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+        const selected =
+            form.querySelector(
+                'input[name="homeQuickPollChoice"]:checked'
+            );
+
+        if (!selected) {
+
+            alert(
+                "Please choose an answer."
+            );
+
+            return;
+
+        }
+
+        let selectedOption =
+            "";
+
+        let writeInResponse =
+            "";
+
+        if (
+            selected.value ===
+            "__write_in__"
+        ) {
+
+            const writeInInput =
+                document.getElementById(
+                    "homeQuickPollWriteIn"
+                );
+
+            writeInResponse =
+                String(
+                    writeInInput?.value ||
+                    ""
+                ).trim();
+
+            if (!writeInResponse) {
+
+                alert(
+                    "Please enter your write-in answer."
+                );
+
+                return;
+
+            }
+
+        }
+        else {
+
+            selectedOption =
+                selected.value;
+
+        }
+
+        voteButton.disabled =
+            true;
+
+        voteButton.textContent =
+            "Submitting...";
+
+        try {
+
+            const voteResponse =
+                await Database
+                    .submitWacQuickPollVote(
+                        poll.pollId,
+                        selectedOption,
+                        writeInResponse
                     );
 
-                optionText.textContent =
-                    "○ " + option;
+            if (
+                !voteResponse ||
+                voteResponse.success !== true
+            ) {
 
-                content.appendChild(
-                    optionText
+                throw new Error(
+                    voteResponse?.error ||
+                    "Your vote could not be recorded."
                 );
 
             }
-        );
 
-        if (
-            poll.allowWriteIn
-        ) {
-
-            const writeInText =
-                document.createElement(
-                    "p"
-                );
-
-            writeInText.textContent =
-                "○ Other — write in your own answer";
-
-            content.appendChild(
-                writeInText
-            );
+            await loadWacQuickPoll();
 
         }
+        catch (error) {
+
+            console.error(
+                "Unable to submit WAC Quick Poll vote.",
+                error
+            );
+
+            alert(
+                error?.message ||
+                "Your vote could not be recorded."
+            );
+
+            voteButton.disabled =
+                false;
+
+            voteButton.textContent =
+                "Vote";
+
+        }
+
+    }
+);
+
+content.appendChild(
+    form
+);
 
     }
 
