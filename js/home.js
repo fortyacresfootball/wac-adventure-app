@@ -2532,7 +2532,7 @@ content.appendChild(
             );
 
         message.textContent =
-            "The WAC Quick Poll could not be loaded.";
+            "You must log in to view and vote on the WAC Quick Poll.";
 
         content.appendChild(
             title
