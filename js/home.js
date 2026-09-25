@@ -26,19 +26,14 @@
 
         await Promise.all([
 
-            loadTodaysAdventure(
-                todayWeather
-            ),
+    loadAdventureCount(),
+    loadNextEvent(),
+    loadCompoundBadgeCount(),
+    loadCabinWeather(),
+    loadLatestNews(),
+    loadWacQuickPoll()
 
-            loadAdventureCount(),
-
-            loadNextEvent(),
-
-            loadCompoundBadgeCount(),
-
-            loadLatestNews()
-
-        ]);
+]);
 
     }
 
@@ -2007,6 +2002,167 @@ function getWeatherDetails(code) {
     };
 
 }
+
+//--------------------------------------------------
+// WAC Quick Poll
+//--------------------------------------------------
+
+async function loadWacQuickPoll() {
+
+    const content =
+        document.getElementById(
+            "homeQuickPollContent"
+        );
+
+    if (!content) {
+
+        return;
+
+    }
+
+    try {
+
+        const response =
+            await Database
+                .getWacQuickPoll();
+
+        if (
+            !response ||
+            response.success !== true ||
+            !response.poll
+        ) {
+
+            content.innerHTML = "";
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+            title.textContent =
+                "No Active Poll";
+
+            const message =
+                document.createElement(
+                    "p"
+                );
+
+            message.textContent =
+                "Check back for the next WAC Quick Poll.";
+
+            content.appendChild(
+                title
+            );
+
+            content.appendChild(
+                message
+            );
+
+            return;
+
+        }
+
+        const poll =
+            response.poll;
+
+        content.innerHTML = "";
+
+        const question =
+            document.createElement(
+                "h3"
+            );
+
+        question.textContent =
+            poll.question;
+
+        content.appendChild(
+            question
+        );
+
+        const options =
+            Array.isArray(
+                poll.options
+            )
+                ? poll.options
+                : [];
+
+        options.forEach(
+            function (
+                option
+            ) {
+
+                const optionText =
+                    document.createElement(
+                        "p"
+                    );
+
+                optionText.textContent =
+                    "○ " + option;
+
+                content.appendChild(
+                    optionText
+                );
+
+            }
+        );
+
+        if (
+            poll.allowWriteIn
+        ) {
+
+            const writeInText =
+                document.createElement(
+                    "p"
+                );
+
+            writeInText.textContent =
+                "○ Other — write in your own answer";
+
+            content.appendChild(
+                writeInText
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to load WAC Quick Poll.",
+            error
+        );
+
+        content.innerHTML = "";
+
+        const title =
+            document.createElement(
+                "h3"
+            );
+
+        title.textContent =
+            "Quick Poll Unavailable";
+
+        const message =
+            document.createElement(
+                "p"
+            );
+
+        message.textContent =
+            "The WAC Quick Poll could not be loaded.";
+
+        content.appendChild(
+            title
+        );
+
+        content.appendChild(
+            message
+        );
+
+    }
+
+}
+
 //--------------------------------------------------
 // Latest Active News
 //--------------------------------------------------

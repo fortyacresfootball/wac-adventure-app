@@ -181,6 +181,27 @@ async submitBlindReactionQuestion(
     );
 },
 
+async getWacQuickPoll() {
+    return await this.authenticatedPost(
+        "getWacQuickPoll"
+    );
+},
+
+async submitWacQuickPollVote(
+    pollId,
+    selectedOption,
+    writeInResponse
+) {
+    return await this.authenticatedPost(
+        "submitWacQuickPollVote",
+        {
+            pollId,
+            selectedOption,
+            writeInResponse
+        }
+    );
+},
+
 async getBlindReactionAccess() {
     return await this.authenticatedPost(
         "getBlindReactionAccess"
