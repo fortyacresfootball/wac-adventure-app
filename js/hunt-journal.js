@@ -804,17 +804,16 @@ if (locationSelect) {
                 );
             }
 
+            await this.clearForm();
 
-            this.showSuccess(
-    response.message ||
-    "Hunt journal entry saved."
-);
-
-            await this.loadJournal();
+await this.loadJournal();
 
 this.renderHistory();
 
-await this.clearForm();
+this.showSuccess(
+    response.message ||
+    "Hunt journal entry saved."
+);
 
         } catch (error) {
 
@@ -1168,14 +1167,18 @@ this.prefillFromHuntBoard();
     );
 
     setValue(
-        "huntJournalStartTime",
+    "huntJournalStartTime",
+    this.formatTimeInput(
         entry["Start Time"]
-    );
+    )
+);
 
     setValue(
-        "huntJournalEndTime",
+    "huntJournalEndTime",
+    this.formatTimeInput(
         entry["End Time"]
-    );
+    )
+);
 
     setValue(
         "huntJournalLocation",
@@ -1925,6 +1928,70 @@ card.appendChild(
                 );
             }
         );
+},
+
+formatTimeInput(
+    value
+) {
+
+    if (!value) {
+        return "";
+    }
+
+    const text =
+        String(
+            value
+        ).trim();
+
+    const simpleTime =
+        text.match(
+            /^(\d{1,2}):(\d{2})/
+        );
+
+    if (simpleTime) {
+
+        return (
+            String(
+                simpleTime[1]
+            ).padStart(
+                2,
+                "0"
+            ) +
+            ":" +
+            simpleTime[2]
+        );
+
+    }
+
+    const date =
+        new Date(
+            text
+        );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "";
+    }
+
+    return (
+        String(
+            date.getHours()
+        ).padStart(
+            2,
+            "0"
+        ) +
+        ":" +
+        String(
+            date.getMinutes()
+        ).padStart(
+            2,
+            "0"
+        )
+    );
+
 },
 
 formatDateInput(
