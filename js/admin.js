@@ -435,7 +435,13 @@ if (
 
         }
 
-        polls.forEach(
+        polls
+    .slice(
+        0,
+        10
+    )
+    .forEach(
+
     function (poll) {
 
         const item =
