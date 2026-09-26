@@ -806,12 +806,15 @@ if (locationSelect) {
 
 
             this.showSuccess(
-                "Hunt journal entry saved."
-            );
+    response.message ||
+    "Hunt journal entry saved."
+);
 
             await this.loadJournal();
 
 this.renderHistory();
+
+await this.clearForm();
 
         } catch (error) {
 
@@ -861,6 +864,11 @@ this.renderHistory();
 
 
         return {
+
+            journalId:
+    getValue(
+        "huntJournalId"
+    ),
 
             date:
                 getValue(
@@ -1072,6 +1080,42 @@ this.renderHistory();
 
         this.clearMessages();
 
+        const formTitle =
+    document.getElementById(
+        "huntJournalFormTitle"
+    );
+
+const formSubtitle =
+    document.getElementById(
+        "huntJournalFormSubtitle"
+    );
+
+if (formTitle) {
+
+    formTitle.textContent =
+        "New Journal Entry";
+
+}
+
+if (formSubtitle) {
+
+    formSubtitle.textContent =
+        "Build a complete record of the hunt";
+
+}
+
+const saveButton =
+    document.getElementById(
+        "huntJournalSaveButton"
+    );
+
+if (saveButton) {
+
+    saveButton.textContent =
+        "Save Journal Entry";
+
+}
+
         this.setDefaultDateTime();
 
         await this.populateLocations();
@@ -1081,6 +1125,283 @@ await this.loadCurrentWeather();
 this.prefillFromHuntBoard();
 
     },
+
+    editEntry(entry) {
+
+    if (!entry) {
+        return;
+    }
+
+    const setValue =
+        function (
+            id,
+            value
+        ) {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+            if (!element) {
+                return;
+            }
+
+            element.value =
+                value === null ||
+                value === undefined
+                    ? ""
+                    : String(value);
+        };
+
+
+    setValue(
+        "huntJournalId",
+        entry["Journal ID"]
+    );
+
+    setValue(
+        "huntJournalDate",
+        this.formatDateInput(
+            entry["Date"]
+        )
+    );
+
+    setValue(
+        "huntJournalStartTime",
+        entry["Start Time"]
+    );
+
+    setValue(
+        "huntJournalEndTime",
+        entry["End Time"]
+    );
+
+    setValue(
+        "huntJournalLocation",
+        entry["Location ID"]
+    );
+
+    setValue(
+        "huntJournalHuntType",
+        entry["Hunt Type"]
+    );
+
+    setValue(
+        "huntJournalSpecies",
+        entry["Game Species"]
+    );
+
+    setValue(
+        "huntJournalWeather",
+        entry["Weather"]
+    );
+
+    setValue(
+        "huntJournalTemperature",
+        entry["Temperature"]
+    );
+
+    setValue(
+        "huntJournalWindDirection",
+        entry["Wind Direction"]
+    );
+
+    setValue(
+        "huntJournalWindSpeed",
+        entry["Wind Speed"]
+    );
+
+    setValue(
+        "huntJournalMoonPhase",
+        entry["Moon Phase"]
+    );
+
+    setValue(
+        "huntJournalPressure",
+        entry["Pressure"]
+    );
+
+    setValue(
+        "huntJournalPrecipitation",
+        entry["Precipitation"]
+    );
+
+    setValue(
+        "huntJournalWeapon",
+        entry["Weapon"]
+    );
+
+    setValue(
+        "huntJournalAmmunition",
+        entry["Ammunition"]
+    );
+
+    setValue(
+        "huntJournalCoHunters",
+        entry["Co-Hunters"]
+    );
+
+    setValue(
+        "huntJournalTerrain",
+        entry["Terrain"]
+    );
+
+    setValue(
+        "huntJournalAccessRoute",
+        entry["Access Route"]
+    );
+
+    setValue(
+        "huntJournalTargetArea",
+        entry["Target Area"]
+    );
+
+    setValue(
+        "huntJournalAnimalsSeen",
+        entry["Animals Seen"]
+    );
+
+    setValue(
+        "huntJournalQuantity",
+        entry["Quantity"]
+    );
+
+    setValue(
+        "huntJournalSex",
+        entry["Sex"]
+    );
+
+    setValue(
+        "huntJournalEstimatedAge",
+        entry["Estimated Age"]
+    );
+
+    setValue(
+        "huntJournalMovementDirection",
+        entry["Movement Direction"]
+    );
+
+    setValue(
+        "huntJournalBehavior",
+        entry["Behavior"]
+    );
+
+    setValue(
+        "huntJournalDistance",
+        entry["Distance"]
+    );
+
+    setValue(
+        "huntJournalShotOpportunity",
+        entry["Shot Opportunity"]
+    );
+
+    setValue(
+        "huntJournalResult",
+        entry["Result"]
+    );
+
+    setValue(
+        "huntJournalAnimalHarvested",
+        entry["Animal Harvested"]
+    );
+
+    setValue(
+        "huntJournalShotDistance",
+        entry["Shot Distance"]
+    );
+
+    setValue(
+        "huntJournalRecoveryDistance",
+        entry["Recovery Distance"]
+    );
+
+    setValue(
+        "huntJournalTrackingNotes",
+        entry["Tracking Notes"]
+    );
+
+    setValue(
+        "huntJournalStrategy",
+        entry["Strategy"]
+    );
+
+    setValue(
+        "huntJournalWhatWorked",
+        entry["What Worked"]
+    );
+
+    setValue(
+        "huntJournalWhatDidNotWork",
+        entry["What Did Not Work"]
+    );
+
+    setValue(
+        "huntJournalNextTime",
+        entry["Next Time"]
+    );
+
+    setValue(
+        "huntJournalNotes",
+        entry["Notes"]
+    );
+
+
+    this.updateSpeciesFields();
+
+    const formTitle =
+    document.getElementById(
+        "huntJournalFormTitle"
+    );
+
+const formSubtitle =
+    document.getElementById(
+        "huntJournalFormSubtitle"
+    );
+
+if (formTitle) {
+
+    formTitle.textContent =
+        "Edit Journal Entry";
+
+}
+
+if (formSubtitle) {
+
+    formSubtitle.textContent =
+        "Update the details from this hunt";
+
+}
+
+    const saveButton =
+        document.getElementById(
+            "huntJournalSaveButton"
+        );
+
+    if (saveButton) {
+
+        saveButton.textContent =
+            "Update Journal Entry";
+
+    }
+
+
+    const form =
+        document.querySelector(
+            ".hunt-journal-shell"
+        );
+
+    if (form) {
+
+        form.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+},
 
     renderHistory() {
 
@@ -1567,6 +1888,37 @@ this.prefillFromHuntBoard();
                     );
                 }
 
+                const editButton =
+    document.createElement(
+        "button"
+    );
+
+editButton.type =
+    "button";
+
+editButton.className =
+    "hunt-journal-button secondary";
+
+editButton.style.marginTop =
+    "14px";
+
+editButton.textContent =
+    "Edit Entry";
+
+editButton.addEventListener(
+    "click",
+    () => {
+
+        this.editEntry(
+            entry
+        );
+
+    }
+);
+
+card.appendChild(
+    editButton
+);
 
                 historyContainer.appendChild(
                     card
@@ -1575,6 +1927,77 @@ this.prefillFromHuntBoard();
         );
 },
 
+formatDateInput(
+    value
+) {
+
+    if (!value) {
+        return "";
+    }
+
+    const text =
+        String(
+            value
+        ).trim();
+
+    const simpleDate =
+        text.match(
+            /^(\d{4})-(\d{2})-(\d{2})$/
+        );
+
+    if (simpleDate) {
+
+        return (
+            simpleDate[1] +
+            "-" +
+            simpleDate[2] +
+            "-" +
+            simpleDate[3]
+        );
+
+    }
+
+    const date =
+        new Date(
+            text
+        );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "";
+    }
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
+
+},
 
 formatJournalDate(
     value
