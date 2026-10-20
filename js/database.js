@@ -272,28 +272,6 @@ async getHuntBoard() {
     );
 },
 
-async huntCheckIn(
-    locationId,
-    activity = "Hunting",
-    notes = ""
-) {
-
-    return await this.authenticatedPost(
-        "huntCheckIn",
-        {
-            locationId,
-            activity,
-            notes
-        }
-    );
-},
-
-async huntCheckOut() {
-
-    return await this.authenticatedPost(
-        "huntCheckOut"
-    );
-},
 
 //--------------------------------------------------
 // Hunt Journal
