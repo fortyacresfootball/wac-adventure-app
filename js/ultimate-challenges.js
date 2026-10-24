@@ -27,3 +27,5 @@ window.UltimateChallenges = {
     }
 
 };
+
+UltimateChallenges.init();
