@@ -1,21 +1,312 @@
-<div class="ultimate-challenges-page">
+<section class="page-section page-enter ultimate-challenges-page">
 
-    <section class="ultimate-challenges-hero">
-        <h1>Ultimate Challenges</h1>
+    <div class="container">
 
-        <p>
-            Long-term WAC challenges designed to be completed over months or years.
-            Track your personal progress as you work through each challenge.
-        </p>
-    </section>
-
-    <section
-        id="ultimateChallengeList"
-        class="ultimate-challenge-list"
-    >
-        <div class="ultimate-challenge-loading">
-            Loading challenges...
+        <div class="profile-back-row">
+            <a
+                href="#"
+                class="profile-back-link"
+                data-page="home">
+                ← Back to Home
+            </a>
         </div>
-    </section>
 
-</div>
+        <section class="profile-summary-card">
+
+            <div class="profile-summary-content">
+
+                <div class="eyebrow">
+                    Long-Form Adventures
+                </div>
+
+                <h1>
+                    Ultimate Challenges
+                </h1>
+
+                <p class="profile-summary-quote">
+                    Take on the biggest WAC challenge tracks, complete tasks over time, and build your progress one step at a time.
+                </p>
+
+            </div>
+
+            <div class="profile-rank-block">
+
+                <div class="profile-level-circle">
+
+                    <strong id="ultimateChallengesCount">
+                        0
+                    </strong>
+
+                    <span>
+                        Challenges
+                    </span>
+
+                </div>
+
+                <div class="profile-rank-label">
+                    Active Challenge Tracks
+                </div>
+
+                <div class="profile-rank-name">
+                    WAC Ultimate
+                </div>
+
+            </div>
+
+        </section>
+
+        <div
+            id="ultimateChallengesMessage"
+            class="auth-modal-message"
+            hidden
+            role="status">
+        </div>
+
+        <section class="profile-content-section">
+
+            <div class="profile-section-header">
+
+                <div>
+                    <div class="eyebrow">
+                        Challenge List
+                    </div>
+
+                    <h2 class="profile-section-title">
+                        All Challenges
+                    </h2>
+
+                    <p class="admin-section-description">
+                        Select a challenge to view its description and task list.
+                    </p>
+                </div>
+
+            </div>
+
+            <div
+                id="ultimateChallengeList"
+                class="profile-recent-list">
+
+                <div class="profile-empty-state">
+                    <div class="profile-empty-icon">
+                        ⏳
+                    </div>
+
+                    <h3>
+                        Loading Challenges
+                    </h3>
+
+                    <p>
+                        Your ultimate challenge tracks are being loaded.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section
+            id="ultimateChallengeDetailSection"
+            class="profile-content-section"
+            hidden>
+
+            <div class="profile-section-header">
+
+                <div>
+                    <div
+                        id="ultimateChallengeCategory"
+                        class="eyebrow">
+                        Challenge
+                    </div>
+
+                    <h2
+                        id="ultimateChallengeTitle"
+                        class="profile-section-title">
+                        Challenge Title
+                    </h2>
+
+                    <p
+                        id="ultimateChallengeDescription"
+                        class="admin-section-description">
+                        Challenge description goes here.
+                    </p>
+                </div>
+
+                <button
+                    id="ultimateChallengesBackButton"
+                    class="small-button"
+                    type="button">
+                    ← All Challenges
+                </button>
+
+            </div>
+
+            <div class="profile-progress-card" style="margin-bottom: 20px;">
+
+                <div class="profile-section-header" style="margin-bottom: 0;">
+
+                    <div>
+                        <div class="eyebrow">
+                            Progress
+                        </div>
+
+                        <h3 style="margin: 0;">
+                            Your Completion Status
+                        </h3>
+                    </div>
+
+                    <div
+                        id="ultimateChallengeProgressChip"
+                        class="chip">
+                        0 / 0 Complete
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div
+                id="ultimateChallengeTasks"
+                class="profile-recent-list">
+
+                <div class="profile-empty-state">
+                    <div class="profile-empty-icon">
+                        📋
+                    </div>
+
+                    <h3>
+                        No Tasks Found
+                    </h3>
+
+                    <p>
+                        This challenge does not currently have any tasks.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</section>
+
+<style>
+
+.ultimate-challenge-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.96),
+            rgba(244, 239, 223, 0.96)
+        );
+    border: 1px solid rgba(79, 67, 45, 0.22);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 18px;
+    box-shadow:
+        0 10px 24px rgba(48, 42, 30, 0.10);
+    position: relative;
+    overflow: hidden;
+}
+
+.ultimate-challenge-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7px;
+    height: 100%;
+    background:
+        linear-gradient(
+            180deg,
+            #2f5a3f,
+            #7b6333
+        );
+}
+
+.ultimate-challenge-card h2 {
+    margin:
+        0
+        0
+        10px;
+    color: #244431;
+    font-size: 1.45rem;
+}
+
+.ultimate-challenge-card p {
+    margin:
+        0
+        0
+        18px;
+    line-height: 1.55;
+    color: #4f4a3f;
+}
+
+.ultimate-challenge-progress {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding:
+        7px
+        12px;
+    border-radius: 999px;
+    background: #e8e2cf;
+    color: #3c513f;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.ultimate-challenge-card .small-button {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.ultimate-challenge-task {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(79, 67, 45, 0.18);
+    border-radius: 14px;
+    box-shadow:
+        0 5px 14px rgba(48, 42, 30, 0.07);
+    cursor: pointer;
+}
+
+.ultimate-challenge-task input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    flex: 0 0 auto;
+    accent-color: #2f5a3f;
+}
+
+.ultimate-challenge-task span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ultimate-challenge-task strong {
+    color: #2c4635;
+    font-size: 1rem;
+}
+
+.ultimate-challenge-task small {
+    color: #6a6459;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.ultimate-challenge-task:has(input:checked) {
+    background: #edf3e9;
+    border-color: rgba(47, 90, 63, 0.38);
+}
+
+.ultimate-challenge-task:has(input:checked) strong {
+    color: #2f5a3f;
+}
+
+</style>
