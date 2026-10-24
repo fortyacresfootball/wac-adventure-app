@@ -338,6 +338,32 @@ window.UltimateChallenges = {
                 challengeId
             );
 
+            const total =
+    challengeTasks.length;
+
+const completed =
+    challengeTasks.filter(
+        task =>
+            completedTaskIds.has(
+                String(
+                    task[
+                        "Task ID"
+                    ] || ""
+                ).trim()
+            )
+    ).length;
+
+const percent =
+    total > 0
+        ? Math.round(
+            (
+                completed /
+                total
+            ) *
+            100
+        )
+        : 0;
+
         container.innerHTML =
             `
                 <div class="ultimate-challenge-detail">
@@ -368,6 +394,11 @@ window.UltimateChallenges = {
                             "Rules"
                         ] || ""}
                     </p>
+
+                    <div class="ultimate-challenge-progress">
+    ${completed} of ${total} Complete
+    · ${percent}%
+</div>
 
                     <div
                         id="ultimateChallengeTaskList"
