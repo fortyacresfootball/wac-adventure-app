@@ -262,6 +262,35 @@ async getBlindReactionArchive() {
 },
 
 //--------------------------------------------------
+// Ultimate Challenges
+//--------------------------------------------------
+
+async getUltimateChallenges() {
+
+    return await this.authenticatedPost(
+        "getUltimateChallenges"
+    );
+},
+
+async saveUltimateChallengeProgress(
+    challengeId,
+    taskId,
+    completed,
+    notes = ""
+) {
+
+    return await this.authenticatedPost(
+        "saveUltimateChallengeProgress",
+        {
+            challengeId,
+            taskId,
+            completed,
+            notes
+        }
+    );
+},
+
+//--------------------------------------------------
 // Hunt Board
 //--------------------------------------------------
 
