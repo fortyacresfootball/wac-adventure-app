@@ -220,8 +220,171 @@ window.UltimateChallenges = {
                 container.appendChild(
                     card
                 );
+
+                const openButton =
+                    card.querySelector(
+                        "[data-challenge-id]"
+                    );
+
+                if (openButton) {
+
+                    openButton.addEventListener(
+                        "click",
+                        () => {
+
+                            this.openChallenge(
+                                challengeId
+                            );
+                        }
+                    );
+                }
             }
         );
+    },
+
+    openChallenge(
+        challengeId
+    ) {
+
+        const container =
+            document.getElementById(
+                "ultimateChallengeList"
+            );
+
+        if (!container) {
+            return;
+        }
+
+        const challenges =
+            Array.isArray(
+                this.data?.challenges
+            )
+                ? this.data.challenges
+                : [];
+
+        const tasks =
+            Array.isArray(
+                this.data?.tasks
+            )
+                ? this.data.tasks
+                : [];
+
+        const challenge =
+            challenges.find(
+                item =>
+                    String(
+                        item[
+                            "Challenge ID"
+                        ] || ""
+                    ).trim() ===
+                    challengeId
+            );
+
+        if (!challenge) {
+            return;
+        }
+
+        const challengeTasks =
+            tasks.filter(
+                task =>
+                    String(
+                        task[
+                            "Challenge ID"
+                        ] || ""
+                    ).trim() ===
+                    challengeId
+            );
+
+        container.innerHTML =
+            `
+                <div class="ultimate-challenge-detail">
+
+                    <button
+                        type="button"
+                        class="small-button"
+                        id="ultimateChallengeBackButton"
+                    >
+                        ← All Challenges
+                    </button>
+
+                    <h2>
+                        ${challenge["Challenge Name"] || ""}
+                    </h2>
+
+                    <p>
+                        ${challenge["Description"] || ""}
+                    </p>
+
+                    <p>
+                        <strong>Rules:</strong>
+                        ${challenge["Rules"] || ""}
+                    </p>
+
+                    <div
+                        id="ultimateChallengeTaskList"
+                    ></div>
+
+                </div>
+            `;
+
+        const taskList =
+            document.getElementById(
+                "ultimateChallengeTaskList"
+            );
+
+        if (taskList) {
+
+            challengeTasks.forEach(
+                task => {
+
+                    const item =
+                        document.createElement(
+                            "label"
+                        );
+
+                    item.className =
+                        "ultimate-challenge-task";
+
+                    item.innerHTML =
+                        `
+                            <input
+                                type="checkbox"
+                                data-task-id="${task["Task ID"] || ""}"
+                            >
+
+                            <span>
+                                <strong>
+                                    ${task["Task Name"] || ""}
+                                </strong>
+
+                                <small>
+                                    ${task["Task Description"] || ""}
+                                </small>
+                            </span>
+                        `;
+
+                    taskList.appendChild(
+                        item
+                    );
+                }
+            );
+        }
+
+        const backButton =
+            document.getElementById(
+                "ultimateChallengeBackButton"
+            );
+
+        if (backButton) {
+
+            backButton.addEventListener(
+                "click",
+                () => {
+
+                    this.renderChallengeList();
+                }
+            );
+        }
     }
 
 };
