@@ -337,6 +337,11 @@ window.UltimateChallenges = {
             challengeTasks.forEach(
                 task => {
 
+         const taskId =
+    String(
+        task["Task ID"] || ""
+    ).trim();
+
                     const item =
                         document.createElement(
                             "label"
@@ -349,7 +354,7 @@ window.UltimateChallenges = {
                         `
                             <input
                                 type="checkbox"
-                                data-task-id="${task["Task ID"] || ""}"
+                                data-task-id="${taskId}"
                             >
 
                             <span>
@@ -369,6 +374,49 @@ window.UltimateChallenges = {
                 }
             );
         }
+
+        const checkbox =
+    item.querySelector(
+        "[data-task-id]"
+    );
+
+if (checkbox) {
+
+    checkbox.addEventListener(
+        "change",
+        async () => {
+
+            try {
+
+                await Database.saveUltimateChallengeProgress(
+                    challengeId,
+                    taskId,
+                    checkbox.checked
+                );
+
+                console.log(
+                    "Ultimate Challenge progress saved:",
+                    taskId,
+                    checkbox.checked
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to save Ultimate Challenge progress:",
+                    error
+                );
+
+                checkbox.checked =
+                    !checkbox.checked;
+
+                alert(
+                    "Unable to save challenge progress."
+                );
+            }
+        }
+    );
+}
 
         const backButton =
             document.getElementById(
