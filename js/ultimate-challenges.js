@@ -389,15 +389,11 @@ window.UltimateChallenges = {
 
                 item.innerHTML =
                     `
-                        <input
-                            type="checkbox"
                            <input
     type="checkbox"
     data-task-id="${taskId}"
     ${checked ? "checked" : ""}
 >
-                        >
-
                         <span>
                             <strong>
                                 ${task["Task Name"] || ""}
@@ -457,77 +453,9 @@ window.UltimateChallenges = {
                 }
             }
         );
+
+        }
         
-        }
-
-        const existingProgress =
-    this.data.progress.find(
-        item =>
-            String(
-                item["Challenge ID"] || ""
-            ).trim() === challengeId &&
-            String(
-                item["Task ID"] || ""
-            ).trim() === taskId
-    );
-
-if (existingProgress) {
-
-    existingProgress["Completed"] =
-        checkbox.checked;
-
-} else {
-
-    this.data.progress.push({
-        "Challenge ID": challengeId,
-        "Task ID": taskId,
-        "Completed": checkbox.checked
-    });
-}
-
-        const checkbox =
-    item.querySelector(
-        "[data-task-id]"
-    );
-
-if (checkbox) {
-
-    checkbox.addEventListener(
-        "change",
-        async () => {
-
-            try {
-
-                await Database.saveUltimateChallengeProgress(
-                    challengeId,
-                    taskId,
-                    checkbox.checked
-                );
-
-                console.log(
-                    "Ultimate Challenge progress saved:",
-                    taskId,
-                    checkbox.checked
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Unable to save Ultimate Challenge progress:",
-                    error
-                );
-
-                checkbox.checked =
-                    !checkbox.checked;
-
-                alert(
-                    "Unable to save challenge progress."
-                );
-            }
-        }
-    );
-}
-
         const backButton =
             document.getElementById(
                 "ultimateChallengeBackButton"
