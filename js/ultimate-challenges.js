@@ -334,45 +334,89 @@ window.UltimateChallenges = {
 
         if (taskList) {
 
-            challengeTasks.forEach(
-                task => {
+                    challengeTasks.forEach(
+            task => {
 
-         const taskId =
-    String(
-        task["Task ID"] || ""
-    ).trim();
+                const taskId =
+                    String(
+                        task["Task ID"] || ""
+                    ).trim();
 
-                    const item =
-                        document.createElement(
-                            "label"
-                        );
+                const item =
+                    document.createElement(
+                        "label"
+                    );
 
-                    item.className =
-                        "ultimate-challenge-task";
+                item.className =
+                    "ultimate-challenge-task";
 
-                    item.innerHTML =
-                        `
-                            <input
-                                type="checkbox"
-                                data-task-id="${taskId}"
-                            >
+                item.innerHTML =
+                    `
+                        <input
+                            type="checkbox"
+                            data-task-id="${taskId}"
+                        >
 
-                            <span>
-                                <strong>
-                                    ${task["Task Name"] || ""}
-                                </strong>
+                        <span>
+                            <strong>
+                                ${task["Task Name"] || ""}
+                            </strong>
 
-                                <small>
-                                    ${task["Task Description"] || ""}
-                                </small>
-                            </span>
-                        `;
+                            <small>
+                                ${task["Task Description"] || ""}
+                            </small>
+                        </span>
+                    `;
 
-                    taskList.appendChild(
-                        item
+                taskList.appendChild(
+                    item
+                );
+
+                const checkbox =
+                    item.querySelector(
+                        "[data-task-id]"
+                    );
+
+                if (checkbox) {
+
+                    checkbox.addEventListener(
+                        "change",
+                        async () => {
+
+                            try {
+
+                                await Database.saveUltimateChallengeProgress(
+                                    challengeId,
+                                    taskId,
+                                    checkbox.checked
+                                );
+
+                                console.log(
+                                    "Ultimate Challenge progress saved:",
+                                    taskId,
+                                    checkbox.checked
+                                );
+
+                            } catch (error) {
+
+                                console.error(
+                                    "Unable to save Ultimate Challenge progress:",
+                                    error
+                                );
+
+                                checkbox.checked =
+                                    !checkbox.checked;
+
+                                alert(
+                                    "Unable to save challenge progress."
+                                );
+                            }
+                        }
                     );
                 }
-            );
+            }
+        );
+        
         }
 
         const checkbox =
