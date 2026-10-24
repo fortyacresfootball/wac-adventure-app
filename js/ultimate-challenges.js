@@ -269,6 +269,13 @@ window.UltimateChallenges = {
                 ? this.data.tasks
                 : [];
 
+                const progress =
+    Array.isArray(
+        this.data?.progress
+    )
+        ? this.data.progress
+        : [];
+
         const challenge =
             challenges.find(
                 item =>
@@ -294,6 +301,31 @@ window.UltimateChallenges = {
                     ).trim() ===
                     challengeId
             );
+
+            const completedTaskIds =
+    new Set(
+        progress
+            .filter(
+                item =>
+                    String(
+                        item["Challenge ID"] || ""
+                    ).trim() === challengeId &&
+                    (
+                        item["Completed"] === true ||
+                        String(
+                            item["Completed"] || ""
+                        )
+                            .trim()
+                            .toLowerCase() === "true"
+                    )
+            )
+            .map(
+                item =>
+                    String(
+                        item["Task ID"] || ""
+                    ).trim()
+            )
+    );
 
         container.innerHTML =
             `
@@ -342,6 +374,11 @@ window.UltimateChallenges = {
                         task["Task ID"] || ""
                     ).trim();
 
+                    const checked =
+    completedTaskIds.has(
+        taskId
+    );
+
                 const item =
                     document.createElement(
                         "label"
@@ -354,7 +391,11 @@ window.UltimateChallenges = {
                     `
                         <input
                             type="checkbox"
-                            data-task-id="${taskId}"
+                           <input
+    type="checkbox"
+    data-task-id="${taskId}"
+    ${checked ? "checked" : ""}
+>
                         >
 
                         <span>
@@ -418,6 +459,31 @@ window.UltimateChallenges = {
         );
         
         }
+
+        const existingProgress =
+    this.data.progress.find(
+        item =>
+            String(
+                item["Challenge ID"] || ""
+            ).trim() === challengeId &&
+            String(
+                item["Task ID"] || ""
+            ).trim() === taskId
+    );
+
+if (existingProgress) {
+
+    existingProgress["Completed"] =
+        checkbox.checked;
+
+} else {
+
+    this.data.progress.push({
+        "Challenge ID": challengeId,
+        "Task ID": taskId,
+        "Completed": checkbox.checked
+    });
+}
 
         const checkbox =
     item.querySelector(
