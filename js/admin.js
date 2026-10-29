@@ -181,92 +181,102 @@ async function showAdminChallengeView(view) {
         );
 
         const list =
-            document.createElement("div");
+    document.createElement("div");
 
-        list.style.display = "grid";
-        list.style.gap = "12px";
-        list.style.marginTop = "20px";
+list.style.display = "grid";
+list.style.gridTemplateColumns = "1fr";
+list.style.gap = "12px";
+list.style.marginTop = "20px";
+
+function createAdminSummaryRow(
+    titleText,
+    detailText
+) {
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "profile-recent-card";
+
+    row.style.display = "flex";
+    row.style.justifyContent = "space-between";
+    row.style.alignItems = "center";
+    row.style.gap = "16px";
+    row.style.padding = "20px 24px";
+
+    const left =
+        document.createElement("div");
+
+    left.style.flex = "1";
+
+    const title =
+        document.createElement("h3");
+
+    title.textContent = titleText;
+    title.style.margin = "0";
+    title.style.lineHeight = "1.3";
+
+    const right =
+        document.createElement("div");
+
+    right.className = "chip";
+    right.textContent = detailText;
+    right.style.whiteSpace = "nowrap";
+
+    left.appendChild(title);
+    row.append(left, right);
+
+    return row;
+
+}
 
         if (view === "challenge") {
 
             challenges.forEach(challenge => {
 
-                const card =
-                    document.createElement("div");
+    const challengeId =
+        String(
+            challenge["Challenge ID"] || ""
+        ).trim();
 
-                card.className =
-                    "profile-recent-card";
+    const taskCount =
+        tasks.filter(task =>
+            String(task["Challenge ID"] || "").trim()
+            === challengeId
+        ).length;
 
-                const title =
-                    document.createElement("h3");
+    const row =
+        createAdminSummaryRow(
+            challenge["Challenge Name"] ||
+            "Unnamed Challenge",
+            `${taskCount} Tasks`
+        );
 
-                title.textContent =
-                    challenge["Challenge Name"] ||
-                    "Unnamed Challenge";
+    list.appendChild(row);
 
-                const challengeId =
-                    String(
-                        challenge["Challenge ID"] || ""
-                    ).trim();
-
-                const taskCount =
-                    tasks.filter(task =>
-                        String(task["Challenge ID"] || "").trim()
-                        === challengeId
-                    ).length;
-
-                const detail =
-                    document.createElement("p");
-
-                detail.textContent =
-                    `${taskCount} Tasks`;
-
-                card.append(
-                    title,
-                    detail
-                );
-
-                list.appendChild(card);
-
-            });
+});
 
         } else {
 
             members.forEach(member => {
 
-                const card =
-                    document.createElement("div");
+    const completed =
+        progress.filter(p =>
+            p.memberId === member.memberId &&
+            p.completed === true
+        ).length;
 
-                card.className =
-                    "profile-recent-card";
+    const row =
+        createAdminSummaryRow(
+            member.displayName ||
+            member.memberId,
+            `${completed} Completed`
+        );
 
-                const title =
-                    document.createElement("h3");
+    list.appendChild(row);
 
-                title.textContent =
-                    member.displayName ||
-                    member.memberId;
-
-                const completed =
-                    progress.filter(p =>
-                        p.memberId === member.memberId &&
-                        p.completed === true
-                    ).length;
-
-                const detail =
-                    document.createElement("p");
-
-                detail.textContent =
-                    `${completed} Completed Task Records`;
-
-                card.append(
-                    title,
-                    detail
-                );
-
-                list.appendChild(card);
-
-            });
+});
 
         }
 
