@@ -109,43 +109,181 @@ const adminChallengesContent =
         "adminChallengesContent"
     );
 
-function showAdminChallengeView(view) {
+async function showAdminChallengeView(view) {
 
     if (!adminChallengesContent) {
         return;
     }
 
-    if (view === "challenge") {
+    adminChallengesContent.innerHTML = `
+        <div class="profile-empty-state">
+            <h3>Loading Challenge Data</h3>
+            <p>Retrieving WAC member progress...</p>
+        </div>
+    `;
 
-        adminChallengesContent.innerHTML = `
-            <div class="profile-empty-state">
-                <h3>View by Challenge</h3>
-                <p>
-                    Select an Ultimate Challenge to review
-                    progress across all WAC members.
-                </p>
-                <p>
-                    Challenge data connection coming next.
-                </p>
-            </div>
-        `;
+    try {
 
-    } else if (view === "member") {
+        const result =
+            await Database.authenticatedPost(
+                "getAdminUltimateChallenges"
+            );
 
-        adminChallengesContent.innerHTML = `
-            <div class="profile-empty-state">
-                <h3>View by Member</h3>
-                <p>
-                    Select a WAC member to review their
-                    Ultimate Challenge participation,
-                    completed tasks, and outstanding
-                    requirements.
-                </p>
-                <p>
-                    Member data connection coming next.
-                </p>
-            </div>
-        `;
+        if (!result || result.success !== true) {
+            throw new Error(
+                result?.error ||
+                "Unable to retrieve challenge data."
+            );
+        }
+
+        const challenges =
+            Array.isArray(result.challenges)
+                ? result.challenges
+                : [];
+
+        const tasks =
+            Array.isArray(result.tasks)
+                ? result.tasks
+                : [];
+
+        const members =
+            Array.isArray(result.members)
+                ? result.members
+                : [];
+
+        const progress =
+            Array.isArray(result.progress)
+                ? result.progress
+                : [];
+
+        adminChallengesContent.innerHTML = "";
+
+        const heading =
+            document.createElement("h3");
+
+        heading.textContent =
+            view === "challenge"
+                ? "All Ultimate Challenges"
+                : "WAC Member Challenge Progress";
+
+        const summary =
+            document.createElement("p");
+
+        summary.textContent =
+            `${challenges.length} Challenges | ` +
+            `${tasks.length} Tasks | ` +
+            `${members.length} Members | ` +
+            `${progress.filter(p => p.completed === true).length} Completed Task Records`;
+
+        adminChallengesContent.append(
+            heading,
+            summary
+        );
+
+        const list =
+            document.createElement("div");
+
+        list.style.display = "grid";
+        list.style.gap = "12px";
+        list.style.marginTop = "20px";
+
+        if (view === "challenge") {
+
+            challenges.forEach(challenge => {
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "profile-recent-card";
+
+                const title =
+                    document.createElement("h3");
+
+                title.textContent =
+                    challenge["Challenge Name"] ||
+                    "Unnamed Challenge";
+
+                const challengeId =
+                    String(
+                        challenge["Challenge ID"] || ""
+                    ).trim();
+
+                const taskCount =
+                    tasks.filter(task =>
+                        String(task["Challenge ID"] || "").trim()
+                        === challengeId
+                    ).length;
+
+                const detail =
+                    document.createElement("p");
+
+                detail.textContent =
+                    `${taskCount} Tasks`;
+
+                card.append(
+                    title,
+                    detail
+                );
+
+                list.appendChild(card);
+
+            });
+
+        } else {
+
+            members.forEach(member => {
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "profile-recent-card";
+
+                const title =
+                    document.createElement("h3");
+
+                title.textContent =
+                    member.displayName ||
+                    member.memberId;
+
+                const completed =
+                    progress.filter(p =>
+                        p.memberId === member.memberId &&
+                        p.completed === true
+                    ).length;
+
+                const detail =
+                    document.createElement("p");
+
+                detail.textContent =
+                    `${completed} Completed Task Records`;
+
+                card.append(
+                    title,
+                    detail
+                );
+
+                list.appendChild(card);
+
+            });
+
+        }
+
+        adminChallengesContent.appendChild(
+            list
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load admin challenges:",
+            error
+        );
+
+        adminChallengesContent.textContent =
+            error?.message ||
+            "Challenge data could not be loaded.";
 
     }
 
