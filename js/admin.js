@@ -90,6 +90,85 @@ const pollCancelButton =
         "wacPollCancelButton"
     );
 
+    //--------------------------------------------------
+// Ultimate Challenges — Admin View Controls
+//--------------------------------------------------
+
+const adminChallengesByChallenge =
+    document.getElementById(
+        "adminChallengesByChallenge"
+    );
+
+const adminChallengesByMember =
+    document.getElementById(
+        "adminChallengesByMember"
+    );
+
+const adminChallengesContent =
+    document.getElementById(
+        "adminChallengesContent"
+    );
+
+function showAdminChallengeView(view) {
+
+    if (!adminChallengesContent) {
+        return;
+    }
+
+    if (view === "challenge") {
+
+        adminChallengesContent.innerHTML = `
+            <div class="profile-empty-state">
+                <h3>View by Challenge</h3>
+                <p>
+                    Select an Ultimate Challenge to review
+                    progress across all WAC members.
+                </p>
+                <p>
+                    Challenge data connection coming next.
+                </p>
+            </div>
+        `;
+
+    } else if (view === "member") {
+
+        adminChallengesContent.innerHTML = `
+            <div class="profile-empty-state">
+                <h3>View by Member</h3>
+                <p>
+                    Select a WAC member to review their
+                    Ultimate Challenge participation,
+                    completed tasks, and outstanding
+                    requirements.
+                </p>
+                <p>
+                    Member data connection coming next.
+                </p>
+            </div>
+        `;
+
+    }
+
+}
+
+if (adminChallengesByChallenge) {
+
+    adminChallengesByChallenge.addEventListener(
+        "click",
+        () => showAdminChallengeView("challenge")
+    );
+
+}
+
+if (adminChallengesByMember) {
+
+    adminChallengesByMember.addEventListener(
+        "click",
+        () => showAdminChallengeView("member")
+    );
+
+}
+
 //--------------------------------------------------
 // Bind Refresh Button
 //--------------------------------------------------
