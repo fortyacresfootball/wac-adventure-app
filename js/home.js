@@ -2217,6 +2217,36 @@ async function loadWacQuickPoll() {
             writeInPercent +
             "%)";
 
+        const writeInAnswers =
+            Array.isArray(poll.writeInResponses)
+                ? poll.writeInResponses
+                : [];
+
+        if (writeInAnswers.length > 0) {
+
+            const answerList = document.createElement("ul");
+
+            Object.assign(answerList.style, {
+                margin: "10px 0 0",
+                paddingLeft: "24px",
+                overflowWrap: "anywhere"
+            });
+
+            writeInAnswers.forEach(answer => {
+
+                const item = document.createElement("li");
+
+                item.textContent = String(answer);
+                item.style.marginBottom = "6px";
+
+                answerList.appendChild(item);
+
+            });
+
+            writeInResult.appendChild(answerList);
+
+        }
+
         content.appendChild(
             writeInResult
         );
