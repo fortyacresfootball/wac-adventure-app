@@ -117,6 +117,81 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    if (challengeId === "UC-BOOKS") {
+
+            const bookTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const achievementIds = new Set(
+                bookTasks
+                    .filter(task =>
+                        String(task["Category"] || "").trim() ===
+                        "Reading Achievements"
+                    )
+                    .map(task =>
+                        String(task["Task ID"] || "").trim()
+                    )
+                    .filter(Boolean)
+            );
+
+            const bookIds = new Set(
+                bookTasks
+                    .filter(task =>
+                        String(task["Category"] || "").trim() !==
+                        "Reading Achievements"
+                    )
+                    .map(task =>
+                        String(task["Task ID"] || "").trim()
+                    )
+                    .filter(Boolean)
+            );
+
+            const booksRead = [...bookIds].filter(id =>
+                completedIds.has(id)
+            ).length;
+
+            const achievements = [...achievementIds].filter(id =>
+                completedIds.has(id)
+            ).length;
+
+            const requirementsMet =
+                booksRead >= 75 && achievements >= 5;
+
+            return `
+                <div>
+                    <strong>Listed books read:</strong>
+                    ${booksRead} / 75 required
+                    ${booksRead >= 75 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Reading achievements:</strong>
+                    ${achievements} / 5 required
+                    ${achievements >= 5 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+
+                <small>
+                    Listed-book progress only.
+                    Approved substitute tracking is not available yet.
+                </small>
+            `;
+
+        }
+
                     if (challengeId === "UC-ANIMAL") {
 
             const animalTasks = this.getTasks().filter(task =>
@@ -710,7 +785,8 @@ const percent =
 if (
     challengeId === "UC-MOVIES" ||
     challengeId === "UC-FOOD" ||
-    challengeId === "UC-ANIMAL"
+    challengeId === "UC-ANIMAL" ||
+    challengeId === "UC-BOOKS"
 ) {
 
                                         const progressBox =
