@@ -115,6 +115,76 @@ window.UltimateChallenges = {
         );
     },
 
+        getChallengeProgressHtml(challengeId, completed, total, percent) {
+
+        if (challengeId !== "UC-MOVIES") {
+            return `${completed} of ${total} Complete · ${percent}%`;
+        }
+
+        const tasks = this.getTasks().filter(task =>
+            String(task["Challenge ID"] || "").trim() === challengeId
+        );
+
+        const completedIds =
+            this.getCompletedTaskIds(challengeId);
+
+        const movieIds = new Set(
+            tasks
+                .map(task => String(task["Task ID"] || "").trim())
+                .filter(id => /^MOVIE-\d{3}$/.test(id))
+        );
+
+        const filmsWatched = [...movieIds].filter(id =>
+            completedIds.has(id)
+        ).length;
+
+        const experienceExists = tasks.some(task =>
+            String(task["Task ID"] || "").trim() === "MOVIE-EXP-001"
+        );
+
+        const experienceComplete =
+            experienceExists &&
+            completedIds.has("MOVIE-EXP-001");
+
+        const requirementsMet =
+            filmsWatched >= 450 && experienceComplete;
+
+        return `
+            <div>
+                <strong>Listed films watched:</strong>
+                ${filmsWatched} / 450 required
+                ${filmsWatched >= 450 ? "— Met" : ""}
+            </div>
+
+            <div>
+                <strong>Paul’s favorites experience:</strong>
+                ${
+                    !experienceExists
+                        ? "Task missing"
+                        : experienceComplete
+                            ? "Complete"
+                            : "Outstanding"
+                }
+            </div>
+
+            <div>
+                <strong>
+                    ${
+                        requirementsMet
+                            ? "Challenge requirements met"
+                            : "Challenge requirements not yet met"
+                    }
+                </strong>
+            </div>
+
+            <small>
+                Listed-film progress only.
+                Substitute tracking is not available yet.
+            </small>
+        `;
+
+    },
+    
     renderChallengeList() {
 
         const container =
@@ -242,8 +312,7 @@ window.UltimateChallenges = {
                         </p>
 
                         <div class="ultimate-challenge-progress">
-                            ${completed} of ${total} Complete
-                            · ${percent}%
+                            ${this.getChallengeProgressHtml(challengeId, completed, total, percent)}
                         </div>
 
                         <button
@@ -396,8 +465,7 @@ const percent =
                     </p>
 
                     <div class="ultimate-challenge-progress">
-    ${completed} of ${total} Complete
-    · ${percent}%
+    ${this.getChallengeProgressHtml(challengeId, completed, total, percent)}
 </div>
 
                     <div
@@ -493,6 +561,20 @@ const percent =
                                         response?.progress
                                     );
 
+                                                                        if (challengeId === "UC-MOVIES") {
+
+                                        const progressBox =
+                                            container.querySelector(
+                                                ".ultimate-challenge-detail .ultimate-challenge-progress"
+                                            );
+
+                                        if (progressBox) {
+                                            progressBox.innerHTML =
+                                                this.getChallengeProgressHtml(challengeId);
+                                        }
+
+                                    }
+                                    
                                     console.log(
                                         "Ultimate Challenge progress saved:",
                                         taskId,
