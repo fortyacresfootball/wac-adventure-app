@@ -1446,15 +1446,68 @@ renderMap() {
             }
         );
 
-        this.renderWindCone(
-    map,
-    firstLocation
-);
+           let scentCone =
+        this.renderWindCone(map, firstLocation);
 
-this.renderWindLabel(
-    map,
-    firstLocation
-);
+    let windLabel =
+        this.renderWindLabel(map, firstLocation);
+
+    const locationSelect =
+        document.getElementById("huntScentLocation");
+
+    if (locationSelect) {
+
+        locationSelect.replaceChildren();
+
+        mappedLocations.forEach((location, index) => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = String(index);
+
+            option.textContent =
+                String(location["Name"] || "").trim() ||
+                `Hunting Location ${index + 1}`;
+
+            locationSelect.appendChild(option);
+
+        });
+
+        locationSelect.value = "0";
+        locationSelect.disabled = false;
+
+        locationSelect.onchange = () => {
+
+            const location =
+                mappedLocations[Number(locationSelect.value)];
+
+            if (!location) {
+                return;
+            }
+
+            if (scentCone) {
+                scentCone.setMap(null);
+            }
+
+            if (windLabel) {
+                windLabel.close();
+            }
+
+            scentCone =
+                this.renderWindCone(map, location);
+
+            windLabel =
+                this.renderWindLabel(map, location);
+
+            map.panTo({
+                lat: parseFloat(location["Latitude"]),
+                lng: parseFloat(location["Longitude"])
+            });
+
+        };
+
+    }
 
     mappedLocations.forEach(
         location => {
@@ -1704,7 +1757,7 @@ const coneWidthDegrees =
         );
 
 
-    new google.maps.Polygon(
+       return new google.maps.Polygon(
         {
             paths:
                 [
@@ -1962,9 +2015,11 @@ renderWindLabel(
         );
 
 
-    infoWindow.open(
+        infoWindow.open(
         map
     );
+
+    return infoWindow;
 },
 
     showError(
