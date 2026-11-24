@@ -71,6 +71,40 @@
                     Live the Adventure. Leave the Legacy.
                 </p>
 
+                <form id="profilePhotoForm" hidden>
+
+                    <label for="profilePhotoInput">
+                        Update your profile picture
+                    </label>
+
+                    <input
+                        type="file"
+                        id="profilePhotoInput"
+                        accept="image/jpeg,image/png,image/webp"
+                        aria-describedby="profilePhotoHelp"
+                        required
+                    >
+
+                    <p id="profilePhotoHelp">
+                        Choose a JPEG, PNG, or WebP photo.
+                    </p>
+
+                    <button
+                        type="submit"
+                        class="small-button"
+                        id="profilePhotoSave"
+                    >
+                        Save Profile Picture
+                    </button>
+
+                    <p
+                        id="profilePhotoMessage"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </form>
+
             </div>
 
             <div class="profile-rank-block">
