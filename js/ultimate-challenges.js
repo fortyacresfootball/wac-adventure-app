@@ -117,6 +117,78 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    if (challengeId === "UC-ANIMAL") {
+
+            const animalTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const categoryIds = category => new Set(
+                animalTasks
+                    .filter(task =>
+                        String(task["Category"] || "").trim() === category
+                    )
+                    .map(task =>
+                        String(task["Task ID"] || "").trim()
+                    )
+                    .filter(Boolean)
+            );
+
+            const countCompleted = ids =>
+                [...ids].filter(id => completedIds.has(id)).length;
+
+            const coreIds = categoryIds("Core");
+            const core = countCompleted(coreIds);
+
+            const encounters =
+                countCompleted(categoryIds("Animal Encounter"));
+
+            const wildlife =
+                countCompleted(categoryIds("Michigan Wildlife Task"));
+
+            const coreMet =
+                coreIds.size === 30 && core === 30;
+
+            const requirementsMet =
+                coreMet &&
+                encounters >= 5 &&
+                wildlife >= 5;
+
+            return `
+                <div>
+                    <strong>Core destinations:</strong>
+                    ${core} / 30 required
+                    ${coreMet ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Animal encounters:</strong>
+                    ${encounters} / 5 required
+                    ${encounters >= 5 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Michigan wildlife tasks:</strong>
+                    ${wildlife} / 5 required
+                    ${wildlife >= 5 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+            `;
+
+        }
+
                     if (challengeId === "UC-FOOD") {
 
             const foodTasks = this.getTasks().filter(task =>
@@ -635,9 +707,10 @@ const percent =
                                         response?.progress
                                     );
 
-                                                                       if (
+if (
     challengeId === "UC-MOVIES" ||
-    challengeId === "UC-FOOD"
+    challengeId === "UC-FOOD" ||
+    challengeId === "UC-ANIMAL"
 ) {
 
                                         const progressBox =
