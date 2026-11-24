@@ -117,6 +117,8 @@
             stats
         );
 
+        setupProfilePhotoUpload(member);
+
         renderProfileStatistics(
             stats
         );
@@ -2067,5 +2069,193 @@ function showProfileError(
         </div>
 
     `;
+
+}
+
+function setupProfilePhotoUpload(member) {
+
+    const form = document.getElementById("profilePhotoForm");
+    const input = document.getElementById("profilePhotoInput");
+    const button = document.getElementById("profilePhotoSave");
+    const message = document.getElementById("profilePhotoMessage");
+
+    if (!form || !input || !button || !message) {
+        return;
+    }
+
+    const memberId = String(member["Member ID"] || "").trim();
+    let uploading = false;
+
+    function ownsProfile() {
+        const signedInId =
+            String(window.WAC?.authMember?.["Member ID"] || "").trim();
+
+        return Boolean(
+            memberId &&
+            window.AuthService?.isSignedIn() &&
+            signedInId === memberId
+        );
+    }
+
+    function updateControls() {
+        form.hidden = !ownsProfile();
+        input.disabled = uploading || !ownsProfile();
+        button.disabled = uploading || !ownsProfile();
+
+        button.textContent =
+            uploading ? "Saving Picture…" : "Save Profile Picture";
+    }
+
+    // Replace listeners from any previously opened profile.
+    const previousListener =
+        window.WAC.profilePhotoAuthListener;
+
+    if (previousListener) {
+        window.removeEventListener("wac-auth-ready", previousListener);
+        window.removeEventListener("wac-auth-changed", previousListener);
+    }
+
+    const authListener = () => {
+        if (form.isConnected) {
+            updateControls();
+        }
+    };
+
+    window.WAC.profilePhotoAuthListener = authListener;
+
+    window.addEventListener("wac-auth-ready", authListener);
+    window.addEventListener("wac-auth-changed", authListener);
+
+    updateControls();
+
+    form.onsubmit = async (event) => {
+
+        event.preventDefault();
+
+        if (uploading) {
+            return;
+        }
+
+        if (!ownsProfile()) {
+            message.textContent = "Sign in to update your own profile picture.";
+            updateControls();
+            return;
+        }
+
+        const file = input.files?.[0];
+
+        if (!file) {
+            message.textContent = "Choose a photo first.";
+            return;
+        }
+
+        if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+            message.textContent = "Please choose a JPEG, PNG, or WebP photo.";
+            return;
+        }
+
+        if (file.size > 20 * 1024 * 1024) {
+            message.textContent = "Please choose a photo smaller than 20 MB.";
+            return;
+        }
+
+        uploading = true;
+        updateControls();
+        message.textContent = "Preparing your photo…";
+
+        let objectUrl = null;
+
+        try {
+
+            objectUrl = URL.createObjectURL(file);
+
+            const image = new Image();
+
+            await new Promise((resolve, reject) => {
+                image.onload = resolve;
+                image.onerror = () => reject(
+                    new Error("This photo could not be opened. Try another image.")
+                );
+                image.src = objectUrl;
+            });
+
+            if (!image.naturalWidth || !image.naturalHeight) {
+                throw new Error("The selected photo has invalid dimensions.");
+            }
+
+            const scale = Math.min(
+                1,
+                800 / image.naturalWidth,
+                800 / image.naturalHeight
+            );
+
+            const canvas = document.createElement("canvas");
+
+            canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+            canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+            const context = canvas.getContext("2d");
+
+            if (!context) {
+                throw new Error("Your browser could not prepare this photo.");
+            }
+
+            context.fillStyle = "#ffffff";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            const base64Data =
+                canvas.toDataURL("image/jpeg", 0.85).split(",")[1];
+
+            if (!base64Data || base64Data.length > 2796204) {
+                throw new Error("Please choose a smaller photo.");
+            }
+
+            if (!form.isConnected || !ownsProfile()) {
+                throw new Error("Your session changed. Reopen your profile and try again.");
+            }
+
+            message.textContent = "Saving your profile picture…";
+
+            const result = await Database.uploadProfilePhoto({
+                mimeType: "image/jpeg",
+                base64Data
+            });
+
+            if (!result.profilePhoto) {
+                throw new Error("The server did not return the saved photo.");
+            }
+
+            member["Profile Photo"] = result.profilePhoto;
+
+            if (ownsProfile()) {
+                window.WAC.authMember["Profile Photo"] = result.profilePhoto;
+
+                if (form.isConnected) {
+                    loadProfilePhoto(member, getProfileMemberName(member));
+                    form.reset();
+                    message.textContent = "Profile picture updated.";
+                }
+            }
+
+        } catch (error) {
+
+            if (form.isConnected) {
+                message.textContent =
+                    error.message || "Your photo could not be saved. Please try again.";
+            }
+
+        } finally {
+
+            if (objectUrl) {
+                URL.revokeObjectURL(objectUrl);
+            }
+
+            uploading = false;
+            updateControls();
+
+        }
+
+    };
 
 }
