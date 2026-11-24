@@ -337,6 +337,15 @@ async saveHuntJournalEntry(
 
     },
 
+    async uploadProfilePhoto(data) {
+
+        return await this.authenticatedPost(
+            "uploadProfilePhoto",
+            data
+        );
+
+    },
+
     //--------------------------------------------------
     // Adventure Log
     //--------------------------------------------------
