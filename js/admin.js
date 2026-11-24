@@ -527,22 +527,187 @@ function createAdminSummaryRow(
 
             members.forEach(member => {
 
-    const completed =
-        progress.filter(p =>
-            p.memberId === member.memberId &&
-            p.completed === true
-        ).length;
+                const memberId =
+                    String(member.memberId || "").trim();
 
-    const row =
-        createAdminSummaryRow(
-            member.displayName ||
-            member.memberId,
-            `${completed} Completed`
-        );
+                const memberName =
+                    member.displayName || memberId;
 
-    list.appendChild(row);
+                const memberProgress = progress.filter(record =>
+                    String(record.memberId || "").trim() === memberId
+                );
 
-});
+                const completed = memberProgress.filter(record =>
+                    record.completed === true
+                ).length;
+
+                const row = createAdminSummaryRow(
+                    memberName,
+                    `${completed} Completed`
+                );
+
+                row.setAttribute("role", "button");
+                row.tabIndex = 0;
+                row.style.cursor = "pointer";
+
+                row.setAttribute(
+                    "aria-label",
+                    `View challenge progress for ${memberName}`
+                );
+
+                function openMemberChallenges() {
+
+                    const previousContent =
+                        Array.from(adminChallengesContent.childNodes);
+
+                    const back = document.createElement("button");
+                    back.type = "button";
+                    back.className = "small-button";
+                    back.textContent = "Back to Members";
+
+                    back.onclick = () => {
+                        adminChallengesContent.replaceChildren(
+                            ...previousContent
+                        );
+                        row.focus();
+                    };
+
+                    const heading = document.createElement("h3");
+                    heading.textContent = `${memberName}'s Challenge Progress`;
+
+                    const explanation = document.createElement("p");
+                    explanation.textContent =
+                        "Select a challenge to review task status and dates. " +
+                        "Task totals do not determine whether all " +
+                        "challenge requirements have been met.";
+
+                    const challengeList = document.createElement("div");
+
+                    Object.assign(challengeList.style, {
+                        display: "grid",
+                        gap: "12px",
+                        marginTop: "20px"
+                    });
+
+                    challenges.forEach(challenge => {
+
+                        const challengeId =
+                            String(challenge["Challenge ID"] || "").trim();
+
+                        const challengeName =
+                            challenge["Challenge Name"] || "Unnamed Challenge";
+
+                        const challengeTasks = tasks.filter(task =>
+                            String(task["Challenge ID"] || "").trim() === challengeId
+                        );
+
+                        const taskIds = new Set(
+                            challengeTasks
+                                .map(task => String(task["Task ID"] || "").trim())
+                                .filter(Boolean)
+                        );
+
+                        const completedTaskIds = new Set(
+                            memberProgress
+                                .filter(record =>
+                                    String(record.challengeId || "").trim() === challengeId &&
+                                    record.completed === true &&
+                                    taskIds.has(
+                                        String(record.taskId || "").trim()
+                                    )
+                                )
+                                .map(record =>
+                                    String(record.taskId || "").trim()
+                                )
+                        );
+
+                        const count = completedTaskIds.size;
+                        const total = taskIds.size;
+
+                        const challengeRow = createAdminSummaryRow(
+                            challengeName,
+                            `${count} / ${total} Tasks`
+                        );
+
+                        challengeRow.style.flexWrap = "wrap";
+                        challengeRow.style.cursor = "pointer";
+                        challengeRow.tabIndex = 0;
+                        challengeRow.setAttribute("role", "button");
+
+                        challengeRow.setAttribute(
+                            "aria-label",
+                            `View ${memberName}'s tasks for ${challengeName}`
+                        );
+
+                        const bar = document.createElement("progress");
+                        bar.max = total || 1;
+                        bar.value = count;
+
+                        bar.setAttribute(
+                            "aria-label",
+                            `${count} of ${total} tasks marked complete`
+                        );
+
+                        Object.assign(bar.style, {
+                            width: "100%",
+                            height: "16px",
+                            accentColor: "#245c38"
+                        });
+
+                        challengeRow.appendChild(bar);
+
+                        const openTasks = () => {
+                            showAdminChallengeTasks(
+                                challengeName,
+                                challengeId,
+                                challengeTasks,
+                                member,
+                                challengeRow
+                            );
+                        };
+
+                        challengeRow.addEventListener("click", openTasks);
+
+                        challengeRow.addEventListener("keydown", event => {
+                            if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                openTasks();
+                            }
+                        });
+
+                        challengeList.appendChild(challengeRow);
+
+                    });
+
+                    if (!challenges.length) {
+                        const empty = document.createElement("p");
+                        empty.textContent = "No challenges were returned.";
+                        challengeList.appendChild(empty);
+                    }
+
+                    adminChallengesContent.replaceChildren(
+                        back,
+                        heading,
+                        explanation,
+                        challengeList
+                    );
+
+                    back.focus();
+
+                }
+
+                row.addEventListener("click", openMemberChallenges);
+
+                row.addEventListener("keydown", event => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openMemberChallenges();
+                    }
+                });
+
+                list.appendChild(row);
+
+            });
 
         }
 
