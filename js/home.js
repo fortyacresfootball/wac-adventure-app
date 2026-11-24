@@ -7,6 +7,18 @@
 
     try {
 
+        const seasonLabel =
+            document.getElementById("wac-season-label");
+
+        if (seasonLabel) {
+            const season = getCurrentWacSeason();
+
+            seasonLabel.textContent =
+                season.charAt(0).toUpperCase() +
+                season.slice(1) +
+                " Operations";
+        }
+
                 await updateHuntBoardAccess();
 
         //--------------------------------------------------
