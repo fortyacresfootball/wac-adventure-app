@@ -235,27 +235,151 @@ function createAdminSummaryRow(
 
             challenges.forEach(challenge => {
 
-    const challengeId =
-        String(
-            challenge["Challenge ID"] || ""
-        ).trim();
+                const challengeId =
+                    String(challenge["Challenge ID"] || "").trim();
 
-    const taskCount =
-        tasks.filter(task =>
-            String(task["Challenge ID"] || "").trim()
-            === challengeId
-        ).length;
+                const challengeName =
+                    challenge["Challenge Name"] || "Unnamed Challenge";
 
-    const row =
-        createAdminSummaryRow(
-            challenge["Challenge Name"] ||
-            "Unnamed Challenge",
-            `${taskCount} Tasks`
-        );
+                const challengeTasks = tasks.filter(task =>
+                    String(task["Challenge ID"] || "").trim() === challengeId
+                );
 
-    list.appendChild(row);
+                const taskIds = new Set(
+                    challengeTasks
+                        .map(task => String(task["Task ID"] || "").trim())
+                        .filter(Boolean)
+                );
 
-});
+                const row = createAdminSummaryRow(
+                    challengeName,
+                    `${taskIds.size} Tasks`
+                );
+
+                row.setAttribute("role", "button");
+                row.tabIndex = 0;
+                row.style.cursor = "pointer";
+                row.setAttribute(
+                    "aria-label",
+                    `View member progress for ${challengeName}`
+                );
+
+                function openChallengeMembers() {
+
+                    const previousContent =
+                        Array.from(adminChallengesContent.childNodes);
+
+                    const backButton = document.createElement("button");
+                    backButton.type = "button";
+                    backButton.className = "small-button";
+                    backButton.textContent = "Back to Challenges";
+
+                    backButton.onclick = () => {
+                        adminChallengesContent.replaceChildren(
+                            ...previousContent
+                        );
+                        row.focus();
+                    };
+
+                    const title = document.createElement("h3");
+                    title.textContent = challengeName;
+
+                    const explanation = document.createElement("p");
+                    explanation.textContent =
+                        "Tasks marked complete by each member. " +
+                        "These totals do not determine whether all " +
+                        "challenge requirements have been met.";
+
+                    const memberList = document.createElement("div");
+
+                    Object.assign(memberList.style, {
+                        display: "grid",
+                        gap: "12px",
+                        marginTop: "20px"
+                    });
+
+                    members.forEach(member => {
+
+                        const memberId =
+                            String(member.memberId || "").trim();
+
+                        const memberName =
+                            member.displayName || memberId;
+
+                        const completedTaskIds = new Set(
+                            progress
+                                .filter(record =>
+                                    String(record.memberId || "").trim() === memberId &&
+                                    String(record.challengeId || "").trim() === challengeId &&
+                                    record.completed === true &&
+                                    taskIds.has(
+                                        String(record.taskId || "").trim()
+                                    )
+                                )
+                                .map(record =>
+                                    String(record.taskId || "").trim()
+                                )
+                        );
+
+                        const completed = completedTaskIds.size;
+                        const total = taskIds.size;
+
+                        const memberRow = createAdminSummaryRow(
+                            memberName,
+                            `${completed} / ${total} Tasks`
+                        );
+
+                        memberRow.style.flexWrap = "wrap";
+
+                        const bar = document.createElement("progress");
+                        bar.max = total || 1;
+                        bar.value = completed;
+
+                        bar.setAttribute(
+                            "aria-label",
+                            `${memberName}: ${completed} of ${total} tasks marked complete`
+                        );
+
+                        Object.assign(bar.style, {
+                            width: "100%",
+                            height: "16px",
+                            accentColor: "#245c38"
+                        });
+
+                        memberRow.appendChild(bar);
+                        memberList.appendChild(memberRow);
+
+                    });
+
+                    if (!members.length) {
+                        const empty = document.createElement("p");
+                        empty.textContent = "No members were returned.";
+                        memberList.appendChild(empty);
+                    }
+
+                    adminChallengesContent.replaceChildren(
+                        backButton,
+                        title,
+                        explanation,
+                        memberList
+                    );
+
+                    backButton.focus();
+
+                }
+
+                row.addEventListener("click", openChallengeMembers);
+
+                row.addEventListener("keydown", event => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openChallengeMembers();
+                    }
+                });
+
+                list.appendChild(row);
+
+            });
 
         } else {
 
