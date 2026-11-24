@@ -2086,21 +2086,25 @@ function setupProfilePhotoUpload(member) {
     const memberId = String(member["Member ID"] || "").trim();
     let uploading = false;
 
-    function ownsProfile() {
+        function canEditProfilePhoto() {
         const signedInId =
             String(window.WAC?.authMember?.["Member ID"] || "").trim();
 
         return Boolean(
             memberId &&
+            signedInId &&
             window.AuthService?.isSignedIn() &&
-            signedInId === memberId
+            (
+                signedInId === memberId ||
+                window.AuthService?.isAdmin()
+            )
         );
     }
 
     function updateControls() {
-        form.hidden = !ownsProfile();
-        input.disabled = uploading || !ownsProfile();
-        button.disabled = uploading || !ownsProfile();
+        form.hidden = !canEditProfilePhoto();
+        input.disabled = uploading || !canEditProfilePhoto();
+        button.disabled = uploading || !canEditProfilePhoto();
 
         button.textContent =
             uploading ? "Saving Picture…" : "Save Profile Picture";
@@ -2136,8 +2140,8 @@ function setupProfilePhotoUpload(member) {
             return;
         }
 
-        if (!ownsProfile()) {
-            message.textContent = "Sign in to update your own profile picture.";
+        if (!canEditProfilePhoto()) {
+            message.textContent = "Sign in with permission to update this profile picture.";
             updateControls();
             return;
         }
@@ -2211,13 +2215,14 @@ function setupProfilePhotoUpload(member) {
                 throw new Error("Please choose a smaller photo.");
             }
 
-            if (!form.isConnected || !ownsProfile()) {
+            if (!form.isConnected || !canEditProfilePhoto()) {
                 throw new Error("Your session changed. Reopen your profile and try again.");
             }
 
             message.textContent = "Saving your profile picture…";
 
             const result = await Database.uploadProfilePhoto({
+                memberId,
                 mimeType: "image/jpeg",
                 base64Data
             });
@@ -2226,16 +2231,22 @@ function setupProfilePhotoUpload(member) {
                 throw new Error("The server did not return the saved photo.");
             }
 
-            member["Profile Photo"] = result.profilePhoto;
+             member["Profile Photo"] = result.profilePhoto;
 
-            if (ownsProfile()) {
-                window.WAC.authMember["Profile Photo"] = result.profilePhoto;
+            const signedInMember =
+                window.WAC?.authMember;
 
-                if (form.isConnected) {
-                    loadProfilePhoto(member, getProfileMemberName(member));
-                    form.reset();
-                    message.textContent = "Profile picture updated.";
-                }
+            if (
+                signedInMember &&
+                String(signedInMember["Member ID"] || "").trim() === memberId
+            ) {
+                signedInMember["Profile Photo"] = result.profilePhoto;
+            }
+
+            if (form.isConnected && canEditProfilePhoto()) {
+                loadProfilePhoto(member, getProfileMemberName(member));
+                form.reset();
+                message.textContent = "Profile picture updated.";
             }
 
         } catch (error) {
