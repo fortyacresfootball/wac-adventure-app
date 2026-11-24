@@ -117,6 +117,80 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    if (challengeId === "UC-FOOD") {
+
+            const foodTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const countCategory = category => {
+
+                const ids = new Set(
+                    foodTasks
+                        .filter(task =>
+                            String(task["Category"] || "").trim() === category
+                        )
+                        .map(task =>
+                            String(task["Task ID"] || "").trim()
+                        )
+                        .filter(Boolean)
+                );
+
+                return [...ids].filter(id =>
+                    completedIds.has(id)
+                ).length;
+
+            };
+
+            const destinations =
+                countCategory("Restaurant Destinations");
+
+            const specialties =
+                countCategory("Michigan Specialty Foods");
+
+            const eatingAttempts =
+                countCategory("Restaurant Eating Challenges");
+
+            const requirementsMet =
+                destinations >= 75 &&
+                specialties >= 8 &&
+                eatingAttempts >= 3;
+
+            return `
+                <div>
+                    <strong>Food destinations:</strong>
+                    ${destinations} / 75 required
+                    ${destinations >= 75 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Specialty-food experiences:</strong>
+                    ${specialties} / 8 required
+                    ${specialties >= 8 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Eating-challenge attempts:</strong>
+                    ${eatingAttempts} / 3 required
+                    ${eatingAttempts >= 3 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+            `;
+
+        }
+
         if (challengeId !== "UC-MOVIES") {
             return `${completed} of ${total} Complete · ${percent}%`;
         }
@@ -561,7 +635,10 @@ const percent =
                                         response?.progress
                                     );
 
-                                                                        if (challengeId === "UC-MOVIES") {
+                                                                       if (
+    challengeId === "UC-MOVIES" ||
+    challengeId === "UC-FOOD"
+) {
 
                                         const progressBox =
                                             container.querySelector(
@@ -574,7 +651,7 @@ const percent =
                                         }
 
                                     }
-                                    
+
                                     console.log(
                                         "Ultimate Challenge progress saved:",
                                         taskId,
