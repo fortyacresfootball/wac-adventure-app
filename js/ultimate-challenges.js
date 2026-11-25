@@ -117,6 +117,80 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    if (challengeId === "UC-ARCADE") {
+
+            const arcadeTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const countCategory = category => {
+
+                const ids = new Set(
+                    arcadeTasks
+                        .filter(task =>
+                            String(task["Category"] || "").trim() === category
+                        )
+                        .map(task =>
+                            String(task["Task ID"] || "").trim()
+                        )
+                        .filter(Boolean)
+                );
+
+                return [...ids].filter(id =>
+                    completedIds.has(id)
+                ).length;
+
+            };
+
+            const games =
+                countCategory("Classic Games");
+
+            const visits =
+                countCategory("Arcade Visits");
+
+            const pinball =
+                countCategory("Pinball Games");
+
+            const requirementsMet =
+                games >= 80 &&
+                visits >= 5 &&
+                pinball >= 10;
+
+            return `
+                <div>
+                    <strong>Classic arcade games:</strong>
+                    ${games} / 80 required
+                    ${games >= 80 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Physical arcade visits:</strong>
+                    ${visits} / 5 required
+                    ${visits >= 5 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Physical pinball titles:</strong>
+                    ${pinball} / 10 required
+                    ${pinball >= 10 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+            `;
+
+        }
+
                     if (challengeId === "UC-GAMES") {
 
             const gamingTasks = this.getTasks().filter(task =>
@@ -965,7 +1039,8 @@ if (
     challengeId === "UC-ANIMAL" ||
     challengeId === "UC-BOOKS" ||
     challengeId === "UC-BIRD" ||
-    challengeId === "UC-GAMES"
+    challengeId === "UC-GAMES" ||
+    challengeId === "UC-ARCADE"
 ) {
 
                                         const progressBox =
