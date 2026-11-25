@@ -117,6 +117,75 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    if (challengeId === "UC-PARKS") {
+
+            const parkTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const categoryIds = category => new Set(
+                parkTasks
+                    .filter(task =>
+                        String(task["Category"] || "").trim() === category
+                    )
+                    .map(task =>
+                        String(task["Task ID"] || "").trim()
+                    )
+                    .filter(Boolean)
+            );
+
+            const countCompleted = ids =>
+                [...ids].filter(id => completedIds.has(id)).length;
+
+            const lower48Ids =
+                categoryIds("Lower 48");
+
+            const lower48 =
+                countCompleted(lower48Ids);
+
+            const additional =
+                countCompleted(categoryIds("Additional Parks"));
+
+            const lower48Met =
+                lower48Ids.size === 52 && lower48 === 52;
+
+            const requirementsMet =
+                lower48Met && additional >= 4;
+
+            return `
+                <div>
+                    <strong>Lower 48 parks visited:</strong>
+                    ${lower48} / 52 required
+                    ${lower48Met ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Additional parks visited:</strong>
+                    ${additional} / 4 required
+                    ${additional >= 4 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+
+                <small>
+                    Additional parks may be any combination of
+                    the listed parks outside the lower 48.
+                </small>
+            `;
+
+        }
+
                     if (challengeId === "UC-ARCADE") {
 
             const arcadeTasks = this.getTasks().filter(task =>
@@ -1040,7 +1109,8 @@ if (
     challengeId === "UC-BOOKS" ||
     challengeId === "UC-BIRD" ||
     challengeId === "UC-GAMES" ||
-    challengeId === "UC-ARCADE"
+    challengeId === "UC-ARCADE" ||
+    challengeId === "UC-PARKS"
 ) {
 
                                         const progressBox =
