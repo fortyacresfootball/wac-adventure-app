@@ -117,6 +117,102 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    if (challengeId === "UC-BIRD") {
+
+            const birdTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const speciesCategories = new Set([
+                "Backyard and Common Birds",
+                "Woodland and Forest Birds",
+                "Waterfowl Wetlands and Shorebirds",
+                "Raptors and Owls",
+                "Warblers and Migratory Songbirds",
+                "Michigan Specialty"
+            ]);
+
+            const experienceCategories = new Set([
+                "Backyard Birding and Identification",
+                "Bird Behavior and Natural History",
+                "Advanced Birding and Conservation"
+            ]);
+
+            const countCompleted = categories => {
+
+                const ids = new Set(
+                    birdTasks
+                        .filter(task =>
+                            categories.has(
+                                String(task["Category"] || "").trim()
+                            )
+                        )
+                        .map(task =>
+                            String(task["Task ID"] || "").trim()
+                        )
+                        .filter(Boolean)
+                );
+
+                return [...ids].filter(id =>
+                    completedIds.has(id)
+                ).length;
+
+            };
+
+            const species =
+                countCompleted(speciesCategories);
+
+            const specialties =
+                countCompleted(new Set(["Michigan Specialty"]));
+
+            const experiences =
+                countCompleted(experienceCategories);
+
+            const requirementsMet =
+                species >= 75 &&
+                specialties >= 3 &&
+                experiences >= 3;
+
+            return `
+                <div>
+                    <strong>Bird species identified:</strong>
+                    ${species} / 75 required
+                    ${species >= 75 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Michigan Specialty species:</strong>
+                    ${specialties} / 3 required
+                    ${specialties >= 3 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Birdwatching experiences:</strong>
+                    ${experiences} / 3 required
+                    ${experiences >= 3 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+
+                <small>
+                    Michigan Specialty species also count
+                    toward the 75-species requirement.
+                </small>
+            `;
+
+        }
+
                     if (challengeId === "UC-BOOKS") {
 
             const bookTasks = this.getTasks().filter(task =>
@@ -786,7 +882,8 @@ if (
     challengeId === "UC-MOVIES" ||
     challengeId === "UC-FOOD" ||
     challengeId === "UC-ANIMAL" ||
-    challengeId === "UC-BOOKS"
+    challengeId === "UC-BOOKS" ||
+    challengeId === "UC-BIRD"
 ) {
 
                                         const progressBox =
