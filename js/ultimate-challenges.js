@@ -117,6 +117,87 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    if (challengeId === "UC-GAMES") {
+
+            const gamingTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const gameCategories = new Set([
+                "Yard and Outdoor Games",
+                "Traditional Board Games",
+                "Card and Dice Games",
+                "Party Strategy and Modern Games"
+            ]);
+
+            const gameIds = new Set(
+                gamingTasks
+                    .filter(task =>
+                        gameCategories.has(
+                            String(task["Category"] || "").trim()
+                        )
+                    )
+                    .map(task =>
+                        String(task["Task ID"] || "").trim()
+                    )
+                    .filter(Boolean)
+            );
+
+            const achievementIds = new Set(
+                gamingTasks
+                    .filter(task =>
+                        String(task["Category"] || "").trim() ===
+                        "Special Gaming Achievements"
+                    )
+                    .map(task =>
+                        String(task["Task ID"] || "").trim()
+                    )
+                    .filter(Boolean)
+            );
+
+            const gamesPlayed = [...gameIds].filter(id =>
+                completedIds.has(id)
+            ).length;
+
+            const achievements = [...achievementIds].filter(id =>
+                completedIds.has(id)
+            ).length;
+
+            const gamesMet =
+                gameIds.size === 60 && gamesPlayed === 60;
+
+            const requirementsMet =
+                gamesMet && achievements >= 6;
+
+            return `
+                <div>
+                    <strong>Games played to completion:</strong>
+                    ${gamesPlayed} / 60 required
+                    ${gamesMet ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Gaming achievements:</strong>
+                    ${achievements} / 6 required
+                    ${achievements >= 6 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+            `;
+
+        }
+
                     if (challengeId === "UC-BIRD") {
 
             const birdTasks = this.getTasks().filter(task =>
@@ -883,7 +964,8 @@ if (
     challengeId === "UC-FOOD" ||
     challengeId === "UC-ANIMAL" ||
     challengeId === "UC-BOOKS" ||
-    challengeId === "UC-BIRD"
+    challengeId === "UC-BIRD" ||
+    challengeId === "UC-GAMES"
 ) {
 
                                         const progressBox =
