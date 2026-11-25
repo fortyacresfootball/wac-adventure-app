@@ -243,16 +243,32 @@
 }
 
 .ultimate-challenge-progress {
-    display: inline-block;
+    display: grid;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     margin-bottom: 18px;
-    padding:
-        7px
-        12px;
-    border-radius: 999px;
+    padding: 16px 18px;
+    border-radius: 14px;
     background: #e8e2cf;
     color: #3c513f;
     font-weight: 700;
     font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.ultimate-challenge-progress > * {
+    min-width: 0;
+}
+
+.ultimate-challenge-progress small {
+    display: block;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 .ultimate-challenge-card .small-button {
