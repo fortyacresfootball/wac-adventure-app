@@ -117,6 +117,86 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    if (challengeId === "UC-FISH") {
+
+            const fishingTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const categoryIds = category => new Set(
+                fishingTasks
+                    .filter(task =>
+                        String(task["Category"] || "").trim() === category
+                    )
+                    .map(task =>
+                        String(task["Task ID"] || "").trim()
+                    )
+                    .filter(Boolean)
+            );
+
+            const countCompleted = ids =>
+                [...ids].filter(id => completedIds.has(id)).length;
+
+            const core =
+                countCompleted(categoryIds("Core"));
+
+            const advanced =
+                countCompleted(categoryIds("Advanced"));
+
+            const experienceIds =
+                categoryIds("Experience");
+
+            const experiences =
+                countCompleted(experienceIds);
+
+            const experiencesMet =
+                experienceIds.size === 15 && experiences === 15;
+
+            const requirementsMet =
+                core >= 30 &&
+                advanced >= 5 &&
+                experiencesMet;
+
+            return `
+                <div>
+                    <strong>Core species:</strong>
+                    ${core} / 30 required
+                    ${core >= 30 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Advanced species:</strong>
+                    ${advanced} / 5 required
+                    ${advanced >= 5 ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>Fishing experiences:</strong>
+                    ${experiences} / 15 required
+                    ${experiencesMet ? "— Met" : ""}
+                </div>
+
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+
+                <small>
+                    All fishing experiences are required.
+                    Grandfathered experiences do not qualify.
+                </small>
+            `;
+
+        }
+
                     if (challengeId === "UC-PARKS") {
 
             const parkTasks = this.getTasks().filter(task =>
@@ -1110,7 +1190,8 @@ if (
     challengeId === "UC-BIRD" ||
     challengeId === "UC-GAMES" ||
     challengeId === "UC-ARCADE" ||
-    challengeId === "UC-PARKS"
+    challengeId === "UC-PARKS" ||
+    challengeId === "UC-FISH"
 ) {
 
                                         const progressBox =
