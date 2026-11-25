@@ -117,6 +117,95 @@ window.UltimateChallenges = {
 
         getChallengeProgressHtml(challengeId, completed, total, percent) {
 
+                    const remainingRules = {
+            "UC-HUNT": [
+                ["Core species", "Core Species", 20, true],
+                ["Advanced species", "Advanced Species", 5, false],
+                ["Hunting experiences", "Experience", 16, true]
+            ],
+            "UC-MIXED": [
+                ["Core cocktails", "Core", 35, true],
+                ["Advanced selections", "Advanced", 5, false],
+                ["Michigan experiences", "Michigan Experience", 7, true]
+            ],
+            "UC-BEER": [
+                ["Core beer tasks", "Core", 30, true],
+                ["Advanced beer tasks", "Advanced", 5, false],
+                ["Michigan experiences", "Michigan Experience", 6, true]
+            ],
+            "UC-ROADTRIP": [
+                ["County destinations", "Hidden Gems", 60, false]
+            ],
+            "UC-NFL": [
+                ["NFL team home-game tasks", null, 32, true]
+            ],
+            "UC-MLB": [
+                ["MLB team home-game tasks", null, 30, true]
+            ]
+        };
+
+        const rules = remainingRules[challengeId];
+
+        if (rules) {
+
+            const challengeTasks = this.getTasks().filter(task =>
+                String(task["Challenge ID"] || "").trim() === challengeId
+            );
+
+            const completedIds =
+                this.getCompletedTaskIds(challengeId);
+
+            const requirements = rules.map(
+                ([label, category, minimum, all]) => {
+
+                    const ids = new Set(
+                        challengeTasks
+                            .filter(task =>
+                                category === null ||
+                                String(task["Category"] || "").trim() === category
+                            )
+                            .map(task =>
+                                String(task["Task ID"] || "").trim()
+                            )
+                            .filter(Boolean)
+                    );
+
+                    const count = [...ids].filter(id =>
+                        completedIds.has(id)
+                    ).length;
+
+                    const met = all
+                        ? ids.size === minimum && count === minimum
+                        : count >= minimum;
+
+                    return { label, minimum, count, met };
+
+                }
+            );
+
+            const requirementsMet =
+                requirements.every(item => item.met);
+
+            return requirements.map(item => `
+                <div>
+                    <strong>${item.label}:</strong>
+                    ${item.count} / ${item.minimum} required
+                    ${item.met ? "— Met" : ""}
+                </div>
+            `).join("") + `
+                <div>
+                    <strong>
+                        ${
+                            requirementsMet
+                                ? "Challenge requirements met"
+                                : "Challenge requirements not yet met"
+                        }
+                    </strong>
+                </div>
+            `;
+
+        }
+
                     if (challengeId === "UC-FISH") {
 
             const fishingTasks = this.getTasks().filter(task =>
@@ -1183,17 +1272,25 @@ const percent =
                                     );
 
 if (
-    challengeId === "UC-MOVIES" ||
-    challengeId === "UC-FOOD" ||
-    challengeId === "UC-ANIMAL" ||
-    challengeId === "UC-BOOKS" ||
-    challengeId === "UC-BIRD" ||
-    challengeId === "UC-GAMES" ||
-    challengeId === "UC-ARCADE" ||
-    challengeId === "UC-PARKS" ||
-    challengeId === "UC-FISH"
+    [
+        "UC-MOVIES",
+        "UC-FOOD",
+        "UC-ANIMAL",
+        "UC-BOOKS",
+        "UC-BIRD",
+        "UC-GAMES",
+        "UC-ARCADE",
+        "UC-PARKS",
+        "UC-FISH",
+        "UC-HUNT",
+        "UC-MIXED",
+        "UC-BEER",
+        "UC-ROADTRIP",
+        "UC-NFL",
+        "UC-MLB"
+    ].includes(challengeId)
 ) {
-
+    
                                         const progressBox =
                                             container.querySelector(
                                                 ".ultimate-challenge-detail .ultimate-challenge-progress"
